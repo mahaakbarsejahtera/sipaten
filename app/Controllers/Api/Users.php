@@ -18,8 +18,8 @@ class Users extends Controller
         $response = [
             'data'      => [], 
             'errors'    => [],
-            'code'      => 0, 
-            'message'   => 'tes' 
+            'code'      => 200, 
+            'message'   => '' 
         ];
         
 
