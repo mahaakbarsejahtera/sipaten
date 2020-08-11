@@ -35,7 +35,7 @@ $routes->get('/', 'Home::index');
 
 $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes){
 
-	$routes->get('users', 'Users::show');
+	$routes->get('users', 'Users::index');
 
 });
 
