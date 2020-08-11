@@ -19,7 +19,7 @@ class Users extends Controller
             'data'      => [], 
             'errors'    => [],
             'code'      => 0, 
-            'message'   => ''
+            'message'   => 'tes' 
         ];
         
 
