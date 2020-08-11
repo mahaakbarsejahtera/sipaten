@@ -37,12 +37,24 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 
 	$routes->get('users', 'Users::index');
 
+	
+	$routes->get('roles', 'Roles::index');
+	$routes->post('roles', 'Roles::store');
+	$routes->post('roles/(:num)', 'Roles::update/$1');
+	$routes->post('roles/(:num)/delete', 'Roles::delete');
+	$routes->post('roles/destroy', 'Roles::destroy');
+
+
+
 });
 
 
 $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function($routes){
 
 	$routes->get('users', 'Users::index');
+	$routes->get('roles', 'Roles::index');
+
+	
 
 });
 

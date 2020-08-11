@@ -25,10 +25,12 @@ class BreadCrumb {
 
         foreach($this->data as $data)
         {
-            $url  = isset($data['url']) ? $data['url'] : '#';
+            $url  = isset($data['url']) ? $data['url'] : '';
             $name = isset($data['name']) ? $data['name'] : '';
             $active = isset($data['active']) ? 'active' : '';
-            $html .= "<li class=\"breadcrumb-item {$active}\"><a href=\"{$url}\">{$name}</a></li>";
+            if($url)  $html .= "<li class=\"breadcrumb-item {$active}\"><a href=\"{$url}\">{$name}</a></li>";
+            else $html .= "<li class=\"breadcrumb-item {$active}\">{$name}</li>";
+           
 
 
         } 
