@@ -178,7 +178,7 @@ class CodeIgniter
 	/**
 	 * Handles some basic app and environment setup.
 	 */
-	public function initialize()
+	public function initialize() 
 	{
 		// Set default locale on the server
 		if(function_exists('locale_set_default')) locale_set_default($this->config->defaultLocale ?? 'en');
