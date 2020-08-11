@@ -41,7 +41,7 @@ class Users extends Controller
 
     public function udpate($id)
     {
-
+ 
     }
 
     public function delete($id)
