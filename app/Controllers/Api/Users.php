@@ -26,9 +26,9 @@ class Users extends Controller
         
         $userModel = new UsersModel();
 
-        $response['data'] = [
+        $response['data'] = [ 
             'lists'     => $userModel->paginate(20, 'group1'),
-            //'per_page'  => $userModel->pager,
+            'per_page'  => $userModel->pager,
         ];
 
         return $this->response->setJson($response);
