@@ -61,6 +61,7 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 	
 	$routes->get('pemasaran', 'Home::dashboardPemasaran');
 	$routes->get('teknik', 'Home::dashboardTeknik');
+	$routes->get('hirup', 'Home::dashboardTeknik');
 	
 
 });
