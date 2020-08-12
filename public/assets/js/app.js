@@ -26,3 +26,20 @@ function Toast(status = "success", message = "") {
         "hideMethod": "fadeOut"
     }
 }
+
+
+$('[data-toggle=sort]').click(function(e){
+    e.preventDefault();
+
+
+    let fas = $(this).find('.fas');
+    if(fas.hasClass('fa-sort-amount-down')) fas.removeClass('fa-sort-amount-down').addClass('fa-sort-amount-up');
+    else  fas.removeClass('fa-sort-amount-up').addClass('fa-sort-amount-down');
+
+});
+
+$(document).on('click', '#pagination-wrapper .page-item', function(e){
+
+    $(this).find('a').html(`<span class="fas fa-spin fa-spinner"></span>`)
+
+});

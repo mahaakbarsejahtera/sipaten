@@ -12,6 +12,27 @@ class Roles extends Controller
         
     }
 
+    public function show( $id ) {
+
+        $response = [
+            'code'          => 0,
+            'message'       =>'',
+            'data'          => [],
+            'errors'        => []
+        ];
+
+        $find = (new rolesModel)->find( $id );
+
+        if($find) {
+            $response['data']       = $find;
+            $response['code']       = 200;
+            $response['message']    = 'Success';
+        }
+
+        return $this->response->setJson($response);
+
+    }
+
     public function index()
     {
 
@@ -26,9 +47,12 @@ class Roles extends Controller
         
         $rolesModel = new RolesModel();
 
+        $lists = $rolesModel->paginate(10, 'group1');
+        $pager = $rolesModel->pager;
+
         $response['data'] = [ 
-            'lists'     => $rolesModel->paginate(10, 'group1'),
-            'per_page'  => $rolesModel->pager,
+            'lists'         => $rolesModel->paginate(10, 'group1'),
+            'pagination'    => $pager->links('group1', 'bootstrap_pagination')
         ];
 
         return $this->response->setJson($response);
@@ -89,7 +113,28 @@ class Roles extends Controller
 
     public function delete($id)
     {
+        $response = [
+            'code'          => 0,
+            'message'       =>'',
+            'data'          => [],
+            'errors'        => []
+        ];
 
+        $find = (new rolesModel)->find( $id );
+        if($find) {
+
+            (new rolesModel)->delete($id);
+
+            $response = [
+                'code'      => 200,
+                'data'      => $find,
+                'message'   => 'Success',
+                'errors'    => []
+            ];
+            
+        }
+
+        return $this->response->setJson($response);
     }
 
     public function destroy()

@@ -10,12 +10,12 @@ $pager->setSurroundCount(2);
 <nav aria-label="<?= lang('Pager.pageNavigation') ?>">
 	<ul class="pagination">
 		<?php if ($pager->hasPrevious()) : ?>
-			<li class="page-item">
-				<a href="<?= $pager->getFirst() ?>" aria-label="<?= lang('Pager.first') ?>" class="page-link">
+			<li>
+				<a href="<?= $pager->getFirst() ?>" aria-label="<?= lang('Pager.first') ?>">
 					<span aria-hidden="true"><?= lang('Pager.first') ?></span>
 				</a>
 			</li>
-			<li class="page-item">
+			<li>
 				<a href="<?= $pager->getPrevious() ?>" aria-label="<?= lang('Pager.previous') ?>">
 					<span aria-hidden="true"><?= lang('Pager.previous') ?></span>
 				</a>
@@ -23,7 +23,7 @@ $pager->setSurroundCount(2);
 		<?php endif ?>
 
 		<?php foreach ($pager->links() as $link) : ?>
-			<li <?= $link['active'] ? 'class="page-item active"' : '' ?>>
+			<li <?= $link['active'] ? 'class="page-item active"' : 'class="page-item"' ?> data-ci-pagination="<?= $link['title'] ?>">
 				<a href="<?= $link['uri'] ?>" class="page-link">
 					<?= $link['title'] ?>
 				</a>
@@ -32,7 +32,7 @@ $pager->setSurroundCount(2);
 
 		<?php if ($pager->hasNext()) : ?>
 			<li class="page-item">
-				<a href="<?= $pager->getNext() ?>" aria-label="<?= lang('Pager.next') ?>" class="page-link">
+				<a href="<?= $pager->getNext() ?>" aria-label="<?= lang('Pager.next') ?>" class="page-link" data-ci-pagination="">
 					<span aria-hidden="true"><?= lang('Pager.next') ?></span>
 				</a>
 			</li>

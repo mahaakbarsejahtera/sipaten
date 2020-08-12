@@ -42,7 +42,7 @@
 
                         <div class="form-row d-flex justify-content-end">
                             <div class="form-group col-12 col-md-4">
-                                <input type="text" class="form-control" placeholder="Search" id="filter-search">
+                                <input type="number" class="form-control" placeholder="Search" min="1" max="99" id="filter-search">
                             </div>
                         </div>
 
@@ -51,7 +51,10 @@
                     </form>
                 </div>
 
-                <div class="col-12"><?php echo $table; ?></div>
+                <div class="col-12">
+                    <div><?php echo $table; ?></div>
+                    <div id="pagination-wrapper"></div>
+                </div>
             </div>    
         </div>
       </div>
@@ -118,7 +121,7 @@
         let form = $('#form');
 
         loadData();
-        function loadData() {
+        function loadData(data = {}) {
             tableData.find('tbody').html(`
                 <tr>
                     <td colspan="4">Loading...</td>
@@ -127,6 +130,7 @@
 
             $.ajax({
                 url: "<?php echo base_url('/api/roles') ?>",
+                data: data,
                 success: function(response) {
 
                     let html =  ``;
@@ -138,10 +142,14 @@
                                 <td>${v.role_name}</td>
                                 <td>${v.role_cap}</td>
                                 <td>${v.role_desc}</td>
-                                <td>
+                                <td width="200">
 
-                                    <a href="javascript:void(0)" class="btn btn-warning" data-toggle="table-action" data-action="edit" data-id="${v.id_role}">Edit</a>
-                                    <a href="javascript:void(0)" class="btn btn-danger" data-toggle="table-action"  data-action="delete" data-id="${v.id_role}">Danger</a>
+                                    <a href="javascript:void(0)" class="btn btn-warning" data-toggle="table-action" data-action="edit" data-id="${v.id_role}">
+                                        <span class="fas fa-edit"></span>
+                                    </a>
+                                    <a href="javascript:void(0)" class="btn btn-danger" data-toggle="table-action"  data-action="delete" data-id="${v.id_role}">
+                                        <span class="fas fa-trash"></span>
+                                    </a>
                                 
                                 </td>
                             </tr>
@@ -150,7 +158,7 @@
                     })
 
                     tableData.find('tbody').html(html);
-
+                    $('#pagination-wrapper').html(response.data.pagination);
                 }
             })
 
@@ -161,19 +169,27 @@
 
             let data = form.serialize();
 
-            $.ajax({
+            return $.ajax({
                 method: 'POST',
                 url: "<?php echo base_url('/api/roles') ?>",
                 data: data, 
                 success: function(response) {
                     console.log('success response add', response);
-                    Toast('success', 'Berhasil menambahkan data');
-                    clearForm();
-                    loadData();
+                    switch(response.code) {
+                        case 200: 
+                            Toast('success', 'Berhasil menambahkan data');
+                            clearForm();
+                            loadData();
+                        break;
+
+                        case 400:
+                            Toast('error', response.message);
+                            break;
+                    }
+                    
                 }, 
                 error: function(response) {
-                    
-                    console.log('err response add', response);
+                    Toast('error', 'Something Wrong!!!');
                 }
             })
 
@@ -183,12 +199,44 @@
 
         }
         
-        function getData() {
+        function getData( id ) {
+            
+            return $.ajax({
+                url: `<?php echo base_url('/api/roles/show') ?>/${id}`,
+                success: function(response) {
+
+                    truthAction.val('update');
+
+                    for(data in response.data) {
+                        $('#i-' + data).val(response.data[data]);
+                    }
+                    
+                    $('#form-modal').modal('show');
+                }
+            })
 
         }
 
-        function deleteData() {
+        function deleteData( id ) {
+            return $.ajax({
+                method: 'POST',
+                url: `<?php echo base_url('/api/roles') ?>/${id}/delete`,
+                success: function(response) {
+                    switch(response.code) {
+                        case 200:
+                            Toast('success', 'Data berhasil dihapus');
+                            loadData();
+                            break;
 
+                        case 400:
+                            Toast('warning', response.message);
+                            break;
+                    }
+                },
+                error: function(response) {
+                    Toast('error','Something Wrong!!');
+                }
+            })
         }
 
         function saveData() {
@@ -208,8 +256,51 @@
             saveData();
         }})
 
+        $(document).on('click', '#pagination-wrapper .page-item', function(e){
+            e.preventDefault();
 
+            let pagination = $(this).data('ci-pagination');
+
+            console.log('ci-pagination', pagination);
+
+            loadData({
+                page_group1: pagination
+            })
         
+        })
+
+
+        $(document).on('click', '[data-toggle=table-action]', function(e){
+            e.preventDefault();
+            
+            let btn = $(this);
+            let action = btn.data('action');
+
+
+            btn.html(`<span class="fas fa-spin fa-spinner"></span>`);
+
+            console.log(action);
+            switch(action) {    
+                case 'edit':
+
+                    getData($(this).data('id'))
+                    .then(() => btn.html(`<span class="fas fa-edit"></span>`));
+
+                    break;
+
+                case 'delete':
+
+                    let tryToDelete = confirm('DELETE ???');
+
+                    if(tryToDelete) {
+                        deleteData($(this).data('id'))
+                        .then(() => btn.html(`<span class="fas fa-trash"></span>`))
+                        .catch(() => btn.html(`<span class="fas fa-trash"></span>`))
+                    }
+
+                    break;
+            }
+        })
 
     })
 </script>

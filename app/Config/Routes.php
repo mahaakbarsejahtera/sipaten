@@ -39,9 +39,11 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 
 	
 	$routes->get('roles', 'Roles::index');
+	$routes->get('roles/show/(:num)', 'Roles::show/$1');
+
 	$routes->post('roles', 'Roles::store');
 	$routes->post('roles/(:num)', 'Roles::update/$1');
-	$routes->post('roles/(:num)/delete', 'Roles::delete');
+	$routes->post('roles/(:num)/delete', 'Roles::delete/$1');
 	$routes->post('roles/destroy', 'Roles::destroy');
 
 
