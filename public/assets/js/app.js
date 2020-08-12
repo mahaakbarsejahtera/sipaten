@@ -31,10 +31,17 @@ function Toast(status = "success", message = "") {
 $('[data-toggle=sort]').click(function(e){
     e.preventDefault();
 
-
     let fas = $(this).find('.fas');
-    if(fas.hasClass('fa-sort-amount-down')) fas.removeClass('fa-sort-amount-down').addClass('fa-sort-amount-up');
-    else  fas.removeClass('fa-sort-amount-up').addClass('fa-sort-amount-down');
+    console.log($(this).data('sort'));
+
+    if(fas.hasClass('fa-sort-amount-down')) {
+        fas.removeClass('fa-sort-amount-down').addClass('fa-sort-amount-up'); 
+        $(this).data('sort', 'desc'); 
+    }
+    else {
+        fas.removeClass('fa-sort-amount-up').addClass('fa-sort-amount-down');  
+        $(this).data('sort', 'asc');
+    }
 
 });
 

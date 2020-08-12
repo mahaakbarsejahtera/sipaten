@@ -132,7 +132,7 @@
                 url: "<?php echo base_url('/api/roles') ?>",
                 data: data,
                 success: function(response) {
-
+                    console.log(response);
                     let html =  ``;
 
                     response.data.lists.map((v, i) => {
@@ -313,8 +313,22 @@
             let orderby = $(this).data('field');
             loadData({
                 page_group1: currentPagination,
-                order: order,
-                orderby: orderby
+                orders: [{
+                    orderby: orderby,
+                    order: order,
+                }]
+            })
+        })
+
+
+        $('#filter-search').keydown(function(){
+            loadData({
+                filters: [
+                    {
+                        key: 'search',
+                        value: $(this).val()
+                    }
+                ]
             })
         })
 

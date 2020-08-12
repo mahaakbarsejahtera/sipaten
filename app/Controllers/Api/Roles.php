@@ -49,20 +49,21 @@ class Roles extends Controller
         $rolesModel = new RolesModel();
 
 
-        // if(!empty($this->request->getGet('filters'))) {
+        if(!empty($this->request->getGet('filters'))) {
 
-        //     foreach($this->request->getGet('filters') as $key => $value) {
-        //         if(in_array($key, array_keys($rolesModel->filterby))) {
-        //             $response['filters'][] = $key;
-        //             //$rolesModel->where($rolesModel->filterby[$key], $value);
-        //         }
-        //     }
+            foreach($this->request->getGet('filters') as $filter) {
+                if(in_array($filter['key'], array_keys($rolesModel->filterby))) {
+                    $response['filters'][] = $filter['key'];
+                    //$rolesModel->where($rolesModel->filterby[$key], $value);
+                }
+            }
 
-        // }
+        }
 
-        if(!empty($this->request->getGet('orderby'))) {
-            foreach($this->request->getGet('orderby') as $orderby) {
- 
+        if(!empty($this->request->getGet('orders'))) {
+            foreach($this->request->getGet('orders') as $order) {
+                $response['orders'][] = $order['orderby'];
+                $rolesModel->orderBy($order['orderby'], $order['order']);
             }
         }
 
@@ -70,10 +71,9 @@ class Roles extends Controller
         $lists = $rolesModel->paginate(10, 'group1');
         $pager = $rolesModel->pager;
 
-        $response['data'] = [ 
-            'lists'         => $rolesModel->paginate(10, 'group1'),
-            'pagination'    => $pager->links('group1', 'bootstrap_pagination')
-        ];
+        $response['data']['lists'] = $lists;
+        $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
+        
 
         return $this->response->setJson($response);
     }
