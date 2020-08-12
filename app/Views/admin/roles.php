@@ -321,13 +321,18 @@
         })
 
 
-        $('#filter-search').keydown(function(){
+        $('#filter-search').keyup(function(){
+
+            let dataToggleSort = $('[data-toggle=sort]');
+            let order = dataToggleSort.data('sort');
+            let orderby = dataToggleSort.data('field');
+            
             loadData({
+                orders: [
+                    { orderby: orderby, order: order,}
+                ],
                 filters: [
-                    {
-                        key: 'search',
-                        value: $(this).val()
-                    }
+                    { key: 'search', value: $(this).val() }
                 ]
             })
         })

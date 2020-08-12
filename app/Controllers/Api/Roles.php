@@ -48,14 +48,28 @@ class Roles extends Controller
         
         $rolesModel = new RolesModel();
 
-
+        $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
 
             foreach($this->request->getGet('filters') as $filter) {
-                if(in_array($filter['key'], array_keys($rolesModel->filterby))) {
-                    $response['filters'][] = $filter['key'];
-                    //$rolesModel->where($rolesModel->filterby[$key], $value);
+
+                switch($filter['key']) {
+                    
+                    case 'search':
+                        
+                        $rolesModel->like('roles.role_name', $filter['value']);
+
+                    break;
+
+                    default:
+                    
+                    if(in_array($filter['key'], array_keys($rolesModel->filterby))) {
+                        $response['filters'][] = $filter['key'];
+                    }
+
+                    break;
                 }
+                
             }
 
         }
