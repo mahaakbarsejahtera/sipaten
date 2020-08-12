@@ -15,5 +15,7 @@ class Home extends Controller
     public function dashboardTeknik() {
         return view('template/dashboard-teknik');
     }
-
+    //public function dashboardTeknik() {
+     //   return view('template/dashboard-teknik');
+   // }
 }
