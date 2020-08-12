@@ -4,6 +4,7 @@ namespace App\Controllers\Admin;
 
 use CodeIgniter\Controller;
 use Template\BreadCrumb;
+use Template\Table;
 
 class Users extends Controller
 {
@@ -12,19 +13,22 @@ class Users extends Controller
     {
 
         $breadcrumb = (new BreadCrumb)->set([
-            [
-                'name' => 'Dashboard',
-                'url' => '#',
-            ],
-            [
-                'name' => 'Users',
-                'url' => '#',
-            ],
+            [ 'name'  => 'Dashboard', 'url'   => base_url('dashboard') ],
+            [ 'name' => 'Users', 'active' => true]
         ])->render();
+
         
-    return view('Admin/users', [
+        return view('admin/users', [
             'title' => 'Users',
-            'breadcrumb' => $breadcrumb
+            'breadcrumb' => $breadcrumb,
+            'table'         => (new Table())->setColumns([
+                [ 'field' => 'user_name', 'name' => 'Nama Lengkap', 'sort' => true ],
+                [ 'field' => 'user_email', 'name' => 'Email' ],
+                [ 'name' => 'Role' ],
+                [ 'name' => 'Status' ],
+                [ 'name' => 'Aksi' ]
+            ])
+            ->render("table-data")
         ]);
     }
 

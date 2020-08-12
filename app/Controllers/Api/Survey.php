@@ -2,10 +2,10 @@
 
 namespace App\Controllers\Api;
 
-use App\Models\RolesModel;
+use App\Models\SurveyModel;
 use CodeIgniter\Controller;
 
-class Roles extends Controller
+class Survey extends Controller
 {
 
     public function __construct() {
@@ -22,7 +22,10 @@ class Roles extends Controller
             'errors'        => []
         ];
 
-        $find = (new rolesModel)->find( $id );
+        $find = (new SurveyModel)
+            //->builder()
+            ->join('permintaan', 'survey.id_permintaan=permintaan.id_permintaan', 'left')
+            ->find( $id );
 
         if($find) {
             $response['data']       = $find;
@@ -47,7 +50,8 @@ class Roles extends Controller
 
 
         
-        $rolesModel = new RolesModel();
+        $surveyModel = new SurveyModel();
+        $surveyModel->builder()->join('permintaan', 'survey.id_permintaan=permintaan.id_permintaan', 'left');
 
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
@@ -58,14 +62,16 @@ class Roles extends Controller
                     
                     case 'search':
                         
-                        $rolesModel->like('roles.role_name', $filter['value']);
+                        $surveyModel->like('permintaan.nama_pekerjaan', $filter['value'])
+                            ->orLike('permintaan.permintaan_lokasi_survey', $filter['value'])
+                            ->orLike('permintaan.permintaan_jadwal_survey', $filter['value']);
 
                     break;
 
                     default:
                     
-                    if(in_array($filter['key'], array_keys($rolesModel->filterby))) {
-                        $response['filters'][] = $filter['key'];
+                    if(in_array($filter['key'], array_keys($surveyModel->filterby))) {
+                        $surveyModel->where($filter['key'], $filter['valeu']);
                     }
 
                     break;
@@ -78,13 +84,13 @@ class Roles extends Controller
         if(!empty($this->request->getGet('orders'))) {
             foreach($this->request->getGet('orders') as $order) {
                 $response['orders'][] = $order['orderby'];
-                $rolesModel->orderBy($order['orderby'], $order['order']);
+                $surveyModel->orderBy($order['orderby'], $order['order']);
             }
         }
 
 
-        $lists = $rolesModel->paginate(10, 'group1');
-        $pager = $rolesModel->pager;
+        $lists = $surveyModel->paginate(10, 'group1');
+        $pager = $surveyModel->pager;
 
         $response['data']['lists'] = $lists;
         $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
@@ -105,8 +111,11 @@ class Roles extends Controller
 
 
         $rules = [
-            'role_name'     => 'required',
-            'role_cap'      => 'required',
+            'nama_pekerjaan'            => 'required',
+            'permintaan_user'           => 'required',
+            'permintaan_status'         => 'required',
+            'permintaan_lokasi_survey'  => 'required',
+            'permintaan_jadwal_survey'  => 'required',
         ];
 
     
@@ -121,17 +130,19 @@ class Roles extends Controller
         }
 
         $insertData = [
-            'role_name'     => $this->request->getPost('role_name'),
-            'role_cap'      => $this->request->getPost('role_cap'),
-            'role_desc'     => $this->request->getPost('role_desc'),
+            'nama_pekerjaan'               => $this->request->getPost('nama_pekerjaan'),
+            'permintaan_user'              => $this->request->getPost('permintaan_user'),
+            'permintaan_status'            => $this->request->getPost('permintaan_status'),
+            'permintaan_lokasi_survey'     => $this->request->getPost('permintaan_lokasi_survey'),
+            'permintaan_jadwal_survey'     => $this->request->getPost('permintaan_jadwal_survey'),
+            'date_create'                  => date('Y-m-d')
         ];
 
-        $rolesModel = new RolesModel;
-        $rolesModel->save($insertData);
+        $surveyModel = new SurveyModel;
+        $surveyModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
-        $response['model']      = $rolesModel->getInsertID();
         //$response['data'] = $insertData;
         $response['message']    = 'Insert Success';
 
@@ -153,9 +164,12 @@ class Roles extends Controller
 
 
         $rules = [
-            'id_role'       => 'required',
-            'role_name'     => 'required',
-            'role_cap'      => 'required',
+            'id_permintaan'             => 'required',
+            'nama_pekerjaan'            => 'required',
+            'permintaan_user'           => 'required',
+            'permintaan_status'         => 'required',
+            'permintaan_lokasi_survey'  => 'required',
+            'permintaan_jadwal_survey'  => 'required',
         ];
 
     
@@ -170,18 +184,19 @@ class Roles extends Controller
         }
 
         $insertData = [
-            'id_role'       => $this->request->getPost('id_role'),
-            'role_name'     => $this->request->getPost('role_name'),
-            'role_cap'      => $this->request->getPost('role_cap'),
-            'role_desc'     => $this->request->getPost('role_desc'),
+            'id_permintaan'                 => $this->request->getPost('id_permintaan'),
+            'nama_pekerjaan'               => $this->request->getPost('nama_pekerjaan'),
+            'permintaan_user'              => $this->request->getPost('permintaan_user'),
+            'permintaan_status'            => $this->request->getPost('permintaan_status'),
+            'permintaan_lokasi_survey'     => $this->request->getPost('permintaan_lokasi_survey'),
+            'permintaan_jadwal_survey'     => $this->request->getPost('permintaan_jadwal_survey'),
         ];
 
-        $rolesModel = new RolesModel;
-        $rolesModel->save($insertData);
+        $surveyModel = new SurveyModel;
+        $surveyModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
-        $response['model']      = $this->request->getPost('id_role');
         //$response['data'] = $insertData;
         $response['message']    = 'Update Success';
 
@@ -197,10 +212,10 @@ class Roles extends Controller
             'errors'        => []
         ];
 
-        $find = (new rolesModel)->find( $id );
+        $find = (new SurveyModel)->find( $id );
         if($find) {
 
-            (new rolesModel)->delete($id);
+            (new SurveyModel)->delete($id);
 
             $response = [
                 'code'      => 200,
@@ -211,6 +226,8 @@ class Roles extends Controller
 
         }
 
+        
+
         return $this->response->setJson($response);
     }
 
@@ -219,9 +236,5 @@ class Roles extends Controller
 
     }
 
-    public function changePassword() 
-    {
-
-    }
 
 }

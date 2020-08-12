@@ -27,12 +27,10 @@ function Toast(status = "success", message = "") {
     }
 }
 
-
 $('[data-toggle=sort]').click(function(e){
     e.preventDefault();
 
     let fas = $(this).find('.fas');
-    console.log($(this).data('sort'));
 
     if(fas.hasClass('fa-sort-amount-down')) {
         fas.removeClass('fa-sort-amount-down').addClass('fa-sort-amount-up'); 

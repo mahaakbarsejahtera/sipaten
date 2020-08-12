@@ -2,10 +2,10 @@
 
 namespace App\Controllers\Api;
 
-use App\Models\UsersModel;
+use App\Models\PermintaanModel;
 use CodeIgniter\Controller;
 
-class Users extends Controller
+class Permintaan extends Controller
 {
 
     public function __construct() {
@@ -22,9 +22,9 @@ class Users extends Controller
             'errors'        => []
         ];
 
-        $find = (new usersModel)
-            ->builder()
-            ->join('roles', 'users.user_role=roles.id_role', 'left')
+        $find = (new PermintaanModel)
+            //->builder()
+            //->join('permi', 'users.user_role=roles.id_role', 'left')
             ->find( $id );
 
         if($find) {
@@ -50,8 +50,8 @@ class Users extends Controller
 
 
         
-        $usersModel = new UsersModel();
-        $usersModel->builder()->join('roles', 'users.user_role=roles.id_role', 'left');
+        $permintaanModel = new PermintaanModel();
+        $permintaanModel->builder()->join('users', 'permintaan.permintaan_user=users.id_user', 'left');
 
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
@@ -62,16 +62,16 @@ class Users extends Controller
                     
                     case 'search':
                         
-                        $usersModel->like('users.user_fullname', $filter['value'])
-                            ->orLike('users.user_name', $filter['value'])
-                            ->orLike('users.user_email', $filter['value']);
+                        $permintaanModel->like('permintaan.nama_pekerjaan', $filter['value'])
+                            ->orLike('permintaan.permintaan_lokasi_survey', $filter['value'])
+                            ->orLike('permintaan.permintaan_jadwal_survey', $filter['value']);
 
                     break;
 
                     default:
                     
-                    if(in_array($filter['key'], array_keys($usersModel->filterby))) {
-                        $usersModel->where($filter['key'], $filter['valeu']);
+                    if(in_array($filter['key'], array_keys($permintaanModel->filterby))) {
+                        $permintaanModel->where($filter['key'], $filter['valeu']);
                     }
 
                     break;
@@ -84,13 +84,13 @@ class Users extends Controller
         if(!empty($this->request->getGet('orders'))) {
             foreach($this->request->getGet('orders') as $order) {
                 $response['orders'][] = $order['orderby'];
-                $usersModel->orderBy($order['orderby'], $order['order']);
+                $permintaanModel->orderBy($order['orderby'], $order['order']);
             }
         }
 
 
-        $lists = $usersModel->paginate(10, 'group1');
-        $pager = $usersModel->pager;
+        $lists = $permintaanModel->paginate(10, 'group1');
+        $pager = $permintaanModel->pager;
 
         $response['data']['lists'] = $lists;
         $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
@@ -111,11 +111,11 @@ class Users extends Controller
 
 
         $rules = [
-            'user_name'         => 'required',
-            'user_fullname'     => 'required',
-            'user_email'        => 'required',
-            'user_email'        => 'required',
-            'user_role'         => 'required',
+            'nama_pekerjaan'            => 'required',
+            'permintaan_user'           => 'required',
+            'permintaan_status'         => 'required',
+            'permintaan_lokasi_survey'  => 'required',
+            'permintaan_jadwal_survey'  => 'required',
         ];
 
     
@@ -130,23 +130,16 @@ class Users extends Controller
         }
 
         $insertData = [
-            'user_name'     => $this->request->getPost('user_name'),
-            'user_role'     => $this->request->getPost('user_role'),
-            'user_fullname'      => $this->request->getPost('user_fullname'),
-            'user_email'     => $this->request->getPost('user_email'),
-            'user_status'     => $this->request->getPost('user_status'),
-            'user_pass'     => md5('ymdhis'),
+            'nama_pekerjaan'               => $this->request->getPost('nama_pekerjaan'),
+            'permintaan_user'              => $this->request->getPost('permintaan_user'),
+            'permintaan_status'            => $this->request->getPost('permintaan_status'),
+            'permintaan_lokasi_survey'     => $this->request->getPost('permintaan_lokasi_survey'),
+            'permintaan_jadwal_survey'     => $this->request->getPost('permintaan_jadwal_survey'),
+            'date_create'                  => date('Y-m-d')
         ];
 
-        $user_image = $this->request->getFile('user_image');
-        if($user_image) {
-            $name = $user_image->getRandomName();
-            $uploaded_file = $user_image->move('uploads/users/', $name);
-            $insertData['user_image'] = $name;
-        }
-
-        $usersModel = new UsersModel;
-        $usersModel->save($insertData);
+        $permintaanModel = new PermintaanModel;
+        $permintaanModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
@@ -171,12 +164,12 @@ class Users extends Controller
 
 
         $rules = [
-            'id_user'           => 'required',
-            'user_name'         => 'required',
-            'user_fullname'     => 'required',
-            'user_email'        => 'required',
-            'user_email'        => 'required',
-            'user_role'         => 'required',
+            'id_permintaan'             => 'required',
+            'nama_pekerjaan'            => 'required',
+            'permintaan_user'           => 'required',
+            'permintaan_status'         => 'required',
+            'permintaan_lokasi_survey'  => 'required',
+            'permintaan_jadwal_survey'  => 'required',
         ];
 
     
@@ -191,25 +184,19 @@ class Users extends Controller
         }
 
         $insertData = [
-            'id_role'       => $this->request->getPost('id_role'),
-            'role_name'     => $this->request->getPost('role_name'),
-            'role_cap'      => $this->request->getPost('role_cap'),
-            'role_desc'     => $this->request->getPost('role_desc'),
+            'id_permintaan'                 => $this->request->getPost('id_permintaan'),
+            'nama_pekerjaan'               => $this->request->getPost('nama_pekerjaan'),
+            'permintaan_user'              => $this->request->getPost('permintaan_user'),
+            'permintaan_status'            => $this->request->getPost('permintaan_status'),
+            'permintaan_lokasi_survey'     => $this->request->getPost('permintaan_lokasi_survey'),
+            'permintaan_jadwal_survey'     => $this->request->getPost('permintaan_jadwal_survey'),
         ];
 
-        $user_image = $this->request->getFile('user_image');
-        if($user_image) {
-            $name = $user_image->getRandomName();
-            $uploaded_file = $user_image->move('uploads/users/', $name);
-            $insertData['user_image'] = $name;
-        }
-
-        $usersModel = new UsersModel;
-        $usersModel->save($insertData);
+        $permintaanModel = new PermintaanModel;
+        $permintaanModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
-        $response['model']      = $this->request->getPost('id_role');
         //$response['data'] = $insertData;
         $response['message']    = 'Update Success';
 
@@ -225,10 +212,10 @@ class Users extends Controller
             'errors'        => []
         ];
 
-        $find = (new usersModel)->find( $id );
+        $find = (new PermintaanModel)->find( $id );
         if($find) {
 
-            (new usersModel)->delete($id);
+            (new PermintaanModel)->delete($id);
 
             $response = [
                 'code'      => 200,
@@ -282,7 +269,7 @@ class Users extends Controller
             'user_pass' => md5($this->request->getPost('user_pass'))
         ];
 
-        (new usersModel)->save($insertData);
+        (new PermintaanModel)->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;

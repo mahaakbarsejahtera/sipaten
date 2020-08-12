@@ -21,6 +21,13 @@
         </a>
     </li>
 
+    <li class="nav-item">
+        <a href="<?php echo base_url('/dashboard/survey') ?>" class="nav-link">
+            <i class="nav-icon far fa-star"></i>
+            <p>Survey</p>
+        </a>
+    </li>
+
 <?php $this->endSection(); ?>
 
 <?php $this->section('content'); ?>
@@ -101,25 +108,42 @@
                     <form action="" id="form">
 
                         <input type="hidden" name="truth_action" id="i-truth_action" value="">
-                        <input type="hidden" name="id_role" id="i-id_role">
+                        <input type="hidden" name="id_permintaan" id="i-id_permintaan">
                         <input type="hidden" name="_method" value="POST">
 
                         <div class="form-group">
-                            <label for="i-role_name">Nama</label>
-                            <input type="text" name="role_name" class="form-control" id="i-role_name">
+                            <label for="i-role_name">Permintaan Oleh</label>
+                            <select name="permintaan_user" id="i-permintaan_user" class="form-control">
+                                <option value="">Pilih</option>
+                            </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="i-role_cap">Kapasitas</label>
-                            <input type="number"  min="1" max="99"  name="role_cap" class="form-control" id="i-role_cap">
+                            <label for="i-nama_pekerjaan">Nama pekerjaan</label>
+                            <input type="text" name="nama_pekerjaan" class="form-control" id="i-nama_pekerjaan">
                         </div>
 
                         <div class="form-group">
-                            <label for="i-role_desc">Deskripsi</label>
-                            <textarea name="role_desc" id="i-role_desc" rows="10" class="form-control"></textarea>
+                            <label for="i-permintaan_lokasi_survey">Lokasi Survey</label>
+                            <input type="text" name="permintaan_lokasi_survey" class="form-control" id="i-permintaan_lokasi_survey">
                         </div>
 
-                        <button class="btn btn-primary" id="js-save">Simpan Role</button>
+                        <div class="form-group">
+                            <label for="i-permintaan_jadwal_survey">Jadwal Survey</label>
+                            <input type="date" name="permintaan_jadwal_survey" class="form-control" id="i-permintaan_jadwal_survey">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="i-permintaan_status">Status</label>
+                            <select name="permintaan_status" id="i-permintaan_status" class="form-control">
+                                <option value="Draft">Draft</option>
+                                <option value="Negosiasi">Negosiasi</option>
+                                <option value="Publish">Publish</option>
+                                <option value="Kontrak">Kontrak</option>
+                            </select>
+                        </div>
+
+                        <button class="btn btn-primary" id="js-save">Buat Permintaan</button>
 
                     </form>
                 </div>
@@ -147,12 +171,12 @@
         function loadData(data = {}) {
             tableData.find('tbody').html(`
                 <tr>
-                    <td colspan="4">Loading...</td>
+                    <td colspan="7">Loading...</td>
                 </tr>
             `);
 
             $.ajax({
-                url: "<?php echo base_url('/api/roles') ?>",
+                url: "<?php echo base_url('/api/permintaan') ?>",
                 data: data,
                 success: function(response) {
                     console.log(response);
@@ -162,15 +186,18 @@
                         html += `
                         
                             <tr>
-                                <td>${v.role_name}</td>
-                                <td>${v.role_cap}</td>
-                                <td>${v.role_desc}</td>
+                                <td>${v.nama_pekerjaan}</td>
+                                <td>${v.user_fullname}</td>
+                                <td>${v.permintaan_status}</td>
+                                <td>${v.date_create}</td>
+                                <td><a href="javascript:void(0)" data-toggle="table-action" data-action="create-timeline" data-id="${v.id_permintaan}">Buat Timeline</a></td>
+                                <td><a href="">Berkas</a></td>
                                 <td width="200">
 
-                                    <a href="javascript:void(0)" class="btn btn-warning" data-toggle="table-action" data-action="edit" data-id="${v.id_role}">
+                                    <a href="javascript:void(0)" class="btn btn-warning" data-toggle="table-action" data-action="edit" data-id="${v.id_permintaan}">
                                         <span class="fas fa-edit"></span>
                                     </a>
-                                    <a href="javascript:void(0)" class="btn btn-danger" data-toggle="table-action"  data-action="delete" data-id="${v.id_role}">
+                                    <a href="javascript:void(0)" class="btn btn-danger" data-toggle="table-action"  data-action="delete" data-id="${v.id_permintaan}">
                                         <span class="fas fa-trash"></span>
                                     </a>
                                 
@@ -187,6 +214,27 @@
 
         }
 
+        getUsers()
+        .then(response => {
+            let html = '<option value="">Pilih</option>';
+
+            response.data.lists.map((v, i) => {
+                html += `<option value="${v.id_user}">${v.user_fullname} - ${v.role_name}</option>`;
+            })
+
+            $('#i-permintaan_user').html(html);
+
+        });
+
+
+        function getUsers() {
+
+            return $.ajax({
+                url: "<?php echo base_url('/api/users?page_group1=-1') ?>",
+            })
+
+        }
+
 
         function addData() {
 
@@ -194,7 +242,7 @@
 
             return $.ajax({
                 method: 'POST',
-                url: "<?php echo base_url('/api/roles') ?>",
+                url: "<?php echo base_url('/api/permintaan') ?>",
                 data: data, 
                 success: function(response) {
                     console.log('success response add', response);
@@ -224,7 +272,7 @@
 
             return $.ajax({
                 method: 'POST',
-                url: "<?php echo base_url('/api/roles/update') ?>",
+                url: "<?php echo base_url('/api/permintaan/update') ?>",
                 data: data, 
                 success: function(response) {
                     console.log('success response add', response);
@@ -251,7 +299,7 @@
         function getData( id ) {
             
             return $.ajax({
-                url: `<?php echo base_url('/api/roles/show') ?>/${id}`,
+                url: `<?php echo base_url('/api/permintaan/show') ?>/${id}`,
                 success: function(response) {
 
                     truthAction.val('update');
@@ -269,7 +317,7 @@
         function deleteData( id ) {
             return $.ajax({
                 method: 'POST',
-                url: `<?php echo base_url('/api/roles') ?>/${id}/delete`,
+                url: `<?php echo base_url('/api/permintaan') ?>/${id}/delete`,
                 success: function(response) {
                     switch(response.code) {
                         case 200:
@@ -348,6 +396,10 @@
                         btn.html(`<span class="fas fa-trash"></span>`)
                     }
 
+                    break;
+
+                case 'create-timeline': 
+                    
                     break;
             }
         })
