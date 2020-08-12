@@ -40,7 +40,7 @@ $('[data-toggle=sort]').click(function(e){
     }
     else {
         fas.removeClass('fa-sort-amount-up').addClass('fa-sort-amount-down');  
-        $(this).data('sort', 'asc');
+        $(this).data('sort', 'asc'); 
     }
 
 });
