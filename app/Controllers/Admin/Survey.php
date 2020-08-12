@@ -24,7 +24,7 @@ class Survey extends Controller
         ])->render();
         
         return view('admin/survey', [
-            'title' => 'Permintaan',
+            'title' => 'Survey',
             'breadcrumb' => $breadcrumb,
             'table'         => (new Table())->setColumns([
                 [

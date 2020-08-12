@@ -108,8 +108,15 @@
                     <form action="" id="form">
 
                         <input type="hidden" name="truth_action" id="i-truth_action" value="">
-                        <input type="hidden" name="id_permintaan" id="i-id_permintaan">
+                        <input type="hidden" name="id_survey" id="i-id_survey">
                         <input type="hidden" name="_method" value="POST">
+
+                        <div class="form-group">
+                            <label for="i-id_permintaan">Permintaan</label>
+                            <select name="id_permintaan" id="i-id_permintaan" class="form-control">
+                                <option value="">Pilih</option>
+                            </select>
+                        </div>
 
                         <div class="form-group">
                             <label for="i-role_name">Permintaan Oleh</label>
@@ -223,11 +230,31 @@
 
         });
 
+        getPermintaan()
+        .then(response => {
+            let html = '<option value="">Pilih</option>';
+
+            response.data.lists.map((v, i) => {
+                html += `<option value="${v.id_permintaan}">${v.nama_pekerjaan} - ${v.permintaan_status}</option>`;
+            })
+
+            $('#i-id_permintaan').html(html);
+
+        });
+
 
         function getUsers() {
 
             return $.ajax({
                 url: "<?php echo base_url('/api/users?page_group1=-1') ?>",
+            })
+
+        }
+
+        function getPermintaan() {
+
+            return $.ajax({
+                url: "<?php echo base_url('/api/permintaan?page_group1=-1') ?>",
             })
 
         }
