@@ -12,4 +12,8 @@ class Home extends Controller
         return view('template/dashboard-pemasaran');
     }
 
+    public function dashboardTeknik() {
+        return view('template/dashboard-teknik');
+    }
+
 }
