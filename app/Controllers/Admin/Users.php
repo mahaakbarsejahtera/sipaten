@@ -22,7 +22,7 @@ class Users extends Controller
             ],
         ])->render();
         
-        return view('Admin/users', [
+    return view('Admin/users', [
             'title' => 'Users',
             'breadcrumb' => $breadcrumb
         ]);

@@ -44,8 +44,21 @@ class Roles extends Controller
         ];
         
 
+
         
         $rolesModel = new RolesModel();
+
+
+        if(!empty($this->request->getGet('filters'))) {
+
+            foreach($this->request->getGet('filters') as $key => $value) {
+                if(in_array($key, array_keys($rolesModel->filterby))) {
+                    $rolesModel->where($rolesModel->filterby[$key], $value);
+                }
+            }
+
+        }
+
 
         $lists = $rolesModel->paginate(10, 'group1');
         $pager = $rolesModel->pager;
@@ -131,7 +144,7 @@ class Roles extends Controller
                 'message'   => 'Success',
                 'errors'    => []
             ];
-            
+
         }
 
         return $this->response->setJson($response);

@@ -56,6 +56,10 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 	$routes->get('users', 'Users::index');
 	$routes->get('roles', 'Roles::index');
 
+	// KAK NABILA
+
+	
+	$routes->get('pemasaran', 'Home::dashboardPemasaran');
 	
 
 });

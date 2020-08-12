@@ -42,7 +42,7 @@
 
                         <div class="form-row d-flex justify-content-end">
                             <div class="form-group col-12 col-md-4">
-                                <input type="number" class="form-control" placeholder="Search" min="1" max="99" id="filter-search">
+                                <input type="text" class="form-control" placeholder="Search" id="filter-search">
                             </div>
                         </div>
 
@@ -88,7 +88,7 @@
 
                         <div class="form-group">
                             <label for="i-role_cap">Kapasitas</label>
-                            <input type="text" name="role_cap" class="form-control" id="i-role_cap">
+                            <input type="number"  min="1" max="99"  name="role_cap" class="form-control" id="i-role_cap">
                         </div>
 
                         <div class="form-group">
@@ -295,11 +295,27 @@
                     if(tryToDelete) {
                         deleteData($(this).data('id'))
                         .then(() => btn.html(`<span class="fas fa-trash"></span>`))
-                        .catch(() => btn.html(`<span class="fas fa-trash"></span>`))
+                    }else {
+                        btn.html(`<span class="fas fa-trash"></span>`)
                     }
 
                     break;
             }
+        })
+
+
+        $('[data-toggle=sort]').click(function(e){
+            
+            e.preventDefault();
+
+            let currentPagination = $('#pagination-wrapper .page-item.active').find('a').data('ci-pagination')
+            let order = $(this).data('sort');
+            let orderby = $(this).data('field');
+            loadData({
+                page_group1: currentPagination,
+                order: order,
+                orderby: orderby
+            })
         })
 
     })
