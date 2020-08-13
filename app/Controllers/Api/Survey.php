@@ -240,9 +240,13 @@ class Survey extends Controller
 
         $db = db_connect();
 
-        $items  = $this->request->getPost('survey_item_name');
-        $quantities = $this->request->getPost('survey_item_qty');
-        $units      = $this->request->getPost('survey_item_unit');
+        $items              = $this->request->getPost('survey_item_name');
+        $quantities         = $this->request->getPost('survey_item_qty');
+        $units              = $this->request->getPost('survey_item_unit');
+        $harga_pokok        = $this->request->getPost('survey_item_harga_pokok');
+        $harga_jual         = $this->request->getPost('survey_item_harga_jual');
+        $harga_pokok_nego   = $this->request->getPost('survey_item_harga_pokok_nego');
+        $harga_jual_nego    = $this->request->getPost('survey_item_harga_jual_nego');
 
         $temp = [];
         for($i = 0; $i < count($items); $i++) 
@@ -255,7 +259,11 @@ class Survey extends Controller
             $dataToInsert = [
                 'survey_item_name'  => $item,
                 'survey_item_unit'  => $qty,
-                'survey_item_qty'   => $unit 
+                'survey_item_qty'   => $unit,
+                'harga_pokok'       => $harga_pokok,
+                'harga_jual'        => $harga_jual,
+                'harga_pokok_nego'  => $harga_pokok_nego,
+                'harga_jual_nego'   => $harga_jual_nego
             ];
 
             $temp[] = $dataToInsert;
@@ -286,17 +294,27 @@ class Survey extends Controller
 
         $id_survey              = $this->request->getPost('id_survey');
         $survey_item_name       = $this->request->getPost('survey_item_name');
-        $survey_item_qty        = $this->request->getPost('survey_item_qty');
-        $survey_item_unit       = $this->request->getPost('survey_item_unit');
+        $survey_item_qty        = (double)$this->request->getPost('survey_item_qty');
+        $survey_item_unit       = (double)$this->request->getPost('survey_item_unit');
+
+        
+        $harga_pokok            = (double)$this->request->getPost('survey_item_harga_pokok');
+        $harga_jual             = (double)$this->request->getPost('survey_item_harga_jual');
+        $harga_pokok_nego       = (double)$this->request->getPost('survey_item_harga_pokok_nego');
+        $harga_jual_nego        = (double)$this->request->getPost('survey_item_harga_jual_nego');
 
         
         $db = db_connect();
 
         $dataToInsert = [
             'id_survey' => $id_survey,
-            'survey_item_name'      => $survey_item_name,
-            'survey_item_qty'      => $survey_item_qty,
-            'survey_item_unit'      => $survey_item_unit
+            'survey_item_name'  => $survey_item_name,
+            'survey_item_qty'   => $survey_item_qty,
+            'survey_item_unit'  => $survey_item_unit,
+            'harga_pokok'       => $harga_pokok,
+            'harga_jual'        => $harga_jual,
+            'harga_pokok_nego'  => $harga_pokok_nego,
+            'harga_jual_nego'   => $harga_jual_nego
         ];
 
         $db->table('hasil_survey')

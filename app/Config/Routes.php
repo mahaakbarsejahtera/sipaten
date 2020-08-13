@@ -72,7 +72,7 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 	$routes->post('permintaan/(:num)/delete', 'Permintaan::delete/$1');
 	$routes->post('permintaan/destroy', 'Permintaan::destroy');
 
-	// ROLES
+	// Roles
 	$routes->get('roles', 'Roles::index');
 	$routes->get('roles/show/(:num)', 'Roles::show/$1');
 

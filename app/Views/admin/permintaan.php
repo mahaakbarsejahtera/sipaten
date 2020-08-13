@@ -166,24 +166,51 @@
                         </button>
                 </div>
                 <div class="modal-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Qty</th>
-                                    <th>Unit</th>
-                                    <th>Harga Pokok</th>
-                                    <th>Harga Jual<th>
-                                    <th>Margin</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
+                    
+                    <form action="" id="form-boq">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Qty</th>
+                                        <th>Unit</th>
+                                        <th>Harga Pokok</th>
+                                        <th>Harga Jual</th>
+                                        <th>Margin</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>
+                                                <input name="items[name]" type="text" class="form-control" placeholder="Masukann Nama item" value="">
+                                        </th>
+                                        <th width="100">
+                                            <input name="items[qty]" type="text" class="form-control" placeholder="Masukan Qty" value="">
+                                        </th>
+                                        <th width="100">
+                                            <input name="items[unit]" type="text" class="form-control" placeholder="Masukan Unit" value="">
+                                        </th>
+                                        <th>
+                                            <input name="items[harga_pokok]"
+                                            type="number" class="form-control" placeholder="Masukan Harga Pokok" value="">
+                                        </th>
+                                        <th>
+                                            <div class="d-flex align-items-center">
+                                                <input name="item[harga_jual]" type="number" class="form-control mr-2" placeholder="Masukan Harga Jual" value="">
+                                                <a href="javascript:void(0)" data-item="${v.id_survey_item}" class="btn btn-primary js-add-item"><span class="fas fa-plus"></span></a>
+                                            </div>
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </div>
+        </div> 
     </div>
     <!-- /BOQ Modal -->
 
@@ -412,7 +439,7 @@
         function loadHasilSurvey( id_survey ) {
 
             return $.ajax({
-                url: "<?php echo base_url('/api/survey/items') ?>",
+                url: "<?php echo base_url('/api/survey/item/load') ?>",
                 data: {
                     id_survey: id_survey 
                 }
@@ -453,6 +480,46 @@
 
                 case 'loadTeknikBoq':
                     $('#modal-boq').modal('show');
+                    loadHasilSurvey(btn.data('survey'))
+                    .then(response => {
+
+
+                        let html = '';
+
+                        response.data.lists.map((v, i) => {
+                            html += `
+                                <tr>
+                                    <th>
+                                        <input name="items[name][${v.id_survey_item}]" type="text" class="form-control" placeholder="Masukann Nama item" value="${v.survey_item_name}">
+                                    </th>
+                                    <th width="100">
+                                        <input name="items[qty][${v.id_survey_item}]" type="text" class="form-control" placeholder="Masukan Qty" value="${v.survey_item_qty}">
+                                    </th>
+                                    <th width="100">
+                                        <input name="items[unit][${v.id_survey_item}]" type="text" class="form-control" placeholder="Masukan Unit" value="${v.survey_item_unit}">
+                                    </th>
+                                    <th>
+                                        <input name="items[harga_pokok][${v.id_survey_item}]"
+                                         type="number" class="form-control" placeholder="Masukan Harga Pokok" value="${v.survey_harga_pokok}">
+                                    </th>
+                                    <th>
+                                        <div class="d-flex align-items-center">
+                                            <input name="item[harga_jual][${v.id_survey_item}]" type="number" class="form-control mr-2" placeholder="Masukan Harga Jual" value="${v.survey_harga_jual}">
+                                            <a href="javascript:void(0)" data-item="${v.id_survey_item}" class="btn btn-danger js-remove-item"><span class="fas fa-minus"></span></a>                                            
+                                        </div>
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            `;
+
+                            
+                        })
+
+                        $('#form-boq').find('tbody').html(html);
+
+                        btn.html('Teknik')
+
+                    })
                     break;
 
                 case 'loadPemasaranBoq':
