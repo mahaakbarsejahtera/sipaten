@@ -124,7 +124,7 @@ class PermintaanFile extends Controller
 
 
         $rules = [
-            'id_permintaan	'            => 'required',
+            'id_permintaan	'     => 'required',
             'nama_file'           => 'required',
             'lokasi_file'         => 'required',
            
@@ -142,7 +142,7 @@ class PermintaanFile extends Controller
         }
 
         $insertData = [
-            'id_permintaan'               => $this->request->getPost('id_permintaan'),
+            'id_permintaan'          => $this->request->getPost('id_permintaan'),
             'nama_file'              => $this->request->getPost('nama_file'),
             'lokasi_file'            => $this->request->getPost('lokasi_file')
         ];

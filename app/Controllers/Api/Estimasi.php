@@ -101,9 +101,9 @@ class Estimasi extends Controller
 
         // Dinamis ikuti table
         $rules = [
-            'id_permintaan'     => 'required',
-            'estimasi_approve_status'     => 'required',
-            'estimasi_approve_by'      => 'required',
+            'id_permintaan'             => 'required',
+            'estimasi_approve_status'   => 'required',
+            'estimasi_approve_by'       => 'required',
         ];
 
     
@@ -120,9 +120,9 @@ class Estimasi extends Controller
 
         // Dinamis ikuti table
         $insertData = [
-            'id_permintaan'     => $this->request->getPost('id_permintaan'),
-            'estimasi_approve_status'      => $this->request->getPost('estimasi_approve_status'),
-            'estimasi_approve_by'     => $this->request->getPost('estimasi_approve_by')
+            'id_permintaan'             => $this->request->getPost('id_permintaan'),
+            'estimasi_approve_status'   => $this->request->getPost('estimasi_approve_status'),
+            'estimasi_approve_by'       => $this->request->getPost('estimasi_approve_by')
         ];
 
         $rolesModel = new EstimasiModel;
@@ -152,10 +152,10 @@ class Estimasi extends Controller
 
 
         $rules = [
-            'id_estimasi'       => 'required',
-            'id_permintaan'     => 'required',
-            'estimasi_approve_status'      => 'required',
-            'estimasi_approve_by'      => 'required'
+            'id_estimasi'               => 'required',
+            'id_permintaan'             => 'required',
+            'estimasi_approve_status'   => 'required',
+            'estimasi_approve_by'       => 'required'
         ];
 
     
