@@ -43,7 +43,20 @@ class Anggaran extends Controller
 
 
         
-        $rolesModel = new AnggaranModel();
+        $anggaranModel = new AnggaranModel();
+
+        $anggaranModel->builder()
+        ->select("
+
+
+            anggaran.id_anggaran, anggaran.id_permintaan, anggaran.approval_teknik, anggaran.approval_pemasaran, anggaran.approval_keuangan,
+
+            permintaan.no_permintaan, permintaan.nama_pekerjaan, permintaan.no_survey
+        
+        
+        ")
+        ->join('permintaan', 'anggaran.id_permintaan=permintaan.id_permintaan', 'left');
+        
 
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
@@ -54,13 +67,13 @@ class Anggaran extends Controller
                     
                     case 'search':
                         
-                        $rolesModel->like('roles.role_name', $filter['value']);
+                        $anggaranModel->like('roles.role_name', $filter['value']);
 
                     break;
 
                     default:
                     
-                    if(in_array($filter['key'], array_keys($rolesModel->filterby))) {
+                    if(in_array($filter['key'], array_keys($anggaranModel->filterby))) {
                         $response['filters'][] = $filter['key'];
                     }
 
@@ -74,13 +87,13 @@ class Anggaran extends Controller
         if(!empty($this->request->getGet('orders'))) {
             foreach($this->request->getGet('orders') as $order) {
                 $response['orders'][] = $order['orderby'];
-                $rolesModel->orderBy($order['orderby'], $order['order']);
+                $anggaranModel->orderBy($order['orderby'], $order['order']);
             }
         }
 
 
-        $lists = $rolesModel->paginate(10, 'group1');
-        $pager = $rolesModel->pager;
+        $lists = $anggaranModel->paginate(10, 'group1');
+        $pager = $anggaranModel->pager;
 
         $response['data']['lists'] = $lists;
         $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
@@ -173,10 +186,10 @@ class Anggaran extends Controller
         }
 
         $insertData = [
-            'id_anggaran'       => $this->request->getPost('id_anggaran'),
-            'id_permintaan'     => $this->request->getPost('id_permintaan'),
-            'approval_teknik'      => $this->request->getPost('approval_teknik'),
-            'approval_pemasaran'     => $this->request->getPost('approval_pemasaran'),
+            'id_anggaran'           => $this->request->getPost('id_anggaran'),
+            'id_permintaan'         => $this->request->getPost('id_permintaan'),
+            'approval_teknik'       => $this->request->getPost('approval_teknik'),
+            'approval_pemasaran'    => $this->request->getPost('approval_pemasaran'),
             'approval_keuangan'     => $this->request->getPost('approval_keuangan')
         ];
 
