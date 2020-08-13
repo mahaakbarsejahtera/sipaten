@@ -23,7 +23,7 @@ class PermintaanFileModel extends Model
         'nama_file' => 'permintaan_file.nama_file',
         'lokasi_file'=>'permintaan_file.lokasi_file'
     ];
-
+    
 
 
 }   
