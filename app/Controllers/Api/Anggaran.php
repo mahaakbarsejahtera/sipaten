@@ -2,10 +2,10 @@
 
 namespace App\Controllers\Api;
 
-use App\Models\RolesModel;
+use App\Models\AnggaranModel;
 use CodeIgniter\Controller;
 
-class Roles extends Controller
+class Anggaran extends Controller
 {
 
     public function __construct() {
@@ -22,7 +22,7 @@ class Roles extends Controller
             'errors'        => []
         ];
 
-        $find = (new RolesModel)->find( $id );
+        $find = (new AnggaranModel)->find( $id );
 
         if($find) {
             $response['data']       = $find;
@@ -47,7 +47,7 @@ class Roles extends Controller
 
 
         
-        $rolesModel = new RolesModel();
+        $rolesModel = new AnggaranModel();
 
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
@@ -103,10 +103,12 @@ class Roles extends Controller
             'message'   => '' 
         ];
 
-
+        // Dinamis ikuti table
         $rules = [
-            'role_name'     => 'required',
-            'role_cap'      => 'required',
+            'id_permintaan'     => 'required',
+            'approval_teknik'      => 'required',
+            'approval_pemasaran'     => 'required',
+            'approval_keuangan'      => 'required',
         ];
 
     
@@ -120,13 +122,16 @@ class Roles extends Controller
 
         }
 
+
+        // Dinamis ikuti table
         $insertData = [
-            'role_name'     => $this->request->getPost('role_name'),
-            'role_cap'      => $this->request->getPost('role_cap'),
-            'role_desc'     => $this->request->getPost('role_desc'),
+            'id_permintaan'     => $this->request->getPost('id_permintaan'),
+            'approval_teknik'      => $this->request->getPost('approval_teknik'),
+            'approval_pemasaran'     => $this->request->getPost('approval_pemasaran'),
+            'approval_keuangan'     => $this->request->getPost('approval_keuangan')
         ];
 
-        $rolesModel = new RolesModel;
+        $rolesModel = new AnggaranModel;
         $rolesModel->save($insertData);
 
         $response['code']       = 200;
@@ -176,7 +181,7 @@ class Roles extends Controller
             'role_desc'     => $this->request->getPost('role_desc'),
         ];
 
-        $rolesModel = new RolesModel;
+        $rolesModel = new AnggaranModel;
         $rolesModel->save($insertData);
 
         $response['code']       = 200;
@@ -197,10 +202,10 @@ class Roles extends Controller
             'errors'        => []
         ];
 
-        $find = (new rolesModel)->find( $id );
+        $find = (new AnggaranModel)->find( $id );
         if($find) {
 
-            (new rolesModel)->delete($id);
+            (new AnggaranModel)->delete($id);
 
             $response = [
                 'code'      => 200,

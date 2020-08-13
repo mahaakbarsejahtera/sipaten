@@ -182,6 +182,7 @@
                     console.log(response);
                     let html =  ``;
 
+                    // `<td><a href="javascript:void(0)" data-toggle="table-action" data-action="create-timeline" data-id="${v.id_permintaan}">Buat Timeline</a></td><td><a href="">Berkas</a></td>`
                     response.data.lists.map((v, i) => {
                         html += `
                         
@@ -190,17 +191,17 @@
                                 <td>${v.user_fullname}</td>
                                 <td>${v.permintaan_status}</td>
                                 <td>${v.date_create}</td>
-                                <td><a href="javascript:void(0)" data-toggle="table-action" data-action="create-timeline" data-id="${v.id_permintaan}">Buat Timeline</a></td>
-                                <td><a href="">Berkas</a></td>
                                 <td width="200">
 
-                                    <a href="javascript:void(0)" class="btn btn-warning" data-toggle="table-action" data-action="edit" data-id="${v.id_permintaan}">
+                                    <a href="javascript:void(0)" class="btn btn-warning" title="Edit Permintaan" data-toggle="table-action" data-action="edit" data-id="${v.id_permintaan}">
                                         <span class="fas fa-edit"></span>
                                     </a>
-                                    <a href="javascript:void(0)" class="btn btn-danger" data-toggle="table-action"  data-action="delete" data-id="${v.id_permintaan}">
+                                    <a href="javascript:void(0)" class="btn btn-danger" title="Hapus Permintaan" data-toggle="table-action"  data-action="delete" data-id="${v.id_permintaan}">
                                         <span class="fas fa-trash"></span>
                                     </a>
-                                
+                                    <a href="javascript:void(0)" class="btn btn-primary" title="Lihat Berkas" data-toggle="table-action"  data-action="delete" data-id="${v.id_permintaan}">
+                                        <span class="fas fa-file"></span>
+                                    </a>
                                 </td>
                             </tr>
                         

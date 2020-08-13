@@ -38,7 +38,7 @@ class Survey extends Controller
                     'sort' => true,
                 ],    
                 [
-                    'field' => 'survey_status',
+                    'field' => 'permintaan_status',
                     'name' => 'Status',
                     'sort' => true
                 ],

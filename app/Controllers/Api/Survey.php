@@ -132,11 +132,13 @@ class Survey extends Controller
             'survey_approve_by'     => $this->request->getPost('survey_approve_by'),
         ];
 
-        $surveyModel = new SurveyModel;
-        $surveyModel->save($insertData);
+        $db = db_connect();
+
+        $surveyModel = $db->table('survey');
+        $surveyModel->insert($insertData);
 
         $response['code']       = 200;
-        $response['data']       = $insertData;
+        $response['data']       = [ 'id_survey' => $db->insertID() ] + $insertData;
         //$response['data'] = $insertData;
         $response['message']    = 'Insert Success';
 
@@ -309,6 +311,64 @@ class Survey extends Controller
 
 
         return $this->response->setJson($response);
+    }
+
+    public function loadItems() {
+        
+        $response = [
+            'code'      => 200,
+            'data'      => [],
+            'errors'    => [],
+            'message'   => '',
+        ];
+
+        $db = db_connect();
+
+        $id_survey = $this->request->getGet('id_survey');
+
+        $results = $db->table('hasil_survey')
+            ->where('id_survey', $id_survey)
+            ->get()
+            ->getResult();
+
+        $response['data']['lists'] = $results;
+
+        return $this->response->setJson($response);
+
+    }
+
+    public function deleteItem( $id ) {
+
+        $response = [
+            'code'          => 0,
+            'message'       =>'',
+            'data'          => [],
+            'errors'        => []
+        ];
+
+        $db = db_connect();
+
+        $find = $db->table('hasil_survey')
+            ->where('id_survey_item', $id)
+            ->get()->getRow();
+
+        if($find) {
+
+            $db->table('hasil_survey')->delete([
+                'id_survey_item' => $id
+            ]);
+
+            $response = [
+                'code'      => 200,
+                'data'      => $find,
+                'message'   => 'Success',
+                'errors'    => []
+            ];
+
+        }
+
+        return $this->response->setJson($response);
+
     }
     
 }

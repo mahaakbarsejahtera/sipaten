@@ -113,8 +113,8 @@
                         <input type="hidden" name="_method" value="POST">
 
                         <div class="form-group">
-                            <label for="i-role_name">Surveyor</label>
-                            <select name="permintaan_user" id="i-permintaan_user" class="form-control" style="max-width: 300px">
+                            <label for="i-survey_user">Surveyor</label>
+                            <select name="survey_user" id="i-survey_user" class="form-control" style="max-width: 300px">
                                 <option value="">Pilih</option>
                             </select>
                         </div>
@@ -133,6 +133,7 @@
                                 <tfoot>
                                     <tr>
                                         <th>
+
                                             <input id="i-survey_item_name" type="text" class="form-control" placeholder="Nama item">
                                         </th>
                                         <th>
@@ -187,8 +188,22 @@
                     response.data.lists.map((v, i) => {
                     
                         let surveyBtn = "";
-                        if(v.id_survey == null || v.id_survey == "") surveyBtn = `<a href="javascript:void(0)" data-toggle="table-action" data-action="create-hasil-survey" data-id="${v.id_permintaan}">Buat Hasil Survey</a>`;
-                        else surveyBtn = `<a href="javascript:void(0)" data-toggle="table-action" data-action="load-hasil-survey" data-id="${v.id_survey}">Lihat Hasil Survey</a>`;
+                        if(v.id_survey == null || v.id_survey == "") {
+
+                            surveyBtn = `<a href="javascript:void(0)" 
+                                data-toggle="table-action" 
+                                data-action="create-hasil-survey" 
+                                data-permintaan="${v.id_permintaan}"
+                                data-survey="${v.id_survey}">Buat Hasil Survey</a>`;
+                        } 
+                        else  { 
+                            surveyBtn = `<a href="javascript:void(0)" 
+                                data-toggle="table-action" 
+                                data-action="load-hasil-survey" 
+                                data-permintaan="${v.id_permintaan}"
+                                data-survey="${v.id_survey}">Lihat Hasil Survey</a>`;
+                        }
+                        
                         html += `
                         
                             <tr>
@@ -353,7 +368,7 @@
         function saveData() {
 
             if(truthAction.val() == 'update') updateData();
-            else addHasilSurvey();
+            //else addHasilSurvey();
 
         }
 
@@ -393,11 +408,19 @@
 
 
 
-        function addHasilSurvey( id_survey ) {
+        function addHasilSurvey() {
+            
+            let id_survey   = $('#i-id_survey').val();
+            let item        = $('#i-survey_item_name').val();
+            let qty         = $('#i-survey_item_qty').val();
+            let unit        = $('#i-survey_item_unit').val();
 
-
-            let data = form.serialize();
-
+            let data =  {
+                id_survey: id_survey,
+                survey_item_name: item,
+                survey_item_qty: qty,
+                survey_item_unit: unit                            
+            }
 
             return $.ajax({
                 method: 'POST',
@@ -410,9 +433,37 @@
                     switch(response.code) {
 
                         case 200: 
+
                             Toast('success', 'Berhasil menambahkan data');
-                            clearForm();
-                            loadData();
+
+                            let html = `
+                                <tr>
+                                    <th>
+                                        <input name="items[name][${response.data.item.id_survey_item}]" type="text" class="form-control" placeholder="Nama item" value="${item}" readonly>
+                                    </th>
+                                    <th>
+                                        <input name="items[qty][${response.data.item.id_survey_item}]" type="text" class="form-control" placeholder="Jumlah" value="${qty}" readonly>
+                                    </th>
+                                    <th>
+                                        <div class="d-flex align-items-center">
+                                            <input name="item[unit][${response.data.item.id_survey_item}]" type="text" class="form-control mr-2" placeholder="Unit" value="${unit}" readonly>
+                                            <a href="javascript:void(0)" data-item="${response.data.item.id_survey_item}" class="btn btn-danger js-remove-item"><span class="fas fa-minus"></span></a>
+                                        </div>
+                                    </th>
+                                </tr>
+                            `;
+
+                            $('#js-add-new-item')
+                                .parent()
+                                .parent()
+                                .parent()
+                                .parent()
+                                .prev()
+                                .append(html);
+
+                            $('#i-survey_item_name').val('');
+                            $('#i-survey_item_qty').val('');
+                            $('#i-survey_item_unit').val('');
                             break;
 
                         case 400:
@@ -430,7 +481,23 @@
         }
 
 
+        function loadHasilSurvey(id_survey) {
 
+            return $.ajax({
+                url: "<?php echo base_url('/api/survey/item/load') ?>",
+                data: {
+                    id_survey: id_survey
+                }
+            })
+
+        }
+
+        function deleteHasilSurvey(id_survey_item) {
+            return $.ajax({
+                method: 'POST',
+                url: "<?php echo base_url('api/survey/item/delete') ?>/" + id_survey_item
+            })
+        }
 
         $(document).on('click', '[data-toggle=table-action]', function(e){
             e.preventDefault();
@@ -446,15 +513,64 @@
 
                 case 'create-hasil-survey':
                     
-                    createSurvey(btn.data('id'))
+                    createSurvey(btn.data('permintaan'))
                     .then(response => {
 
                         Toast('success', 'Generated');
-
+                        $('#i-id_survey').val(response.data.id_survey);
                         $('#form-modal').modal('show');
+
+                        loadData();
 
                     });
                     
+
+                    break;
+
+                case 'load-hasil-survey':
+                    
+                    $('#i-id_survey').val(btn.data('survey'));
+
+                    loadHasilSurvey(btn.data('survey'))
+                    .then(response => {
+                        console.log(response)
+                        let tbody = $('#js-add-new-item')
+                                .parent()
+                                .parent()
+                                .parent()
+                                .parent()
+                                .prev();
+                        
+                        tbody.html('');
+
+                        let html = ``;
+                        response.data.lists.map((v, i) => {
+                            html += `
+                                <tr>
+                                    <th>
+                                        <input name="items[name][${v.id_survey_item}]" type="text" class="form-control" placeholder="Nama item" value="${v.survey_item_name}" readonly>
+                                    </th>
+                                    <th>
+                                        <input name="items[qty][${v.id_survey_item}]" type="text" class="form-control" placeholder="Jumlah" value="${v.survey_item_qty}" readonly>
+                                    </th>
+                                    <th>
+                                        <div class="d-flex align-items-center">
+                                            <input name="item[unit][${v.id_survey_item}]" type="text" class="form-control mr-2" placeholder="Unit" value="${v.survey_item_unit}" readonly>
+                                            <a href="javascript:void(0)" data-item="${v.id_survey_item}" class="btn btn-danger js-remove-item"><span class="fas fa-minus"></span></a>
+                                        </div>
+                                    </th>
+                                </tr>
+                            `;
+
+                            
+                        })
+
+                        btn.html('Lihat Hasil Survey')
+
+                        tbody.append(html);
+                        
+                        $('#form-modal').modal('show');
+                    });
 
                     break;
 
@@ -537,40 +653,23 @@
         $('#js-add-new-item').click(function(e){
             e.preventDefault();
 
+            addHasilSurvey();
+                
+        });
 
+        $(document).on('click', '.js-remove-item', function(e){
+            e.preventDefault();
 
-            let item    = $('#i-survey_item_name').val();
-            let qty     = $('#i-survey_item_qty').val();
-            let unit    = $('#i-survey_item_unit').val();
+            let btn = $(this);
 
-            let html = `
-                <tr>
-                    <th>
-                        <input name="items[name]" type="text" class="form-control" placeholder="Nama item" value="${item}">
-                    </th>
-                    <th>
-                        <input name="items[qty]" type="text" class="form-control" placeholder="Jumlah" value="${qty}">
-                    </th>
-                    <th>
-                        <div class="d-flex align-items-center">
-                            <input name="survey_item_unit[]" type="text" class="form-control mr-2" placeholder="Unit" value="${unit}">
-                            <a href="javascript:void(0)" id="js-remove-item" class="btn btn-danger"><span class="fas fa-minus"></span></a>
-                        </div>
-                    </th>
-                </tr>
-            `;
+            deleteHasilSurvey(btn.data('item'))
+            .then(response => {
 
-            $(this)
-                .parent()
-                .parent()
-                .parent()
-                .parent()
-                .prev()
-                .append(html);
+                btn.closest('tr').remove();
 
-            $('#i-survey_item_name').val('');
-            $('#i-survey_item_qty').val('');
-            $('#i-survey_item_unit').val('');
+                Toast('success', 'Berhasil Menghapus Item')
+                
+            });
         
         })
 

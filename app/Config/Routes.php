@@ -57,8 +57,10 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 	$routes->post('survey/destroy', 'Survey::destroy');
 
 	
-	$routes->post('survey/items/add', 'Survey::addItems');
 	$routes->post('survey/item/add', 'Survey::addItem');
+	$routes->post('survey/items/add', 'Survey::addItems');
+	$routes->get('survey/item/load', 'Survey::loadItems');
+	$routes->post('survey/item/delete/(:num)', 'Survey::deleteItem/$1');
 
 	// Permintaan
 	$routes->get('permintaan', 'Permintaan::index');
