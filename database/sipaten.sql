@@ -1,15 +1,4 @@
--- --------------------------------------------------------
--- Host:                         localhost
--- Versi server:                 5.7.24 - MySQL Community Server (GPL)
--- OS Server:                    Win64
--- HeidiSQL Versi:               10.2.0.5599
--- --------------------------------------------------------
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 
 -- Membuang struktur basisdata untuk internal_pt_maha
@@ -237,6 +226,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `create_date` date DEFAULT NULL,
   `latest_update` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_user`)
+<<<<<<< HEAD
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+=======
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- Membuang data untuk tabel internal_pt_maha.users: ~2 rows (lebih kurang)
@@ -249,3 +241,4 @@ INSERT IGNORE INTO `users` (`id_user`, `user_role`, `user_name`, `user_fullname`
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+>>>>>>> f4c1f783aa74075116e74f2ebf344efb0e17d758

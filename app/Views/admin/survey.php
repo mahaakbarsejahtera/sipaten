@@ -546,10 +546,10 @@
             let html = `
                 <tr>
                     <th>
-                        <input name="survey_item_name[]" type="text" class="form-control" placeholder="Nama item" value="${item}">
+                        <input name="items[name]" type="text" class="form-control" placeholder="Nama item" value="${item}">
                     </th>
                     <th>
-                        <input name="survey_item_qty[]" type="text" class="form-control" placeholder="Jumlah" value="${qty}">
+                        <input name="items[qty]" type="text" class="form-control" placeholder="Jumlah" value="${qty}">
                     </th>
                     <th>
                         <div class="d-flex align-items-center">
