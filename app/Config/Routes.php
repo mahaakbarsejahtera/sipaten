@@ -56,6 +56,10 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 	$routes->post('survey/(:num)/delete', 'Survey::delete/$1');
 	$routes->post('survey/destroy', 'Survey::destroy');
 
+	
+	$routes->post('survey/items/add', 'Survey::addItems');
+	$routes->post('survey/item/add', 'Survey::addItem');
+
 	// Permintaan
 	$routes->get('permintaan', 'Permintaan::index');
 	$routes->get('permintaan/show/(:num)', 'Permintaan::show/$1');
@@ -93,7 +97,6 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 	$routes->get('pemasaran', 'Home::dashboardPemasaran');
 	$routes->get('teknik', 'Home::dashboardTeknik');
 	$routes->get('hirup', 'Home::dashboardTeknik');
-	
 
 });
 

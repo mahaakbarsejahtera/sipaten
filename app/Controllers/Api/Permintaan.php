@@ -51,7 +51,19 @@ class Permintaan extends Controller
 
         
         $permintaanModel = new PermintaanModel();
-        $permintaanModel->builder()->join('users', 'permintaan.permintaan_user=users.id_user', 'left');
+        $permintaanModel->builder()
+        ->select("
+
+            permintaan.id_permintaan, permintaan.nama_pekerjaan, permintaan.permintaan_status,
+            permintaan.permintaan_user, permintaan.permintaan_lokasi_survey, permintaan.permintaan_jadwal_survey,
+
+            users.id_user, users.user_fullname, users.user_name, users.user_status,
+
+            survey.id_survey, survey.survey_user
+
+        ")
+        ->join('users', 'permintaan.permintaan_user=users.id_user', 'left')
+        ->join('survey', 'permintaan.id_permintaan=survey.id_permintaan', 'left');
 
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {

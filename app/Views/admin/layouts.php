@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Toastr -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+  <link rel="stylesheet" href="<?php echo base_url('/assets/plugins/toastr-master/build/toastr.min.css') ?>">
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="<?php echo base_url('/assets/adminlte/plugins/fontawesome-free/css/all.min.css') ?>">
@@ -741,7 +741,7 @@
 <script src="<?php echo base_url('assets/adminlte/dist/js/demo.js') ?>"></script>
 
 <!-- Toastr -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="<?php echo base_url('/assets/plugins/toastr-master/build/toastr.min.js') ?>"></script>
 
 <!-- Custom Script -->
 <script src="<?php echo base_url('assets/js/app.js'); ?>"></script>

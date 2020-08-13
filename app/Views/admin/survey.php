@@ -65,7 +65,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-md-3">
-                    <a href="javascript:void(0)" data-toggle="modal" data-target="#form-modal" class="btn btn-primary mb-3">Tambah Data</a>
+                    <!-- <a href="javascript:void(0)" data-toggle="modal" data-target="#form-modal" class="btn btn-primary mb-3">Tambah Data</a> -->
                 </div>
                 <div class="col-12 col-md-9">
                     <form class="w-100" id="filter-form">
@@ -96,7 +96,7 @@
     
     <!-- Modal -->
     <div class="modal fade" id="form-modal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <!-- <div class="modal-header">
                     <h5 class="modal-title">Modal title</h5>
@@ -108,56 +108,51 @@
                     <form action="" id="form">
 
                         <input type="hidden" name="truth_action" id="i-truth_action" value="">
+                        <input type="hidden" name="id_permintaan" id="i-id_permintaan">
                         <input type="hidden" name="id_survey" id="i-id_survey">
                         <input type="hidden" name="_method" value="POST">
 
                         <div class="form-group">
-                            <label for="i-id_permintaan">Permintaan</label>
-                            <select name="id_permintaan" id="i-id_permintaan" class="form-control">
+                            <label for="i-role_name">Surveyor</label>
+                            <select name="permintaan_user" id="i-permintaan_user" class="form-control" style="max-width: 300px">
                                 <option value="">Pilih</option>
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="i-role_name">Permintaan Oleh</label>
-                            <select name="permintaan_user" id="i-permintaan_user" class="form-control">
-                                <option value="">Pilih</option>
-                            </select>
+                        
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Qty</th>
+                                        <th>Unit</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>
+                                            <input id="i-survey_item_name" type="text" class="form-control" placeholder="Nama item">
+                                        </th>
+                                        <th>
+                                            <input id="i-survey_item_qty" type="text" class="form-control" placeholder="Jumlah">
+                                        </th>
+                                        <th>
+                                            <div class="d-flex align-items-center">
+                                                <input id="i-survey_item_unit" type="text" class="form-control mr-2" placeholder="Unit">
+                                                <a href="javascript:void(0)" id="js-add-new-item" class="btn btn-primary"><span class="fas fa-plus"></span></a>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
 
-                        <div class="form-group">
-                            <label for="i-nama_pekerjaan">Nama pekerjaan</label>
-                            <input type="text" name="nama_pekerjaan" class="form-control" id="i-nama_pekerjaan">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="i-permintaan_lokasi_survey">Lokasi Survey</label>
-                            <input type="text" name="permintaan_lokasi_survey" class="form-control" id="i-permintaan_lokasi_survey">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="i-permintaan_jadwal_survey">Jadwal Survey</label>
-                            <input type="date" name="permintaan_jadwal_survey" class="form-control" id="i-permintaan_jadwal_survey">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="i-permintaan_status">Status</label>
-                            <select name="permintaan_status" id="i-permintaan_status" class="form-control">
-                                <option value="Draft">Draft</option>
-                                <option value="Negosiasi">Negosiasi</option>
-                                <option value="Publish">Publish</option>
-                                <option value="Kontrak">Kontrak</option>
-                            </select>
-                        </div>
-
-                        <button class="btn btn-primary" id="js-save">Buat Permintaan</button>
+                        <button class="btn btn-primary" id="js-save">Simpan Hasil Survey</button>
 
                     </form>
                 </div>
-                <!-- <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save</button>
-                </div> -->
             </div>
         </div>
     </div>
@@ -183,29 +178,24 @@
             `);
 
             $.ajax({
-                url: "<?php echo base_url('/api/survey') ?>",
+                url: "<?php echo base_url('/api/permintaan') ?>",
                 data: data,
                 success: function(response) {
                     console.log(response);
                     let html =  ``;
 
                     response.data.lists.map((v, i) => {
+                    
+                        let surveyBtn = "";
+                        if(v.id_survey == null || v.id_survey == "") surveyBtn = `<a href="javascript:void(0)" data-toggle="table-action" data-action="create-hasil-survey" data-id="${v.id_permintaan}">Buat Hasil Survey</a>`;
+                        else surveyBtn = `<a href="javascript:void(0)" data-toggle="table-action" data-action="load-hasil-survey" data-id="${v.id_survey}">Lihat Hasil Survey</a>`;
                         html += `
                         
                             <tr>
                                 <td>${v.nama_pekerjaan}</td>
                                 <td>${v.user_fullname}</td>
                                 <td>${v.permintaan_status}</td>
-                                <td width="200">
-
-                                    <a href="javascript:void(0)" class="btn btn-warning" data-toggle="table-action" data-action="edit" data-id="${v.id_permintaan}">
-                                        <span class="fas fa-edit"></span>
-                                    </a>
-                                    <a href="javascript:void(0)" class="btn btn-danger" data-toggle="table-action"  data-action="delete" data-id="${v.id_permintaan}">
-                                        <span class="fas fa-trash"></span>
-                                    </a>
-                                
-                                </td>
+                                <td width="200">${surveyBtn}</td>
                             </tr>
                         
                         `
@@ -363,7 +353,7 @@
         function saveData() {
 
             if(truthAction.val() == 'update') updateData();
-            else addData();
+            else addHasilSurvey();
 
         }
 
@@ -390,6 +380,57 @@
         
         })
 
+        function createSurvey( id_permintaan ) {
+            return $.ajax({
+                method: 'POST',
+                url: "<?php echo base_url('api/survey/') ?>",
+                data: {
+                    id_permintaan: id_permintaan
+                }
+            });  
+        }
+
+
+
+
+        function addHasilSurvey( id_survey ) {
+
+
+            let data = form.serialize();
+
+
+            return $.ajax({
+                method: 'POST',
+                url: "<?php echo base_url('/api/survey/item/add') ?>",
+                data: data, 
+                success: function(response) {
+
+                    console.log('success response add', response);
+                    
+                    switch(response.code) {
+
+                        case 200: 
+                            Toast('success', 'Berhasil menambahkan data');
+                            clearForm();
+                            loadData();
+                            break;
+
+                        case 400:
+                            Toast('error', response.message);
+                            break;
+                    }
+                    
+                }, 
+                error: function(response) {
+                    Toast('error', 'Something Wrong!!!');
+                }
+            })
+
+
+        }
+
+
+
 
         $(document).on('click', '[data-toggle=table-action]', function(e){
             e.preventDefault();
@@ -402,6 +443,21 @@
 
             console.log(action);
             switch(action) {    
+
+                case 'create-hasil-survey':
+                    
+                    createSurvey(btn.data('id'))
+                    .then(response => {
+
+                        Toast('success', 'Generated');
+
+                        $('#form-modal').modal('show');
+
+                    });
+                    
+
+                    break;
+
                 case 'edit':
 
                     getData($(this).data('id'))
@@ -474,6 +530,48 @@
                     { key: 'search', value: $(this).val() }
                 ]
             })
+        })
+
+
+
+        $('#js-add-new-item').click(function(e){
+            e.preventDefault();
+
+
+
+            let item    = $('#i-survey_item_name').val();
+            let qty     = $('#i-survey_item_qty').val();
+            let unit    = $('#i-survey_item_unit').val();
+
+            let html = `
+                <tr>
+                    <th>
+                        <input name="survey_item_name[]" type="text" class="form-control" placeholder="Nama item" value="${item}">
+                    </th>
+                    <th>
+                        <input name="survey_item_qty[]" type="text" class="form-control" placeholder="Jumlah" value="${qty}">
+                    </th>
+                    <th>
+                        <div class="d-flex align-items-center">
+                            <input name="survey_item_unit[]" type="text" class="form-control mr-2" placeholder="Unit" value="${unit}">
+                            <a href="javascript:void(0)" id="js-remove-item" class="btn btn-danger"><span class="fas fa-minus"></span></a>
+                        </div>
+                    </th>
+                </tr>
+            `;
+
+            $(this)
+                .parent()
+                .parent()
+                .parent()
+                .parent()
+                .prev()
+                .append(html);
+
+            $('#i-survey_item_name').val('');
+            $('#i-survey_item_qty').val('');
+            $('#i-survey_item_unit').val('');
+        
         })
 
     })

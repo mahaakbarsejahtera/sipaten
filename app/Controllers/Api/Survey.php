@@ -111,11 +111,7 @@ class Survey extends Controller
 
 
         $rules = [
-            'nama_pekerjaan'            => 'required',
-            'permintaan_user'           => 'required',
-            'permintaan_status'         => 'required',
-            'permintaan_lokasi_survey'  => 'required',
-            'permintaan_jadwal_survey'  => 'required',
+            'id_permintaan'            => 'required',
         ];
 
     
@@ -130,12 +126,10 @@ class Survey extends Controller
         }
 
         $insertData = [
-            'nama_pekerjaan'               => $this->request->getPost('nama_pekerjaan'),
-            'permintaan_user'              => $this->request->getPost('permintaan_user'),
-            'permintaan_status'            => $this->request->getPost('permintaan_status'),
-            'permintaan_lokasi_survey'     => $this->request->getPost('permintaan_lokasi_survey'),
-            'permintaan_jadwal_survey'     => $this->request->getPost('permintaan_jadwal_survey'),
-            'date_create'                  => date('Y-m-d')
+            'id_permintaan'         => $this->request->getPost('id_permintaan'),
+            'survey_user'           => $this->request->getPost('survey_user'),
+            'survey_approve_status' => $this->request->getPost('survey_approve_status'),
+            'survey_approve_by'     => $this->request->getPost('survey_approve_by'),
         ];
 
         $surveyModel = new SurveyModel;
@@ -236,5 +230,85 @@ class Survey extends Controller
 
     }
 
+    public function addItems() {
 
+        $response = [
+            'code'      => 0,
+            'message'   => '',
+            'data'      => [],
+            'erroors'   => []
+        ];
+
+        $db = db_connect();
+
+        $items  = $this->request->getPost('survey_item_name');
+        $quantities = $this->request->getPost('survey_item_qty');
+        $units      = $this->request->getPost('survey_item_unit');
+
+        $temp = [];
+        for($i = 0; $i < count($items); $i++) 
+        {
+
+            $item = isset($items[$i]) ? $items[$i] : '';
+            $qty = isset($quantities[$i]) ? $quantities[$i] : 0;
+            $unit = isset($units[$i]) ? $units[$i] : '';
+            
+            $dataToInsert = [
+                'survey_item_name'  => $item,
+                'survey_item_unit'  => $qty,
+                'survey_item_qty'   => $unit 
+            ];
+
+            $temp[] = $dataToInsert;
+
+            $db->table('hasil_survey')
+            ->insert($dataToInsert);
+
+        }
+
+
+        $response['data']['items'] = $temp;
+        $response['code'] = 200;
+        $response['message'] = 'Success';
+
+
+        return $this->response->setJson($response);
+
+    }
+
+    public function addItem() {
+        
+        $response = [
+            'code'      => 0,
+            'message'   => '',
+            'data'      => [],
+            'erroors'   => []
+        ];
+
+        $id_survey              = $this->request->getPost('id_survey');
+        $survey_item_name       = $this->request->getPost('survey_item_name');
+        $survey_item_qty        = $this->request->getPost('survey_item_qty');
+        $survey_item_unit       = $this->request->getPost('survey_item_unit');
+
+        
+        $db = db_connect();
+
+        $dataToInsert = [
+            'id_survey' => $id_survey,
+            'survey_item_name'      => $survey_item_name,
+            'survey_item_qty'      => $survey_item_qty,
+            'survey_item_unit'      => $survey_item_unit
+        ];
+
+        $db->table('hasil_survey')
+            ->insert($dataToInsert);
+
+        $response['data']['item']   = [ 'id_survey_item' => $db->insertID() ] + $dataToInsert;
+        $response['code']           = 200;
+        $response['message']        = 'Success';
+
+
+        return $this->response->setJson($response);
+    }
+    
 }
