@@ -152,9 +152,10 @@ class Estimasi extends Controller
 
 
         $rules = [
-            'id_role'       => 'required',
-            'role_name'     => 'required',
-            'role_cap'      => 'required',
+            'id_estimasi'       => 'required',
+            'id_permintaan'     => 'required',
+            'estimasi_approve_status'      => 'required',
+            'estimasi_approve_by'      => 'required'
         ];
 
     
@@ -169,10 +170,10 @@ class Estimasi extends Controller
         }
 
         $insertData = [
-            'id_role'       => $this->request->getPost('id_role'),
-            'role_name'     => $this->request->getPost('role_name'),
-            'role_cap'      => $this->request->getPost('role_cap'),
-            'role_desc'     => $this->request->getPost('role_desc'),
+            'id_estimasi'       => $this->request->getPost('id_estimasi'),
+            'id_permintaan'     => $this->request->getPost('id_permintaan'),
+            'estimasi_approve_status'      => $this->request->getPost('estimasi_approve_status'),
+            'estimasi_approve_by'     => $this->request->getPost('estimasi_approve_by'),
         ];
 
         $rolesModel = new EstimasiModel;

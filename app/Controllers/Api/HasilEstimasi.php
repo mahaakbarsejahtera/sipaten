@@ -162,9 +162,14 @@ class HasilEstimasi extends Controller
 
 
         $rules = [
-            'id_role'       => 'required',
-            'role_name'     => 'required',
-            'role_cap'      => 'required',
+            'id_estimasi_item'       => 'required',
+            'id_estimasi'     => 'required',
+            'estimasi_item_name'     => 'required',
+            'estimasi_item_qty'      => 'required',
+            'estimasi_item_unit'      => 'required',
+            'estimasi_harga_pokok'      => 'required',
+            'estimasi_harga_pokok_nego'    => 'required',
+            'estimasi_harga_jual_nego'      => 'required'
         ];
 
     
@@ -179,10 +184,14 @@ class HasilEstimasi extends Controller
         }
 
         $insertData = [
-            'id_role'       => $this->request->getPost('id_role'),
-            'role_name'     => $this->request->getPost('role_name'),
-            'role_cap'      => $this->request->getPost('role_cap'),
-            'role_desc'     => $this->request->getPost('role_desc'),
+            'id_estimasi_item'       => $this->request->getPost('id_estimasi_item'),
+            'id_estimasi'     => $this->request->getPost('id_estimasi'),
+            'estimasi_item_name'      => $this->request->getPost('estimasi_item_name'),
+            'estimasi_item_qty'     => $this->request->getPost('estimasi_item_qty'),
+            'estimasi_item_unit'     => $this->request->getPost('estimasi_item_unit'),
+            'estimasi_harga_pokok'     => $this->request->getPost('estimasi_harga_pokok'),
+            'estimasi_harga_pokok_nego'     => $this->request->getPost('estimasi_harga_pokok_nego'),
+            'estimasi_harga_jual_nego'     => $this->request->getPost('estimasi_harga_jual_nego'),
         ];
 
         $rolesModel = new HasilEstimasiModel;

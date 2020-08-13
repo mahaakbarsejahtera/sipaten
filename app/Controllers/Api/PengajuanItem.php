@@ -159,9 +159,12 @@ class PengajuanItem extends Controller
 
 
         $rules = [
-            'id_role'       => 'required',
-            'role_name'     => 'required',
-            'role_cap'      => 'required',
+            'id_pengajuan_item'     => 'required',
+            'id_pengajuan'     => 'required',
+            'pengajuan_item'     => 'required',
+            'pengajuan_qty'     => 'required',
+            'pengajuan_unit'     => 'required',
+            'pengajuan_price'     => 'required',
         ];
 
     
@@ -176,10 +179,12 @@ class PengajuanItem extends Controller
         }
 
         $insertData = [
-            'id_role'       => $this->request->getPost('id_role'),
-            'role_name'     => $this->request->getPost('role_name'),
-            'role_cap'      => $this->request->getPost('role_cap'),
-            'role_desc'     => $this->request->getPost('role_desc'),
+            'id_pengajuan_item'     => $this->request->getPost('id_pengajuan_item'),
+            'id_pengajuan'     => $this->request->getPost('id_pengajuan'),
+            'pengajuan_item'     => $this->request->getPost('pengajuan_item'),
+            'pengajuan_qty'     => $this->request->getPost('pengajuan_qty'),
+            'pengajuan_unit'     => $this->request->getPost('pengajuan_unit'),
+            'pengajuan_price'     => $this->request->getPost('pengajuan_price'),
         ];
 
         $rolesModel = new PengajuanItemModel;

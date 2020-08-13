@@ -173,9 +173,10 @@ class PermintaanFile extends Controller
 
 
         $rules = [
-            'id_permintaan	'             => 'required',
+            'id_file'              => 'required',
+            'id_permintaan'        => 'required',
             'nama_file'            => 'required',
-            'lokasi_file'           => 'required',
+            'lokasi_file'          => 'required',
             
         ];
 
@@ -191,9 +192,10 @@ class PermintaanFile extends Controller
         }
 
         $insertData = [
-            'id_permintaan'                 => $this->request->getPost('id_permintaan'),
+            'id_file'                 => $this->request->getPost('id_file'),
+            'id_permintaan'           => $this->request->getPost('id_permintaan'),
             'nama_file'               => $this->request->getPost('nama_file'),
-            'lokasi_file'              => $this->request->getPost('lokasi_file'),
+            'lokasi_file'             => $this->request->getPost('lokasi_file'),
            
         ];
 
@@ -241,48 +243,6 @@ class PermintaanFile extends Controller
 
     }
 
-    public function changePassword() 
-    {
-
-        
-        $response = [
-            'data'      => [],
-            'errors'    => [],
-            'code'      => 0,
-            'message'   => ''
-        ];
-
-
-        $rules = [
-            'id_user'      => 'required',
-            'user_pass' => 'required',
-        ];
-
-        if(!$this->validate($rules))
-        {
-
-            $response['code']       = 400;
-            $response['message']    = 'Bad Request';
-            $response['errors']     = $this->validator->getErrors();
-            return $this->response->setJson($response);
-
-        }
-
-
-        $insertData = [
-            'id_user' => $this->request->getPost('id_user'),
-            'user_pass' => md5($this->request->getPost('user_pass'))
-        ];
-
-        (new PermintaanFileModel)->save($insertData);
-
-        $response['code']       = 200;
-        $response['data']       = $insertData;
-        //$response['data'] = $insertData;
-        $response['message']    = 'Update Success';
-
-        return $this->response->setJson($response);
-
-    }
+   
 
 }

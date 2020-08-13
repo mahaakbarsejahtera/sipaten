@@ -154,9 +154,11 @@ class Anggaran extends Controller
 
 
         $rules = [
-            'id_role'       => 'required',
-            'role_name'     => 'required',
-            'role_cap'      => 'required',
+            'id_anggaran'       => 'required',
+            'id_permintaan'     => 'required',
+            'approval_teknik'      => 'required',
+            'approval_pemasaran'      => 'required',
+            'approval_keuangan'      => 'required',
         ];
 
     
@@ -171,10 +173,11 @@ class Anggaran extends Controller
         }
 
         $insertData = [
-            'id_role'       => $this->request->getPost('id_role'),
-            'role_name'     => $this->request->getPost('role_name'),
-            'role_cap'      => $this->request->getPost('role_cap'),
-            'role_desc'     => $this->request->getPost('role_desc'),
+            'id_anggaran'       => $this->request->getPost('id_anggaran'),
+            'id_permintaan'     => $this->request->getPost('id_permintaan'),
+            'approval_teknik'      => $this->request->getPost('approval_teknik'),
+            'approval_pemasaran'     => $this->request->getPost('approval_pemasaran'),
+            'approval_keuangan'     => $this->request->getPost('approval_keuangan')
         ];
 
         $rolesModel = new AnggaranModel;

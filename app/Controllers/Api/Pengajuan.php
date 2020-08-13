@@ -153,9 +153,9 @@ class Pengajuan extends Controller
 
 
         $rules = [
-            'id_role'       => 'required',
-            'role_name'     => 'required',
-            'role_cap'      => 'required',
+            'id_pengajuan'=>'required',
+            'id_anggaran'     => 'required',
+            'id_jenis_pengajuan'     => 'required'
         ];
 
     
@@ -170,10 +170,9 @@ class Pengajuan extends Controller
         }
 
         $insertData = [
-            'id_role'       => $this->request->getPost('id_role'),
-            'role_name'     => $this->request->getPost('role_name'),
-            'role_cap'      => $this->request->getPost('role_cap'),
-            'role_desc'     => $this->request->getPost('role_desc'),
+            'id_pengajuan' => $this->request->getPost('id_pengajuan'),
+            'id_anggaran'     => $this->request->getPost('id_anggaran'),
+            'id_jenis_pengajuan'     => $this->request->getPost('id_jenis_pengajuan')
         ];
 
         $rolesModel = new PengajuanModel;
