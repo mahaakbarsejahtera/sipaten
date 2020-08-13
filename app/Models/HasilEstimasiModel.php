@@ -18,7 +18,7 @@ class HasilEstimasiModel extends Model
     protected $orderby = [
         'id_estimasi_item', 'id_estimasi', 'estimasi_item_name',
         'estimasi_item_qty', 'estimasi_item_unit', 'estimasi_harga_pokok',
-        'estimasi_harga_jual', 'estimas_harga_pokok_nego','estimasi_harga_jual_nego'
+        'estimasi_harga_jual', 'estimasi_harga_pokok_nego','estimasi_harga_jual_nego'
     ];
 
     protected $filterby = [
@@ -29,7 +29,7 @@ class HasilEstimasiModel extends Model
         'estimasi_item_unit' => 'hasil_estimasi_id.estimasi_item_unit',
         'estimasi_harga_pokok' => 'hasil_estimasi_id.estimasi_harga_pokok',
         'estimasi_harga_jual'=> 'hasil_estimasi_id.estimasi_harga_jual',
-        'estimas_harga_pokok_nego' => 'hasil_estimasi_id.estimasi_harga_pokok_nego',
+        'estimasi_harga_pokok_nego' => 'hasil_estimasi_id.estimasi_harga_pokok_nego',
         'estimasi_harga_jual_nego' => 'hasil_estimasi_id.estimasi_harga_jual_nego'
     ];
 
