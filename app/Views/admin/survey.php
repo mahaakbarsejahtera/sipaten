@@ -231,7 +231,7 @@
                 html += `<option value="${v.id_user}">${v.user_fullname} - ${v.role_name}</option>`;
             })
 
-            $('#i-permintaan_user').html(html);
+            $('#i-survey_user').html(html);
 
         });
 
@@ -367,8 +367,10 @@
 
         function saveData() {
 
-            if(truthAction.val() == 'update') updateData();
+            //if(truthAction.val() == 'update') updateData();
             //else addHasilSurvey();
+
+            saveHasilSurvey();
 
         }
 
@@ -395,6 +397,22 @@
         
         })
 
+        saveHasilSurvey() {
+            return $.ajax({
+                method: 'POST',
+                data: {
+                    id_survey: $('#i-id_survey').val(),
+                    survey_user: $('#i-survey_user').val(),
+                },
+                url: "<?php echo base_url("api/survey") ?>",
+                success: function(response) {
+
+                    console.log(response)
+
+                }
+            })
+        }
+
         function createSurvey( id_permintaan ) {
             return $.ajax({
                 method: 'POST',
@@ -404,9 +422,6 @@
                 }
             });  
         }
-
-
-
 
         function addHasilSurvey() {
             
@@ -647,7 +662,6 @@
                 ]
             })
         })
-
 
 
         $('#js-add-new-item').click(function(e){

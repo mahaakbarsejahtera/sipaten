@@ -8,10 +8,6 @@ use CodeIgniter\Controller;
 class Anggaran extends Controller
 {
 
-    public function __construct() {
-        
-    }
-
     public function show( $id ) 
     {
 
