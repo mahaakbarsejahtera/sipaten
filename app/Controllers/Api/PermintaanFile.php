@@ -174,7 +174,7 @@ class PermintaanFile extends Controller
 
         $rules = [
             'id_file'              => 'required',
-            'id_permintaan'        => 'required',
+            'id_permintaan'        => 'required', 
             'nama_file'            => 'required',
             'lokasi_file'          => 'required',
             
