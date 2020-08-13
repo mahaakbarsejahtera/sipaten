@@ -48,3 +48,39 @@ $(document).on('click', '#pagination-wrapper .page-item', function(e){
     $(this).find('a').html(`<span class="fas fa-spin fa-spinner"></span>`)
 
 });
+
+
+$(document).on('change keyup', '[data-toggle=get-margin]', function(e){
+
+    let value   = parseFloat($(this).val());
+    let bind    = parseFloat($($(this).data('bind')).val());
+    let target  = $($(this).data('target'))
+    let action = $(this).data('action');
+
+    if(action == "harga-jual") {
+        let persentase = InternalCalculation.getPersentaseMargin(bind, value).toFixed(2);
+        persentase = !isNaN(persentase) ? persentase + "%" : 0;
+        target.html(persentase);
+    }
+
+    if(action == "harga-pokok") {
+        let persentase = InternalCalculation.getPersentaseMargin(value, bind).toFixed(2);
+        persentase = !isNaN(persentase) ? persentase + "%" : 0;
+        target.html(persentase);
+    }
+
+    
+
+})
+
+
+
+let InternalCalculation = {
+
+    getPersentaseMargin: function(hargaPokok, hargaJual) {
+
+        return ((hargaJual - hargaPokok) / hargaPokok) * 100;
+
+    }
+
+}

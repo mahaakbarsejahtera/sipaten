@@ -295,26 +295,26 @@ class Survey extends Controller
         $id_survey              = $this->request->getPost('id_survey');
         $survey_item_name       = $this->request->getPost('survey_item_name');
         $survey_item_qty        = (double)$this->request->getPost('survey_item_qty');
-        $survey_item_unit       = (double)$this->request->getPost('survey_item_unit');
+        $survey_item_unit       = $this->request->getPost('survey_item_unit');
 
         
-        $harga_pokok            = (double)$this->request->getPost('survey_item_harga_pokok');
-        $harga_jual             = (double)$this->request->getPost('survey_item_harga_jual');
-        $harga_pokok_nego       = (double)$this->request->getPost('survey_item_harga_pokok_nego');
-        $harga_jual_nego        = (double)$this->request->getPost('survey_item_harga_jual_nego');
+        $harga_pokok            = (double)$this->request->getPost('survey_harga_pokok');
+        $harga_jual             = (double)$this->request->getPost('survey_harga_jual');
+        $harga_pokok_nego       = (double)$this->request->getPost('survey_harga_pokok_nego');
+        $harga_jual_nego        = (double)$this->request->getPost('survey_harga_jual_nego');
 
         
         $db = db_connect();
 
         $dataToInsert = [
-            'id_survey' => $id_survey,
-            'survey_item_name'  => $survey_item_name,
-            'survey_item_qty'   => $survey_item_qty,
-            'survey_item_unit'  => $survey_item_unit,
-            'harga_pokok'       => $harga_pokok,
-            'harga_jual'        => $harga_jual,
-            'harga_pokok_nego'  => $harga_pokok_nego,
-            'harga_jual_nego'   => $harga_jual_nego
+            'id_survey'                => $id_survey,
+            'survey_item_name'         => $survey_item_name,
+            'survey_item_qty'          => $survey_item_qty,
+            'survey_item_unit'         => $survey_item_unit,
+            'survey_harga_pokok'       => $harga_pokok,
+            'survey_harga_jual'        => $harga_jual,
+            'survey_harga_pokok_nego'  => $harga_pokok_nego,
+            'survey_harga_jual_nego'   => $harga_jual_nego
         ];
 
         $db->table('hasil_survey')

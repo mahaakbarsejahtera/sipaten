@@ -18,6 +18,8 @@
   <link rel="stylesheet" href="<?php echo base_url('/assets/adminlte/dist/css/adminlte.min.css') ?>">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+  <script src="<?php echo base_url("assets/js/plugins/template7-1.4.1/dist/template7.min.js") ?>"></script>
 </head>
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
