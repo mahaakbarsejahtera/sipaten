@@ -160,12 +160,12 @@ class Survey extends Controller
 
 
         $rules = [
+            'id_survey'                 => 'required',
             'id_permintaan'             => 'required',
-            'nama_pekerjaan'            => 'required',
-            'permintaan_user'           => 'required',
-            'permintaan_status'         => 'required',
-            'permintaan_lokasi_survey'  => 'required',
-            'permintaan_jadwal_survey'  => 'required',
+            //'permintaan_user'           => 'required',
+            //'permintaan_status'         => 'required',
+            //'permintaan_lokasi_survey'  => 'required',
+            //'permintaan_jadwal_survey'  => 'required',
         ];
 
     
@@ -180,12 +180,9 @@ class Survey extends Controller
         }
 
         $insertData = [
-            'id_permintaan'                 => $this->request->getPost('id_permintaan'),
-            'nama_pekerjaan'               => $this->request->getPost('nama_pekerjaan'),
-            'permintaan_user'              => $this->request->getPost('permintaan_user'),
-            'permintaan_status'            => $this->request->getPost('permintaan_status'),
-            'permintaan_lokasi_survey'     => $this->request->getPost('permintaan_lokasi_survey'),
-            'permintaan_jadwal_survey'     => $this->request->getPost('permintaan_jadwal_survey'),
+            'id_permintaan' => $this->request->getPost('id_permintaan'),
+            'id_survey'     => $this->request->getPost('id_survey'),
+            'survey_user'   => $this->request->getPost('survey_user')
         ];
 
         $surveyModel = new SurveyModel;

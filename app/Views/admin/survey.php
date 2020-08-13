@@ -28,6 +28,13 @@
         </a>
     </li>
 
+    <li class="nav-item">
+        <a href="<?php echo base_url('/dashboard/estimasi') ?>" class="nav-link">
+            <i class="nav-icon far fa-star"></i>
+            <p>Estimasi</p>
+        </a>
+    </li>
+
 <?php $this->endSection(); ?>
 
 <?php $this->section('content'); ?>
@@ -235,6 +242,7 @@
 
         });
 
+        /** 
         getPermintaan()
         .then(response => {
             let html = '<option value="">Pilih</option>';
@@ -246,6 +254,7 @@
             $('#i-id_permintaan').html(html);
 
         });
+         */
 
 
         function getUsers() {
@@ -397,17 +406,20 @@
         
         })
 
-        saveHasilSurvey() {
+        function saveHasilSurvey() {
             return $.ajax({
                 method: 'POST',
                 data: {
+                    id_permintaan: $('#i-id_permintaan').val(),
                     id_survey: $('#i-id_survey').val(),
                     survey_user: $('#i-survey_user').val(),
                 },
-                url: "<?php echo base_url("api/survey") ?>",
+                url: "<?php echo base_url("api/survey/update") ?>",
                 success: function(response) {
 
-                    console.log(response)
+                    console.log(response);
+                    Toast('success', 'Berhasil menyimpan');
+
 
                 }
             })
@@ -545,47 +557,55 @@
                 case 'load-hasil-survey':
                     
                     $('#i-id_survey').val(btn.data('survey'));
+                    $('#i-id_permintaan').val(btn.data('permintaan'));
 
-                    loadHasilSurvey(btn.data('survey'))
-                    .then(response => {
-                        console.log(response)
-                        let tbody = $('#js-add-new-item')
-                                .parent()
-                                .parent()
-                                .parent()
-                                .parent()
-                                .prev();
+                    getData(btn.data('survey')).then(() => {
                         
-                        tbody.html('');
+                        loadHasilSurvey(btn.data('survey'))
+                        .then(response => {
 
-                        let html = ``;
-                        response.data.lists.map((v, i) => {
-                            html += `
-                                <tr>
-                                    <th>
-                                        <input name="items[name][${v.id_survey_item}]" type="text" class="form-control" placeholder="Nama item" value="${v.survey_item_name}" readonly>
-                                    </th>
-                                    <th>
-                                        <input name="items[qty][${v.id_survey_item}]" type="text" class="form-control" placeholder="Jumlah" value="${v.survey_item_qty}" readonly>
-                                    </th>
-                                    <th>
-                                        <div class="d-flex align-items-center">
-                                            <input name="item[unit][${v.id_survey_item}]" type="text" class="form-control mr-2" placeholder="Unit" value="${v.survey_item_unit}" readonly>
-                                            <a href="javascript:void(0)" data-item="${v.id_survey_item}" class="btn btn-danger js-remove-item"><span class="fas fa-minus"></span></a>
-                                        </div>
-                                    </th>
-                                </tr>
-                            `;
+                            console.log(response)
 
+                            let tbody = $('#js-add-new-item')
+                                    .parent()
+                                    .parent()
+                                    .parent()
+                                    .parent()
+                                    .prev();
                             
-                        })
+                            tbody.html('');
 
-                        btn.html('Lihat Hasil Survey')
+                            let html = ``;
+                            response.data.lists.map((v, i) => {
+                                html += `
+                                    <tr>
+                                        <th>
+                                            <input name="items[name][${v.id_survey_item}]" type="text" class="form-control" placeholder="Nama item" value="${v.survey_item_name}" readonly>
+                                        </th>
+                                        <th>
+                                            <input name="items[qty][${v.id_survey_item}]" type="text" class="form-control" placeholder="Jumlah" value="${v.survey_item_qty}" readonly>
+                                        </th>
+                                        <th>
+                                            <div class="d-flex align-items-center">
+                                                <input name="item[unit][${v.id_survey_item}]" type="text" class="form-control mr-2" placeholder="Unit" value="${v.survey_item_unit}" readonly>
+                                                <a href="javascript:void(0)" data-item="${v.id_survey_item}" class="btn btn-danger js-remove-item"><span class="fas fa-minus"></span></a>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                `;
 
-                        tbody.append(html);
-                        
-                        $('#form-modal').modal('show');
-                    });
+                                
+                            })
+
+                            btn.html('Lihat Hasil Survey')
+
+                            tbody.append(html);
+                            
+                            $('#form-modal').modal('show');
+                        });
+
+                    })
+                    
 
                     break;
 

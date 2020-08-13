@@ -28,6 +28,13 @@
         </a>
     </li>
 
+    <li class="nav-item">
+        <a href="<?php echo base_url('/dashboard/estimasi') ?>" class="nav-link">
+            <i class="nav-icon far fa-star"></i>
+            <p>Survey</p>
+        </a>
+    </li>
+
 <?php $this->endSection(); ?>
 
 <?php $this->section('content'); ?>
@@ -155,38 +162,6 @@
         </div>
     </div>
 
-    <!-- BOQ Modal -->
-    <div class="modal fade" id="modal-boq" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">BOQ</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                </div>
-                <div class="modal-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Qty</th>
-                                    <th>Unit</th>
-                                    <th>Harga Pokok</th>
-                                    <th>Harga Jual<th>
-                                    <th>Margin</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /BOQ Modal -->
-
 <?php $this->endSection(); ?>
 
 
@@ -201,7 +176,6 @@
 
         loadData();
         function loadData(data = {}) {
-            
             tableData.find('tbody').html(`
                 <tr>
                     <td colspan="7">Loading...</td>
@@ -224,26 +198,17 @@
                                 <td>${v.user_fullname}</td>
                                 <td>${v.permintaan_status}</td>
                                 <td>${v.date_create}</td>
-                                <td>
-                                    <ul>
-                                        <li><a href="javascript:void(0)" data-toggle="table-action" data-action="loadTeknikBoq" data-permintaan="${v.id_permintaan}" data-survey="${v.id_survey}">Teknik</a></li>
-                                        <li><a href="javascript:void(0)" data-toggle="table-action" data-action="loadPemasaranBoq" data-permintaan="${v.id_permintaan}" data-survey="${v.id_survey}">Pemasaran</a></li>
-                                    </ul>
-                                </td>
-                                <td>
+                                <td width="200">
 
-                                    <a href="javascript:void(0)" class="btn btn-warning mb-2" title="Edit Permintaan" data-toggle="table-action" data-action="edit" data-id="${v.id_permintaan}">
+                                    <a href="javascript:void(0)" class="btn btn-warning" title="Edit Permintaan" data-toggle="table-action" data-action="edit" data-id="${v.id_permintaan}">
                                         <span class="fas fa-edit"></span>
                                     </a>
-                                    
-                                    <a href="javascript:void(0)" class="btn btn-danger mb-2" title="Hapus Permintaan" data-toggle="table-action"  data-action="delete" data-id="${v.id_permintaan}">
+                                    <a href="javascript:void(0)" class="btn btn-danger" title="Hapus Permintaan" data-toggle="table-action"  data-action="delete" data-id="${v.id_permintaan}">
                                         <span class="fas fa-trash"></span>
                                     </a>
-
-                                    <a href="javascript:void(0)" class="btn btn-primary mb-2" title="Lihat Berkas" data-toggle="table-action"  data-action="delete" data-id="${v.id_permintaan}">
+                                    <a href="javascript:void(0)" class="btn btn-primary" title="Lihat Berkas" data-toggle="table-action"  data-action="delete" data-id="${v.id_permintaan}">
                                         <span class="fas fa-file"></span>
                                     </a>
-
                                 </td>
                             </tr>
                         
@@ -409,16 +374,6 @@
         
         })
 
-        function loadHasilSurvey( id_survey ) {
-
-            return $.ajax({
-                url: "<?php echo base_url('/api/survey/items') ?>",
-                data: {
-                    id_survey: id_survey 
-                }
-            })
-
-        }
 
         $(document).on('click', '[data-toggle=table-action]', function(e){
             e.preventDefault();
@@ -451,15 +406,6 @@
 
                     break;
 
-                case 'loadTeknikBoq':
-                    $('#modal-boq').modal('show');
-                    break;
-
-                case 'loadPemasaranBoq':
-                    
-                    $('#modal-boq').modal('show');
-                    break;
-
                 case 'create-timeline': 
                     
                     break;
@@ -473,7 +419,6 @@
             if(($('#filter-search').val())) {
 
                 filters.push({ key: 'search', value: $('#filter-search').val() })
-
             }
 
             return filters;
