@@ -82,6 +82,9 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 	$routes->post('roles/(:num)/delete', 'Roles::delete/$1');
 	$routes->post('roles/destroy', 'Roles::destroy');
 
+	//ESTIMASI
+	
+
 
 });
 
@@ -95,10 +98,6 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 
 	// KAK NABILA
 
-	
-	$routes->get('pemasaran', 'Home::dashboardPemasaran');
-	$routes->get('teknik', 'Home::dashboardTeknik');
-	$routes->get('hirup', 'Home::dashboardTeknik');
 
 });
 

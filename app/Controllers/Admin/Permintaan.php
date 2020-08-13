@@ -45,7 +45,7 @@ class Permintaan extends Controller
                 [
                     'name' => 'Tanggal Permintaan',
                 ],
-                //[ 'name' => 'Timeline' ],
+                [ 'name' => 'BOQ' ],
                 //[ 'name' => 'Berkas' ],
                 [
                     'name' => 'Aksi'
