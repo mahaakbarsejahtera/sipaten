@@ -43,8 +43,16 @@ class JenisPengajuan extends Controller
 
 
         
-        $rolesModel = new JenisPengajuanModel();
+        $jenisPengajuanModel = new JenisPengajuanModel();
+        $jenisPengajuanModel->builder()
+        ->select("
 
+
+            jenis_pengajuan.id_jenis_pengajuan, jenis_pengajuan.nama_jenis_pengajuan
+           
+        ")
+        //?
+        ->join('permintaan', 'anggaran.id_permintaan=permintaan.id_permintaan', 'left');
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
 
@@ -54,13 +62,13 @@ class JenisPengajuan extends Controller
                     
                     case 'search':
                         
-                        $rolesModel->like('roles.role_name', $filter['value']);
+                        $jenisPengajuanModel->like('jenis_pengajuan.nama_jenis_pengajuan', $filter['value']);
 
                     break;
 
                     default:
                     
-                    if(in_array($filter['key'], array_keys($rolesModel->filterby))) {
+                    if(in_array($filter['key'], array_keys($jenisPengajuanModel->filterby))) {
                         $response['filters'][] = $filter['key'];
                     }
 
@@ -74,13 +82,13 @@ class JenisPengajuan extends Controller
         if(!empty($this->request->getGet('orders'))) {
             foreach($this->request->getGet('orders') as $order) {
                 $response['orders'][] = $order['orderby'];
-                $rolesModel->orderBy($order['orderby'], $order['order']);
+                $jenisPengajuanModel->orderBy($order['orderby'], $order['order']);
             }
         }
 
 
-        $lists = $rolesModel->paginate(10, 'group1');
-        $pager = $rolesModel->pager;
+        $lists = $jenisPengajuanModel->paginate(10, 'group1');
+        $pager = $jenisPengajuanModel->pager;
 
         $response['data']['lists'] = $lists;
         $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
@@ -124,12 +132,12 @@ class JenisPengajuan extends Controller
         ];
 
 
-        $rolesModel = new JenisPengajuanModel;
-        $rolesModel->save($insertData);
+        $jenisPengajuanModel = new JenisPengajuanModel;
+        $jenisPengajuanModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
-        $response['model']      = $rolesModel->getInsertID();
+        $response['model']      = $jenisPengajuanModel->getInsertID();
         //$response['data'] = $insertData;
         $response['message']    = 'Insert Success';
 
@@ -151,7 +159,7 @@ class JenisPengajuan extends Controller
 
 
         $rules = [
-            'id_jenis_pengajuan'     => 'required',
+            'id_jenis_pengajuan'       => 'required',
             'nama_jenis_pengajuan'     => 'required'
         ];
 
@@ -168,11 +176,11 @@ class JenisPengajuan extends Controller
 
         $insertData = [
             'id_jenis_pengajuan'     => $this->request->getPost('id_jenis_pengajuan'),
-            'nama_jenis_pengajuan'     => $this->request->getPost('nama_jenis_pengajuan')
+            'nama_jenis_pengajuan'   => $this->request->getPost('nama_jenis_pengajuan')
         ];
 
-        $rolesModel = new JenisPengajuanModel;
-        $rolesModel->save($insertData);
+        $jenisPengajuanModel = new JenisPengajuanModel;
+        $jenisPengajuanModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;

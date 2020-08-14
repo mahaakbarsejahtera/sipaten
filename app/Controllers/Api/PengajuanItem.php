@@ -43,7 +43,7 @@ class PengajuanItem extends Controller
 
 
         
-        $rolesModel = new PengajuanItemModel();
+        $pengajuanItemModel = new PengajuanItemModel();
 
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
@@ -53,14 +53,14 @@ class PengajuanItem extends Controller
                 switch($filter['key']) {
                     
                     case 'search':
-                        
-                        $rolesModel->like('roles.role_name', $filter['value']);
+                        //?
+                        $pengajuanItemModel->like('roles.role_name', $filter['value']);
 
                     break;
 
                     default:
                     
-                    if(in_array($filter['key'], array_keys($rolesModel->filterby))) {
+                    if(in_array($filter['key'], array_keys($pengajuanItemModel->filterby))) {
                         $response['filters'][] = $filter['key'];
                     }
 
@@ -74,13 +74,13 @@ class PengajuanItem extends Controller
         if(!empty($this->request->getGet('orders'))) {
             foreach($this->request->getGet('orders') as $order) {
                 $response['orders'][] = $order['orderby'];
-                $rolesModel->orderBy($order['orderby'], $order['order']);
+                $pengajuanItemModel->orderBy($order['orderby'], $order['order']);
             }
         }
 
 
-        $lists = $rolesModel->paginate(10, 'group1');
-        $pager = $rolesModel->pager;
+        $lists = $pengajuanItemModel->paginate(10, 'group1');
+        $pager = $pengajuanItemModel->pager;
 
         $response['data']['lists'] = $lists;
         $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
@@ -101,11 +101,11 @@ class PengajuanItem extends Controller
 
         // Dinamis ikuti table
         $rules = [
-            'id_pengajuan'     => 'required',
-            'pengajuan_item'     => 'required',
+            'id_pengajuan'      => 'required',
+            'pengajuan_item'    => 'required',
             'pengajuan_qty'     => 'required',
-            'pengajuan_unit'     => 'required',
-            'pengajuan_price'     => 'required',
+            'pengajuan_unit'    => 'required',
+            'pengajuan_price'   => 'required',
 
         ];
 
@@ -123,21 +123,21 @@ class PengajuanItem extends Controller
 
         // Dinamis ikuti table
         $insertData = [
-            'id_pengajuan'     => $this->request->getPost('id_pengajuan'),
+            'id_pengajuan'       => $this->request->getPost('id_pengajuan'),
             'pengajuan_item'     => $this->request->getPost('pengajuan_item'),
-            'pengajuan_qty'     => $this->request->getPost('pengajuan_qty'),
+            'pengajuan_qty'      => $this->request->getPost('pengajuan_qty'),
             'pengajuan_unit'     => $this->request->getPost('pengajuan_unit'),
-            'pengajuan_price'     => $this->request->getPost('pengajuan_price'),
+            'pengajuan_price'    => $this->request->getPost('pengajuan_price'),
             
         ];
 
 
-        $rolesModel = new PengajuanItemModel;
-        $rolesModel->save($insertData);
+        $pengajuanItemModel = new PengajuanItemModel;
+        $pengajuanItemModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
-        $response['model']      = $rolesModel->getInsertID();
+        $response['model']      = $pengajuanItemModel->getInsertID();
         //$response['data'] = $insertData;
         $response['message']    = 'Insert Success';
 
@@ -160,11 +160,11 @@ class PengajuanItem extends Controller
 
         $rules = [
             'id_pengajuan_item'     => 'required',
-            'id_pengajuan'     => 'required',
-            'pengajuan_item'     => 'required',
-            'pengajuan_qty'     => 'required',
-            'pengajuan_unit'     => 'required',
-            'pengajuan_price'     => 'required',
+            'id_pengajuan'          => 'required',
+            'pengajuan_item'        => 'required',
+            'pengajuan_qty'         => 'required',
+            'pengajuan_unit'        => 'required',
+            'pengajuan_price'       => 'required',
         ];
 
     
@@ -180,15 +180,15 @@ class PengajuanItem extends Controller
 
         $insertData = [
             'id_pengajuan_item'     => $this->request->getPost('id_pengajuan_item'),
-            'id_pengajuan'     => $this->request->getPost('id_pengajuan'),
-            'pengajuan_item'     => $this->request->getPost('pengajuan_item'),
-            'pengajuan_qty'     => $this->request->getPost('pengajuan_qty'),
-            'pengajuan_unit'     => $this->request->getPost('pengajuan_unit'),
-            'pengajuan_price'     => $this->request->getPost('pengajuan_price'),
+            'id_pengajuan'          => $this->request->getPost('id_pengajuan'),
+            'pengajuan_item'        => $this->request->getPost('pengajuan_item'),
+            'pengajuan_qty'         => $this->request->getPost('pengajuan_qty'),
+            'pengajuan_unit'        => $this->request->getPost('pengajuan_unit'),
+            'pengajuan_price'       => $this->request->getPost('pengajuan_price'),
         ];
 
-        $rolesModel = new PengajuanItemModel;
-        $rolesModel->save($insertData);
+        $pengajuanItemModel = new PengajuanItemModel;
+        $pengajuanItemModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;

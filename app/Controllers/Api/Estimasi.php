@@ -43,8 +43,18 @@ class Estimasi extends Controller
 
 
         
-        $rolesModel = new EstimasiModel();
+        $estimasiModel = new EstimasiModel();
+        $estimasiModel -> builder()
+        ->select("
+        estimasi.id_estimasi, estimasi.id_permintaan, estimasi.estimasi_approve_status, 
+        estimasi.estimasi_approve_by, 
+        permintaan.no_permintaan, permintaan.nama_pekerjaan, permintaan.no_survey, permintaan.no_kontrak,
+        permintaan.permintaan_status, permintaan.permintaan_user, permintaan.permintaan_lokasi_survey,
+        permintaan.permintaan_jadwal_survey, permintaan.date_create, permintaan.permintaan_approval,
+        permintaan.approve_by
 
+    ")
+    ->join('permintaan', 'estimasi.id_permintaan=permintaan.id_permintaan', 'left');
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
 
@@ -54,13 +64,13 @@ class Estimasi extends Controller
                     
                     case 'search':
                         
-                        $rolesModel->like('roles.role_name', $filter['value']);
+                        $estimasiModel->like('permintaan.nama_pekerjaan', $filter['value']);
 
                     break;
 
                     default:
                     
-                    if(in_array($filter['key'], array_keys($rolesModel->filterby))) {
+                    if(in_array($filter['key'], array_keys($estimasiModel->filterby))) {
                         $response['filters'][] = $filter['key'];
                     }
 
@@ -74,13 +84,13 @@ class Estimasi extends Controller
         if(!empty($this->request->getGet('orders'))) {
             foreach($this->request->getGet('orders') as $order) {
                 $response['orders'][] = $order['orderby'];
-                $rolesModel->orderBy($order['orderby'], $order['order']);
+                $estimasiModel->orderBy($order['orderby'], $order['order']);
             }
         }
 
 
-        $lists = $rolesModel->paginate(10, 'group1');
-        $pager = $rolesModel->pager;
+        $lists = $estimasiModel->paginate(10, 'group1');
+        $pager = $estimasiModel->pager;
 
         $response['data']['lists'] = $lists;
         $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
@@ -101,9 +111,9 @@ class Estimasi extends Controller
 
         // Dinamis ikuti table
         $rules = [
-            'id_permintaan'             => 'required',
-            'estimasi_approve_status'   => 'required',
-            'estimasi_approve_by'       => 'required',
+            'id_permintaan'               => 'required',
+            'estimasi_approve_status'     => 'required',
+            'estimasi_approve_by'         => 'required',
         ];
 
     
@@ -120,17 +130,17 @@ class Estimasi extends Controller
 
         // Dinamis ikuti table
         $insertData = [
-            'id_permintaan'             => $this->request->getPost('id_permintaan'),
-            'estimasi_approve_status'   => $this->request->getPost('estimasi_approve_status'),
-            'estimasi_approve_by'       => $this->request->getPost('estimasi_approve_by')
+            'id_permintaan'                => $this->request->getPost('id_permintaan'),
+            'estimasi_approve_status'      => $this->request->getPost('estimasi_approve_status'),
+            'estimasi_approve_by'          => $this->request->getPost('estimasi_approve_by')
         ];
 
-        $rolesModel = new EstimasiModel;
-        $rolesModel->save($insertData);
+        $estimasiModel = new EstimasiModel;
+        $estimasiModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
-        $response['model']      = $rolesModel->getInsertID();
+        $response['model']      = $estimasiModel->getInsertID();
         //$response['data'] = $insertData;
         $response['message']    = 'Insert Success';
 
@@ -152,10 +162,10 @@ class Estimasi extends Controller
 
 
         $rules = [
-            'id_estimasi'               => 'required',
-            'id_permintaan'             => 'required',
-            'estimasi_approve_status'   => 'required',
-            'estimasi_approve_by'       => 'required'
+            'id_estimasi'                => 'required',
+            'id_permintaan'              => 'required',
+            'estimasi_approve_status'    => 'required',
+            'estimasi_approve_by'        => 'required'
         ];
 
     
@@ -170,14 +180,14 @@ class Estimasi extends Controller
         }
 
         $insertData = [
-            'id_estimasi'       => $this->request->getPost('id_estimasi'),
-            'id_permintaan'     => $this->request->getPost('id_permintaan'),
+            'id_estimasi'                  => $this->request->getPost('id_estimasi'),
+            'id_permintaan'                => $this->request->getPost('id_permintaan'),
             'estimasi_approve_status'      => $this->request->getPost('estimasi_approve_status'),
-            'estimasi_approve_by'     => $this->request->getPost('estimasi_approve_by'),
+            'estimasi_approve_by'          => $this->request->getPost('estimasi_approve_by'),
         ];
 
-        $rolesModel = new EstimasiModel;
-        $rolesModel->save($insertData);
+        $estimasiModel = new EstimasiModel;
+        $estimasiModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;

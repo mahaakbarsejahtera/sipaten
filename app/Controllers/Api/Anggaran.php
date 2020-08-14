@@ -51,7 +51,10 @@ class Anggaran extends Controller
 
             anggaran.id_anggaran, anggaran.id_permintaan, anggaran.approval_teknik, anggaran.approval_pemasaran, anggaran.approval_keuangan,
 
-            permintaan.no_permintaan, permintaan.nama_pekerjaan, permintaan.no_survey
+            permintaan.no_permintaan, permintaan.nama_pekerjaan, permintaan.no_survey, permintaan.no_kontrak,
+            permintaan.permintaan_status, permintaan.permintaan_user, permintaan.permintaan_lokasi_survey,
+            permintaan.permintaan_jadwal_survey, permintaan.date_create, permintaan.permintaan_approval,
+            permintaan.approve_by
         
         
         ")
@@ -67,7 +70,7 @@ class Anggaran extends Controller
                     
                     case 'search':
                         
-                        $anggaranModel->like('roles.role_name', $filter['value']);
+                        $anggaranModel->like('permintaan.nama_pekerjaan', $filter['value']);
 
                     break;
 
@@ -114,8 +117,8 @@ class Anggaran extends Controller
 
         // Dinamis ikuti table
         $rules = [
-            'id_permintaan'     => 'required',
-            'approval_teknik'      => 'required',
+            'id_permintaan'          => 'required',
+            'approval_teknik'        => 'required',
             'approval_pemasaran'     => 'required',
             'approval_keuangan'      => 'required',
         ];
@@ -134,18 +137,18 @@ class Anggaran extends Controller
 
         // Dinamis ikuti table
         $insertData = [
-            'id_permintaan'     => $this->request->getPost('id_permintaan'),
+            'id_permintaan'        => $this->request->getPost('id_permintaan'),
             'approval_teknik'      => $this->request->getPost('approval_teknik'),
-            'approval_pemasaran'     => $this->request->getPost('approval_pemasaran'),
-            'approval_keuangan'     => $this->request->getPost('approval_keuangan')
+            'approval_pemasaran'   => $this->request->getPost('approval_pemasaran'),
+            'approval_keuangan'    => $this->request->getPost('approval_keuangan')
         ];
 
-        $rolesModel = new AnggaranModel;
-        $rolesModel->save($insertData);
+        $anggaranModel = new AnggaranModel;
+        $anggaranModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
-        $response['model']      = $rolesModel->getInsertID();
+        $response['model']      = $anggaranModel->getInsertID();
         //$response['data'] = $insertData;
         $response['message']    = 'Insert Success';
 
@@ -167,11 +170,11 @@ class Anggaran extends Controller
 
 
         $rules = [
-            'id_anggaran'       => 'required',
-            'id_permintaan'     => 'required',
-            'approval_teknik'      => 'required',
-            'approval_pemasaran'      => 'required',
-            'approval_keuangan'      => 'required',
+            'id_anggaran'         => 'required',
+            'id_permintaan'       => 'required',
+            'approval_teknik'     => 'required',
+            'approval_pemasaran'  => 'required',
+            'approval_keuangan'   => 'required',
         ];
 
     
@@ -193,8 +196,8 @@ class Anggaran extends Controller
             'approval_keuangan'     => $this->request->getPost('approval_keuangan')
         ];
 
-        $rolesModel = new AnggaranModel;
-        $rolesModel->save($insertData);
+        $anggaranModel = new AnggaranModel;
+        $anggaranModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;

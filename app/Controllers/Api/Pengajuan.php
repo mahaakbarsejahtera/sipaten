@@ -43,8 +43,19 @@ class Pengajuan extends Controller
 
 
         
-        $rolesModel = new PengajuanModel();
+        $pengajuanModel = new PengajuanModel();
+        $pengajuanModel->builder()
+        ->select("
 
+
+            pengajuan.id_pengajuan, pengajuan.id_anggaran, pengajuan.id_jenis_pengajuan, 
+
+            anggaran.id_permintaan, anggaran.approval_teknik, anggaran.approval_pemasaran, anggaran.approval_keuangan,
+            jenis_pengajuan.nama_jenis_pengajuan
+           
+        ")
+        ->join('anggaran', 'pengajuan.id_anggaran=anggaran.id_anggaran', 'left',)
+              ('jenis_pengajuan', 'pengajuan.id_jenis_pengajuan=jenis_anggran.id_jenis_anggaran','left');
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
 
@@ -54,13 +65,13 @@ class Pengajuan extends Controller
                     
                     case 'search':
                         
-                        $rolesModel->like('roles.role_name', $filter['value']);
+                        $pengajuanModel->like('jenis_pengajuan.nama_jenis_pengajuan', $filter['value']);
 
                     break;
 
                     default:
                     
-                    if(in_array($filter['key'], array_keys($rolesModel->filterby))) {
+                    if(in_array($filter['key'], array_keys($pengajuanModel->filterby))) {
                         $response['filters'][] = $filter['key'];
                     }
 
@@ -74,13 +85,13 @@ class Pengajuan extends Controller
         if(!empty($this->request->getGet('orders'))) {
             foreach($this->request->getGet('orders') as $order) {
                 $response['orders'][] = $order['orderby'];
-                $rolesModel->orderBy($order['orderby'], $order['order']);
+                $pengajuanModel->orderBy($order['orderby'], $order['order']);
             }
         }
 
 
-        $lists = $rolesModel->paginate(10, 'group1');
-        $pager = $rolesModel->pager;
+        $lists = $pengajuanModel->paginate(10, 'group1');
+        $pager = $pengajuanModel->pager;
 
         $response['data']['lists'] = $lists;
         $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
@@ -101,8 +112,8 @@ class Pengajuan extends Controller
 
         // Dinamis ikuti table
         $rules = [
-            'id_anggaran'     => 'required',
-            'id_jenis_pengajuan'     => 'required'
+            'id_anggaran'           => 'required',
+            'id_jenis_pengajuan'    => 'required'
 
         ];
 
@@ -120,18 +131,18 @@ class Pengajuan extends Controller
 
         // Dinamis ikuti table
         $insertData = [
-            'id_anggaran'     => $this->request->getPost('id_anggaran'),
+            'id_anggaran'            => $this->request->getPost('id_anggaran'),
             'id_jenis_pengajuan'     => $this->request->getPost('id_jenis_pengajuan')
             
         ];
 
 
-        $rolesModel = new PengajuanModel;
-        $rolesModel->save($insertData);
+        $pengajuanModel = new PengajuanModel;
+        $pengajuanModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
-        $response['model']      = $rolesModel->getInsertID();
+        $response['model']      = $pengajuanModel->getInsertID();
         //$response['data'] = $insertData;
         $response['message']    = 'Insert Success';
 
@@ -153,9 +164,9 @@ class Pengajuan extends Controller
 
 
         $rules = [
-            'id_pengajuan'=>'required',
-            'id_anggaran'     => 'required',
-            'id_jenis_pengajuan'     => 'required'
+            'id_pengajuan'          =>'required',
+            'id_anggaran'           => 'required',
+            'id_jenis_pengajuan'    => 'required'
         ];
 
     
@@ -170,13 +181,13 @@ class Pengajuan extends Controller
         }
 
         $insertData = [
-            'id_pengajuan' => $this->request->getPost('id_pengajuan'),
-            'id_anggaran'     => $this->request->getPost('id_anggaran'),
-            'id_jenis_pengajuan'     => $this->request->getPost('id_jenis_pengajuan')
+            'id_pengajuan'          => $this->request->getPost('id_pengajuan'),
+            'id_anggaran'           => $this->request->getPost('id_anggaran'),
+            'id_jenis_pengajuan'    => $this->request->getPost('id_jenis_pengajuan')
         ];
 
-        $rolesModel = new PengajuanModel;
-        $rolesModel->save($insertData);
+        $pengajuanModel = new PengajuanModel;
+        $pengajuanModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
