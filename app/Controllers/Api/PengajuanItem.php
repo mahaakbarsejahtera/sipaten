@@ -53,8 +53,8 @@ class PengajuanItem extends Controller
                 switch($filter['key']) {
                     
                     case 'search':
-                        //?
-                        $pengajuanItemModel->like('roles.role_name', $filter['value']);
+                       
+                        $pengajuanItemModel->like('pengajuan_item.pengajuan_item_name', $filter['value']);
 
                     break;
 
@@ -102,7 +102,7 @@ class PengajuanItem extends Controller
         // Dinamis ikuti table
         $rules = [
             'id_pengajuan'      => 'required',
-            'pengajuan_item'    => 'required',
+            'pengajuan_item_name'    => 'required',
             'pengajuan_qty'     => 'required',
             'pengajuan_unit'    => 'required',
             'pengajuan_price'   => 'required',
@@ -124,7 +124,7 @@ class PengajuanItem extends Controller
         // Dinamis ikuti table
         $insertData = [
             'id_pengajuan'       => $this->request->getPost('id_pengajuan'),
-            'pengajuan_item'     => $this->request->getPost('pengajuan_item'),
+            'pengajuan_item_name'     => $this->request->getPost('pengajuan_item_name'),
             'pengajuan_qty'      => $this->request->getPost('pengajuan_qty'),
             'pengajuan_unit'     => $this->request->getPost('pengajuan_unit'),
             'pengajuan_price'    => $this->request->getPost('pengajuan_price'),
@@ -161,7 +161,7 @@ class PengajuanItem extends Controller
         $rules = [
             'id_pengajuan_item'     => 'required',
             'id_pengajuan'          => 'required',
-            'pengajuan_item'        => 'required',
+            'pengajuan_item_name'        => 'required',
             'pengajuan_qty'         => 'required',
             'pengajuan_unit'        => 'required',
             'pengajuan_price'       => 'required',
@@ -181,7 +181,7 @@ class PengajuanItem extends Controller
         $insertData = [
             'id_pengajuan_item'     => $this->request->getPost('id_pengajuan_item'),
             'id_pengajuan'          => $this->request->getPost('id_pengajuan'),
-            'pengajuan_item'        => $this->request->getPost('pengajuan_item'),
+            'pengajuan_item_name'        => $this->request->getPost('pengajuan_item_name'),
             'pengajuan_qty'         => $this->request->getPost('pengajuan_qty'),
             'pengajuan_unit'        => $this->request->getPost('pengajuan_unit'),
             'pengajuan_price'       => $this->request->getPost('pengajuan_price'),

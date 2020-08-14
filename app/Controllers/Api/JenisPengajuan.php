@@ -50,9 +50,8 @@ class JenisPengajuan extends Controller
 
             jenis_pengajuan.id_jenis_pengajuan, jenis_pengajuan.nama_jenis_pengajuan
            
-        ")
-        //?
-        ->join('permintaan', 'anggaran.id_permintaan=permintaan.id_permintaan', 'left');
+        ");
+       
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
 
