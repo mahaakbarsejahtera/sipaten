@@ -55,7 +55,7 @@ class Permintaan extends Controller
         ->select("
 
             permintaan.id_permintaan, permintaan.nama_pekerjaan, permintaan.permintaan_status,
-            permintaan.permintaan_user, permintaan.permintaan_lokasi_survey, permintaan.permintaan_jadwal_survey,
+            permintaan.permintaan_user, permintaan.permintaan_lokasi_survey, permintaan.permintaan_jadwal_survey, permintaan.date_create,
 
             users.id_user, users.user_fullname, users.user_name, users.user_status,
 
