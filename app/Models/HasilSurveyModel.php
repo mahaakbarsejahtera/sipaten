@@ -6,6 +6,7 @@ use CodeIgniter\Model;
 
 class HasilSurveyModel extends Model
 {
+    
     protected $table = "hasil_survey";
     protected $primaryKey = "id_survey_item";
     

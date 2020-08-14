@@ -3,6 +3,7 @@
 namespace App\Controllers\Api;
 
 use App\Models\SurveyModel;
+use App\Models\HasilSurveyModel;
 use CodeIgniter\Controller;
 
 class Survey extends Controller
@@ -386,4 +387,40 @@ class Survey extends Controller
 
     }
     
+    public function updateItem() {
+
+
+        $response = [
+            'code'      => 200,
+            'data'      => [],
+            'errors'    => [],
+            'message'   => '',
+        ];
+    
+
+        $dataToInsert = [
+            'id_survey_item'            => $this->request->getPost('id_survey_item'),
+            'id_survey'                 => $this->request->getPost('id_survey'),
+            'survey_item_name'          => $this->request->getPost('survey_item_name'),
+            'survey_item_qty'           => $this->request->getPost('survey_item_qty'),
+            'survey_item_unit'          => $this->request->getPost('survey_item_unit'),
+            'survey_harga_pokok'        => $this->request->getPost('survey_harga_pokok'),
+            'survey_harga_jual'         => $this->request->getPost('survey_harga_jual'),
+            'survey_harga_pokok_nego'   => $this->request->getPost('survey_harga_pokok_nego'),
+            'survey_harga_jual_nego'    => $this->request->getPost('survey_harga_jual_nego'),
+            'survey_item_keterangan'    => $this->request->getPost('survey_item_keterangan'),
+            'survey_divisi'             => $this->request->getPost('survey_divisi')
+
+        ];
+
+        $hasilSurveyModel = new HasilSurveyModel();
+        $hasilSurveyModel->save($dataToInsert);
+
+        $response['data']['item']   = $dataToInsert;
+        $response['code']           = 200;
+        $response['message']        = 'Success';
+
+        return $this->response->setJson($response);
+
+    }
 }

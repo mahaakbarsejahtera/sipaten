@@ -499,13 +499,14 @@
                     break;
 
                 case 'loadTeknikBoq':
-                    $('#modal-boq').modal('show');
 
+                    $('#modal-boq').modal('show');
                     $('#i-id_survey').val(btn.data('survey'));
 
                     loadHasilSurvey(btn.data('survey'))
                     .then(response => {
 
+                        console.log('load teknik boq', response)
 
                         let html = '';
 
@@ -629,9 +630,37 @@
 
 
         $('.js-add-item').click(function(e){
-
+            e.preventDefault();
             addHasilSurvey()
 
+        });
+
+
+        $(document).on('click', '.js-update-item', function(e){
+            e.preventDefault();
+
+            let parent = $(this).closest('tr');
+
+            let idSurvey = $('#i-id_survey').val();
+            let idSurveyItem = $(this).data('item');
+            let inputs = parent.find('input')
+
+            console.log({ 
+                id_survey_item: idSurveyItem
+            });
+
+            let data = {
+                id_survey_item: idSurveyItem,
+                id_survey: idSurvey,
+                survey_item_name: $(inputs[0]).val(),
+                survey_item_qty: $(inputs[1]).val(),
+                survey_item_unit: $(inputs[2]).val(),
+                survey_harga_pokok: $(inputs[3]).val(),
+                survey_harga_jual: $(inputs[4]).val(),
+            }
+
+
+            updateHasilSurvey(data);
         });
 
         function addHasilSurvey() {
@@ -732,6 +761,36 @@
                 }
             })
 
+
+        }
+
+        function updateHasilSurvey(data) {
+            return $.ajax({
+                method: 'POST',
+                url: "<?php echo base_url('/api/survey/item/update') ?>",
+                data: data, 
+                success: function(response) {
+
+                    console.log('success response update item', response);
+                    
+                    switch(response.code) {
+
+                        case 200: 
+
+                            Toast('success', 'Berhasil memperbaharui data');
+
+                            break;
+
+                        case 400:
+                            Toast('error', response.message);
+                            break;
+                    }
+                    
+                }, 
+                error: function(response) {
+                    Toast('error', 'Something Wrong!!!');
+                }
+            })
 
         }
 

@@ -61,6 +61,7 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 	$routes->post('survey/items/add', 'Survey::addItems');
 	$routes->get('survey/item/load', 'Survey::loadItems');
 	$routes->post('survey/item/delete/(:num)', 'Survey::deleteItem/$1');
+	$routes->post('survey/item/update', 'Survey::updateItem');
 
 	// Permintaan
 	$routes->get('permintaan', 'Permintaan::index');
