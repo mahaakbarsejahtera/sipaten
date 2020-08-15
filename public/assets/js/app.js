@@ -94,11 +94,25 @@ function escStr(value) {
 }
 
 
-let anggaranSpreadSheet = x_spreadsheet('#anggaran-spreadsheet');
-anggaranSpreadSheet.loadData({ 
+function createRowHasilSurvey(id = 0, name = '', qty = 0, unit = '') {
 
-    view: {
-        width: () => 300,
-    }
+    let html = `
+        <tr>
+            <th>
+                <input name="items[name][${id}]" type="text" class="form-control" placeholder="Nama item" value="${name}" readonly>
+            </th>
+            <th>
+                <input name="items[qty][${id}]" type="text" class="form-control" placeholder="Jumlah" value="${qty}" readonly>
+            </th>
+            <th>
+                <input name="item[unit][${id}]" type="text" class="form-control mr-2" placeholder="Unit" value="${unit}" readonly>
+            </th>
+            <th>
+                <a href="javascript:void(0)" data-item="${id}" class="btn btn-danger js-remove-item"><span class="fas fa-minus"></span></a>
+            </th>
+        </tr>`
 
-})
+    return html;
+
+}
+

@@ -11,13 +11,13 @@
     </a>
     <ul class="nav nav-treeview">
         <li class="nav-item">
-        <a href="<?php echo base_url('dashboard/customer') ?>" class="nav-link">
+        <a href="<?php echo base_url('dashboard/pemasaran/customer') ?>" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Customer</p>
         </a>
         </li>
         <li class="nav-item">
-        <a href="<?php echo base_url('dashboard/permintaan') ?>" class="nav-link">
+        <a href="<?php echo base_url('dashboard/pemasaran/permintaan') ?>" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Permintaan Survey</p>
         </a>
@@ -29,23 +29,25 @@
     <a href="#" class="nav-link">
         <i class="nav-icon fas fa-copy"></i>
         <p>
-        Pemasaran
+        Teknik
         <i class="fas fa-angle-left right"></i>
         <!-- <span class="badge badge-info right">6</span> -->
         </p>
     </a>
     <ul class="nav nav-treeview">
+        
         <li class="nav-item">
-        <a href="<?php echo base_url('dashboard/customer') ?>" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Customer</p>
-        </a>
+            <a href="<?php echo base_url('dashboard/teknik/permintaan') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Permintaan Survey</p>
+            </a>
         </li>
+
         <li class="nav-item">
-        <a href="<?php echo base_url('dashboard/permintaan') ?>" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Permintaan Survey</p>
-        </a>
+            <a href="<?php echo base_url('dashboard/teknik/survey') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Survey</p>
+            </a>
         </li>
     </ul>
 </li>

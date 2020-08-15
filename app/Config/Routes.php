@@ -69,9 +69,19 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 
 	$routes->post('permintaan', 'Permintaan::store');
 	$routes->post('permintaan/update', 'Permintaan::update');
+	$routes->post('permintaan/penunjukan/(:num)', 'Permintaan::accPenunjukan/$1');
+	$routes->post('permintaan/hasil-survey/(:num)', 'Permintaan::accHasilSurvey/$1');
 
 	$routes->post('permintaan/(:num)/delete', 'Permintaan::delete/$1');
 	$routes->post('permintaan/destroy', 'Permintaan::destroy');
+
+	// Permintaan Item
+	$routes->get('permintaan-item', 'PermintaanItem::index');
+	$routes->get('permintaan-item/show/(:num)', 'PermintaanItem::show/$1');
+	$routes->post('permintaan-item/add', 'PermintaanItem::store');
+	$routes->post('permintaan-item/update', 'PermintaanItem::update');
+	$routes->post('permintaan-item/(:num)/delete', 'PermintaanItem::delete/$1');
+
 
 	// Roles
 	$routes->get('roles', 'Roles::index');
@@ -83,7 +93,15 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 	$routes->post('roles/(:num)/delete', 'Roles::delete/$1');
 	$routes->post('roles/destroy', 'Roles::destroy');
 
-	//ESTIMASI
+	//CUSTOMER
+	$routes->get('customer', 'Customer::index');
+	$routes->get('customer/show/(:num)', 'Customer::show/$1');
+
+	$routes->post('customer', 'Customer::store');
+	$routes->post('customer/update', 'Customer::update');
+
+	$routes->post('customer/(:num)/delete', 'Customer::delete/$1');
+	$routes->post('customer/destroy', 'Customer::destroy');
 
 
 });
@@ -95,6 +113,20 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 	$routes->get('roles', 'Roles::index');
 	$routes->get('permintaan', 'Permintaan::index');
 	$routes->get('survey', 'Survey::index');
+
+	$routes->group('pemasaran', function($routes) {
+
+		$routes->get('customer', 'Home::pemasaranCustomer');
+		$routes->get('permintaan', 'Home::pemasaranPermintaan');
+
+	});
+
+	$routes->group('teknik', function($routes) {
+
+		$routes->get('permintaan', 'Home::teknikPermintaan');
+		$routes->get('survey', 'Home::teknikSurvey');
+
+	});
 
 	$routes->get('laporan/lampiran-penawaran', 'Laporan::lampiranPenawaran');
 	$routes->get('laporan/lampiran-boq', 'Laporan::lampiranBoq');

@@ -55,16 +55,22 @@ class Permintaan extends Controller
         ->select("
 
             permintaan.id_permintaan, permintaan.nama_pekerjaan, permintaan.permintaan_status,
-            permintaan.permintaan_user, permintaan.permintaan_lokasi_survey, permintaan.permintaan_jadwal_survey, permintaan.date_create,
-            permintaan.keterangan_pekerjaan,
+            permintaan.permintaan_sales, permintaan.permintaan_lokasi_survey, permintaan.permintaan_jadwal_survey, permintaan.date_create,
+            permintaan.keterangan_pekerjaan, permintaan.permintaan_supervisi, permintaan.permintaan_supervisi_status,
+            permintaan.permintaan_hasil_survey_status,
 
-            users.id_user, users.user_fullname, users.user_name, users.user_status,
+            sales.id_user, sales.user_fullname, sales.user_name, sales.user_status,
 
-            survey.id_survey, survey.survey_user
+            survey.id_survey, 
+            customers.id_customer, customers.nama_customer, customers.pic_nama_customer, customers.pic_no_customer,
+
+            supervisi.user_fullname as nama_supervisi,
 
         ")
-        ->join('users', 'permintaan.permintaan_user=users.id_user', 'left')
-        ->join('survey', 'permintaan.id_permintaan=survey.id_permintaan', 'left');
+        ->join('users as sales', 'permintaan.permintaan_sales=sales.id_user', 'left')
+        ->join('survey', 'permintaan.id_permintaan=survey.id_permintaan', 'left')
+        ->join('users as supervisi', 'permintaan.permintaan_supervisi=supervisi.id_user', 'left')
+        ->join('customers', 'permintaan.id_customer=customers.id_customer', 'left');
 
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
@@ -124,6 +130,7 @@ class Permintaan extends Controller
 
 
         $rules = [
+            'id_customer' => 'required',
             'nama_pekerjaan' => 'required'
             //'no_permintaan'         => 'required',
             //'no_survey'             => 'required',
@@ -149,18 +156,19 @@ class Permintaan extends Controller
         }
 
         $insertData = [
-            'nama_pekerjaan'            => $this->request->getPost('nama_pekerjaan'),
+            'id_customer'                => $this->request->getPost('id_customer'),
+            'nama_pekerjaan'             => $this->request->getPost('nama_pekerjaan'),
             'no_permintaan'              => $this->request->getPost('no_permintaan'),
             'no_survey'                  => $this->request->getPost('no_survey'),
             'no_kontrak'                 => $this->request->getPost('no_kontrak'),
             'permintaan_status'          => $this->request->getPost('permintaan_status'),
-            'permintaan_user'            => $this->request->getPost('permintaan_user'),
+            'permintaan_sales'            => $this->request->getPost('permintaan_sales'),
             'permintaan_lokasi_survey'   => $this->request->getPost('permintaan_lokasi_survey'),
             'permintaan_jadwal_survey'   => $this->request->getPost('permintaan_jadwal_survey'),
             'date_create'                => date('Y-m-d'),
             'permintaan_approval'        => $this->request->getPost('permintaan_approval'),
             'approve_by'                 => $this->request->getPost('approve_by'),
-            'keterangan_pekerjaan'      => $this->request->getPost('keterangan_pekerjaan')
+            'keterangan_pekerjaan'       => $this->request->getPost('keterangan_pekerjaan')
         ];
 
         $permintaanModel = new PermintaanModel;
@@ -190,6 +198,7 @@ class Permintaan extends Controller
 
         $rules = [
             'id_permintaan'            => 'required',
+            'id_customer'               => 'required',
             'nama_pekerjaan'            => 'required'
         ];
 
@@ -205,19 +214,23 @@ class Permintaan extends Controller
         }
 
         $insertData = [
+            
+            'id_customer'                => $this->request->getPost('id_customer'),
             'id_permintaan'             => $this->request->getPost('id_permintaan'),
             'nama_pekerjaan'            => $this->request->getPost('nama_pekerjaan'),
             'no_permintaan'             => $this->request->getPost('no_permintaan'),
             'no_survey'                 => $this->request->getPost('no_survey'),
             'no_kontrak'                => $this->request->getPost('no_kontrak'),
             'permintaan_status'         => $this->request->getPost('permintaan_status'),
-            'permintaan_user'           => $this->request->getPost('permintaan_user'),
+            'permintaan_sales'           => $this->request->getPost('permintaan_sales'),
             'permintaan_lokasi_survey'  => $this->request->getPost('permintaan_lokasi_survey'),
             'permintaan_jadwal_survey'  => $this->request->getPost('permintaan_jadwal_survey	'),
             'date_create'               => date('Y-m-d'),
             'permintaan_approval'       => $this->request->getPost('permintaan_approval'),
             'approve_by'                => $this->request->getPost('approve_by'),
-            'keterangan_pekerjaan'      => $this->request->getPost('keterangan_pekerjaan')
+            'keterangan_pekerjaan'      => $this->request->getPost('keterangan_pekerjaan'),
+            'permintaan_supervisi'      => $this->request->getPost('permintaan_supervisi'),
+            'permintaan_supervisi_status' => $this->request->getPost('permintaan_supervisi_status')
         ];
 
         $permintaanModel = new PermintaanModel;
@@ -261,6 +274,58 @@ class Permintaan extends Controller
 
     public function destroy()
     {
+
+    }
+
+    public function accPenunjukan($id_permintaan) {
+
+        $response = [
+            'code'      => 0,
+            'message'   => '',
+            'data'      => [],
+            'errors'    => []
+        ];
+
+        $dataToInsert = [
+            'id_permintaan' => $id_permintaan,
+            'permintaan_supervisi_status' => $this->request->getPost('permintaan_supervisi_status'),
+            'permintaan_supervisi' => $this->request->getPost('permintaan_supervisi')
+        ];
+
+        (new PermintaanModel)->save($dataToInsert);
+
+        $response['code']       = 200;
+        $response['message']    = 'Success';
+        $response['data']       = $dataToInsert;
+
+
+        return $response;
+
+    }
+
+    public function accHasilSurvey($id_permintaan) {
+
+        $response = [
+            'code'      => 0,
+            'message'   => '',
+            'data'      => [],
+            'errors'    => []
+        ];
+
+        $dataToInsert = [
+            'id_permintaan'                     => $id_permintaan,
+            'permintaan_supervisi'              => $this->request->getPost('permintaan_supervisi'),
+            'permintaan_hasil_survey_status'    => $this->request->getPost('permintaan_hasil_survey_status')
+        ];
+
+        (new PermintaanModel)->save($dataToInsert);
+
+        $response['code']       = 200;
+        $response['message']    = 'Success';
+        $response['data']       = $dataToInsert;
+
+
+        return $response;
 
     }
 

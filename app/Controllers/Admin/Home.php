@@ -51,4 +51,206 @@ class Home extends Controller
 
     }
 
+    // PEMASARAN
+
+
+    public function pemasaranCustomer() {
+
+        $breadcrumb = (new BreadCrumb)->set([
+            [
+                'name' => 'Dashboard',
+                'url' => base_url('dashboard'),
+            ],
+            [
+                'name' => 'Customer',
+                'active' => true
+            ],
+        ])->render();
+        
+        return view('admin/pemasaran/customer', [
+            'title' => 'Permintaan',
+            'breadcrumb' => $breadcrumb,
+            'table'         => (new Table())->setColumns([
+                [
+                    'field' => 'nama_customer',
+                    'name' => 'Nama',
+                    'sort' => true,
+                ],
+                [
+                    'name' => 'PIC',
+                ],
+                [
+                    'name' => 'Alamat',
+                ],    
+                [
+                    'name' => 'Aksi'
+                ],
+
+            ])
+            ->render("table-data")
+        ]);
+
+    }
+
+    public function pemasaranPermintaan() {
+        $breadcrumb = (new BreadCrumb)->set([
+            [
+                'name' => 'Dashboard',
+                'url' => base_url('dashboard'),
+            ],
+            [
+                'name' => 'Customer',
+                'active' => true
+            ],
+        ])->render();
+        
+        return view('admin/pemasaran/permintaan', [
+            'title' => 'Permintaan',
+            'breadcrumb' => $breadcrumb,
+            'table'         => (new Table())->setColumns([
+                [
+                    'field' => 'nama_pekerjaan',
+                    'name' => 'Nama Pekerjaan',
+                    'sort' => true,
+                ],
+                [
+                    'name' => 'Customer',
+                ],
+                  
+                [
+                    'name' => 'Lokasi'
+                ],
+                [
+                    'name' => 'Jadwal'
+                ],
+                [
+                    'name' => 'Keterangan'
+                ],
+                [
+                    'field' => 'permintaan_sales',
+                    'name' => 'Sales',
+                    'sort' => true,
+                ],  
+                [
+                    'field' => 'permintaan_status',
+                    'name' => 'Status',
+                    'sort' => true
+                ],
+                [
+                    'name' => 'Tanggal Permintaan',
+                ],
+                [
+                    'name' => 'Aksi'
+                ],
+
+            ])
+            ->render("table-data")
+        ]);
+    }
+
+
+    // TEKNIK
+
+    public function teknikPermintaan() {
+        $breadcrumb = (new BreadCrumb)->set([
+            [
+                'name' => 'Dashboard',
+                'url' => base_url('dashboard'),
+            ],
+            [
+                'name' => 'Permintaan',
+                'active' => true
+            ],
+        ])->render();
+        
+        return view('admin/teknik/permintaan', [
+            'title' => 'Permintaan',
+            'breadcrumb' => $breadcrumb,
+            'table'         => (new Table())->setColumns([
+                [
+                    'field' => 'nama_pekerjaan',
+                    'name' => 'Nama Pekerjaan',
+                    'sort' => true,
+                ],
+                [
+                    'name' => 'Customer',
+                ],
+                  
+                [
+                    'name' => 'Lokasi'
+                ],
+                [
+                    'name' => 'Jadwal'
+                ],
+                [
+                    'name' => 'Keterangan'
+                ],
+                [
+                    'field' => 'permintaan_sales',
+                    'name' => 'Sales',
+                    'sort' => true,
+                ],  
+                [
+                    'name' => 'Penunjukan'
+                ],
+                [
+                    'name' => 'Status',
+                ]
+
+            ])
+            ->render("table-data")
+        ]);
+    }
+
+    public function teknikSurvey() {
+        $breadcrumb = (new BreadCrumb)->set([
+            [
+                'name' => 'Dashboard',
+                'url' => base_url('dashboard'),
+            ],
+            [
+                'name' => 'Permintaan',
+                'active' => true
+            ],
+        ])->render();
+        
+        return view('admin/teknik/survey', [
+            'title' => 'Survey',
+            'breadcrumb' => $breadcrumb,
+            'table'         => (new Table())->setColumns([
+                [
+                    'field' => 'nama_pekerjaan',
+                    'name' => 'Nama Pekerjaan',
+                    'sort' => true,
+                ],
+                [
+                    'name' => 'Customer',
+                ],
+                  
+                [
+                    'name' => 'Lokasi'
+                ],
+                [
+                    'name' => 'Jadwal'
+                ],
+                [
+                    'name' => 'Keterangan'
+                ],
+                [
+                    'field' => 'permintaan_sales',
+                    'name' => 'Sales',
+                    'sort' => true,
+                ],  
+                [
+                    'name' => 'Hasil Survey'
+                ],
+                [
+                    'name' => 'Status',
+                ]
+
+            ])
+            ->render("table-data")
+        ]);
+    }
+
 }

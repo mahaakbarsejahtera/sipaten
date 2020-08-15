@@ -2,11 +2,15 @@
 
 namespace App\Controllers\Api;
 
-use App\Models\HasilSurveyModel;
+use App\Models\CustomersModel;
 use CodeIgniter\Controller;
 
-class HasilSurvey extends Controller
+class Customer extends Controller
 {
+
+    public function __construct() {
+        
+    }
 
     public function show( $id ) 
     {
@@ -18,7 +22,7 @@ class HasilSurvey extends Controller
             'errors'        => []
         ];
 
-        $find = (new HasilSurveyModel)->find( $id );
+        $find = (new CustomersModel)->find( $id );
 
         if($find) {
             $response['data']       = $find;
@@ -43,7 +47,7 @@ class HasilSurvey extends Controller
 
 
         
-        $rolesModel = new HasilSurveyModel();
+        $customersModel = new CustomersModel();
 
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
@@ -54,13 +58,13 @@ class HasilSurvey extends Controller
                     
                     case 'search':
                         
-                        $rolesModel->like('roles.survey_item_name', $filter['value']);
+                        $customersModel->like('customers.nama_customer', $filter['value']);
 
                     break;
 
                     default:
                     
-                    if(in_array($filter['key'], array_keys($rolesModel->filterby))) {
+                    if(in_array($filter['key'], array_keys($customersModel->filterby))) {
                         $response['filters'][] = $filter['key'];
                     }
 
@@ -74,13 +78,13 @@ class HasilSurvey extends Controller
         if(!empty($this->request->getGet('orders'))) {
             foreach($this->request->getGet('orders') as $order) {
                 $response['orders'][] = $order['orderby'];
-                $rolesModel->orderBy($order['orderby'], $order['order']);
+                $customersModel->orderBy($order['orderby'], $order['order']);
             }
         }
 
 
-        $lists = $rolesModel->paginate(10, 'group1');
-        $pager = $rolesModel->pager;
+        $lists = $customersModel->paginate(10, 'group1');
+        $pager = $customersModel->pager;
 
         $response['data']['lists'] = $lists;
         $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
@@ -99,17 +103,9 @@ class HasilSurvey extends Controller
             'message'   => '' 
         ];
 
-        // Dinamis ikuti table
-        $rules = [
-            'id_survey'     => 'required',
-            'survey_item_name'     => 'required',
-            'survey_item_qty'      => 'required',
-            'survey_item_unit'      => 'required',
-            'survey_harga_pokok'      => 'required',
-            'survey_harga_jual'    => 'required',
-            'survey_harga_pokok_nego'      => 'required',
-            'survey_harga_jual_nego'      => 'required'
 
+        $rules = [
+            'nama_customer'     => 'required',
         ];
 
     
@@ -123,27 +119,19 @@ class HasilSurvey extends Controller
 
         }
 
-
-        // Dinamis ikuti table
         $insertData = [
-            'id_survey'     => $this->request->getPost('id_survey'),
-            'survey_item_name'      => $this->request->getPost('survey_item_name'),
-            'survey_item_qty'     => $this->request->getPost('survey_item_qty'),
-            'survey_item_unit'     => $this->request->getPost('survey_item_unit'),
-            'survey_harga_pokok'     => $this->request->getPost('survey_harga_pokok'),
-            'survey_harga_jual'     => $this->request->getPost('survey_harga_jual'),
-            'survey_harga_pokok_nego'     => $this->request->getPost('survey_harga_pokok_nego'),
-            'survey_harga_jual_nego'     => $this->request->getPost('survey_harga_jual_nego'),
-
+            'nama_customer'         => $this->request->getPost('nama_customer'),
+            'alamat_customer'       => $this->request->getPost('alamat_customer'),
+            'pic_nama_customer'     => $this->request->getPost('pic_nama_customer'),
+            'pic_no_customer'       => $this->request->getPost('pic_no_customer'),
         ];
 
-
-        $rolesModel = new HasilSurveyModel;
-        $rolesModel->save($insertData);
+        $customersModel = new CustomersModel;
+        $customersModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
-        $response['model']      = $rolesModel->getInsertID();
+        $response['model']      = $customersModel->getInsertID();
         //$response['data'] = $insertData;
         $response['message']    = 'Insert Success';
 
@@ -165,15 +153,8 @@ class HasilSurvey extends Controller
 
 
         $rules = [
-            'id_survey_item'     => 'required',
-            'id_survey'     => 'required',
-            'survey_item_name'     => 'required',
-            'survey_item_qty'      => 'required',
-            'survey_item_unit'      => 'required',
-            'survey_harga_pokok'      => 'required',
-            'survey_harga_jual'    => 'required',
-            'survey_harga_pokok_nego'      => 'required',
-            'survey_harga_jual_nego'      => 'required'
+            'id_customer'       => 'required',
+            'nama_customer'     => 'required',
         ];
 
     
@@ -188,19 +169,15 @@ class HasilSurvey extends Controller
         }
 
         $insertData = [
-            'id_survey_item'     => $this->request->getPost('id_survey_item'),
-            'id_survey'     => $this->request->getPost('id_survey'),
-            'survey_item_name'      => $this->request->getPost('survey_item_name'),
-            'survey_item_qty'     => $this->request->getPost('survey_item_qty'),
-            'survey_item_unit'     => $this->request->getPost('survey_item_unit'),
-            'survey_harga_pokok'     => $this->request->getPost('survey_harga_pokok'),
-            'survey_harga_jual'     => $this->request->getPost('survey_harga_jual'),
-            'survey_harga_pokok_nego'     => $this->request->getPost('survey_harga_pokok_nego'),
-            'survey_harga_jual_nego'     => $this->request->getPost('survey_harga_jual_nego'),
+            'id_customer'           => $this->request->getPost('id_customer'),
+            'nama_customer'         => $this->request->getPost('nama_customer'),
+            'alamat_customer'       => $this->request->getPost('alamat_customer'),
+            'pic_nama_customer'     => $this->request->getPost('pic_nama_customer'),
+            'pic_no_customer'       => $this->request->getPost('pic_no_customer')
         ];
 
-        $rolesModel = new HasilSurveyModel;
-        $rolesModel->save($insertData);
+        $customersModel = new CustomersModel;
+        $customersModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
@@ -220,10 +197,10 @@ class HasilSurvey extends Controller
             'errors'        => []
         ];
 
-        $find = (new HasilSurveyModel)->find( $id );
+        $find = (new CustomersModel)->find( $id );
         if($find) {
 
-            (new HasilSurveyModel)->delete($id);
+            (new CustomersModel)->delete($id);
 
             $response = [
                 'code'      => 200,

@@ -2,11 +2,15 @@
 
 namespace App\Controllers\Api;
 
-use App\Models\HasilSurveyModel;
+use App\Models\PermintaanItemsModel;
 use CodeIgniter\Controller;
 
-class HasilSurvey extends Controller
+class PermintaanItem extends Controller
 {
+
+    public function __construct() {
+        
+    }
 
     public function show( $id ) 
     {
@@ -18,7 +22,7 @@ class HasilSurvey extends Controller
             'errors'        => []
         ];
 
-        $find = (new HasilSurveyModel)->find( $id );
+        $find = (new PermintaanItemsModel)->find( $id );
 
         if($find) {
             $response['data']       = $find;
@@ -43,7 +47,7 @@ class HasilSurvey extends Controller
 
 
         
-        $rolesModel = new HasilSurveyModel();
+        $rolesModel = new PermintaanItemsModel();
 
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
@@ -54,7 +58,7 @@ class HasilSurvey extends Controller
                     
                     case 'search':
                         
-                        $rolesModel->like('roles.survey_item_name', $filter['value']);
+                        $rolesModel->like('permintaan_item.item_name', $filter['value']);
 
                     break;
 
@@ -99,17 +103,10 @@ class HasilSurvey extends Controller
             'message'   => '' 
         ];
 
-        // Dinamis ikuti table
-        $rules = [
-            'id_survey'     => 'required',
-            'survey_item_name'     => 'required',
-            'survey_item_qty'      => 'required',
-            'survey_item_unit'      => 'required',
-            'survey_harga_pokok'      => 'required',
-            'survey_harga_jual'    => 'required',
-            'survey_harga_pokok_nego'      => 'required',
-            'survey_harga_jual_nego'      => 'required'
 
+        $rules = [
+            'id_permintaan'     => 'required',
+            'item_name'         => 'required',
         ];
 
     
@@ -123,27 +120,25 @@ class HasilSurvey extends Controller
 
         }
 
-
-        // Dinamis ikuti table
         $insertData = [
-            'id_survey'     => $this->request->getPost('id_survey'),
-            'survey_item_name'      => $this->request->getPost('survey_item_name'),
-            'survey_item_qty'     => $this->request->getPost('survey_item_qty'),
-            'survey_item_unit'     => $this->request->getPost('survey_item_unit'),
-            'survey_harga_pokok'     => $this->request->getPost('survey_harga_pokok'),
-            'survey_harga_jual'     => $this->request->getPost('survey_harga_jual'),
-            'survey_harga_pokok_nego'     => $this->request->getPost('survey_harga_pokok_nego'),
-            'survey_harga_jual_nego'     => $this->request->getPost('survey_harga_jual_nego'),
-
+            'id_permintaan'     => $this->request->getPost('id_permintaan'),
+            'item_name'      => $this->request->getPost('item_name'),
+            'item_keterangan'     => $this->request->getPost('item_keterangan'),
+            'item_qty'     => $this->request->getPost('item_qty'),
+            'item_unit'     => $this->request->getPost('item_unit'),
+            'item_hp'     => $this->request->getPost('item_hp'),
+            'item_hj'       => $this->request->getPost('item_hj'),
+            'item_hp_nego'     => $this->request->getPost('item_hp_nego'),
+            'item_hj_nego'     => $this->request->getPost('item_hj_nego'),
         ];
 
+        $db = db_connect();
 
-        $rolesModel = new HasilSurveyModel;
-        $rolesModel->save($insertData);
+        $rolesModel = $db->table('permintaan_item')
+            ->insert($insertData);
 
         $response['code']       = 200;
-        $response['data']       = $insertData;
-        $response['model']      = $rolesModel->getInsertID();
+        $response['data']       = [ 'id' => $db->insertID() ] + $insertData;
         //$response['data'] = $insertData;
         $response['message']    = 'Insert Success';
 
@@ -165,15 +160,9 @@ class HasilSurvey extends Controller
 
 
         $rules = [
-            'id_survey_item'     => 'required',
-            'id_survey'     => 'required',
-            'survey_item_name'     => 'required',
-            'survey_item_qty'      => 'required',
-            'survey_item_unit'      => 'required',
-            'survey_harga_pokok'      => 'required',
-            'survey_harga_jual'    => 'required',
-            'survey_harga_pokok_nego'      => 'required',
-            'survey_harga_jual_nego'      => 'required'
+            'id_item'       => 'required',
+            'id_permintaan' => 'required',
+            'item_name'     => 'required',
         ];
 
     
@@ -188,18 +177,19 @@ class HasilSurvey extends Controller
         }
 
         $insertData = [
-            'id_survey_item'     => $this->request->getPost('id_survey_item'),
-            'id_survey'     => $this->request->getPost('id_survey'),
-            'survey_item_name'      => $this->request->getPost('survey_item_name'),
-            'survey_item_qty'     => $this->request->getPost('survey_item_qty'),
-            'survey_item_unit'     => $this->request->getPost('survey_item_unit'),
-            'survey_harga_pokok'     => $this->request->getPost('survey_harga_pokok'),
-            'survey_harga_jual'     => $this->request->getPost('survey_harga_jual'),
-            'survey_harga_pokok_nego'     => $this->request->getPost('survey_harga_pokok_nego'),
-            'survey_harga_jual_nego'     => $this->request->getPost('survey_harga_jual_nego'),
+            'id_item'           => $this->request->getPost('id_item'),
+            'id_permintaan'     => $this->request->getPost('id_permintaan'),
+            'item_name'         => $this->request->getPost('item_name'),
+            'item_keterangan'   => $this->request->getPost('item_keterangan'),
+            'item_qty'          => $this->request->getPost('item_qty'),
+            'item_unit'         => $this->request->getPost('item_unit'),
+            'item_hp'           => $this->request->getPost('item_hp'),
+            'item_hj'           => $this->request->getPost('item_hj'),
+            'item_hp_nego'      => $this->request->getPost('item_hp_nego'),
+            'item_hj_nego'      => $this->request->getPost('item_hj_nego'),
         ];
 
-        $rolesModel = new HasilSurveyModel;
+        $rolesModel = new PermintaanItemsModel;
         $rolesModel->save($insertData);
 
         $response['code']       = 200;
@@ -220,10 +210,10 @@ class HasilSurvey extends Controller
             'errors'        => []
         ];
 
-        $find = (new HasilSurveyModel)->find( $id );
+        $find = (new PermintaanItemsModel)->find( $id );
         if($find) {
 
-            (new HasilSurveyModel)->delete($id);
+            (new PermintaanItemsModel)->delete($id);
 
             $response = [
                 'code'      => 200,
@@ -237,14 +227,11 @@ class HasilSurvey extends Controller
         return $this->response->setJson($response);
     }
 
+
     public function destroy()
     {
 
     }
 
-    public function changePassword() 
-    {
-
-    }
 
 }

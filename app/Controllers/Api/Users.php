@@ -130,12 +130,12 @@ class Users extends Controller
         }
 
         $insertData = [
-            'user_name'     => $this->request->getPost('user_name'),
-            'user_role'     => $this->request->getPost('user_role'),
-            'user_fullname'      => $this->request->getPost('user_fullname'),
-            'user_email'     => $this->request->getPost('user_email'),
-            'user_status'     => $this->request->getPost('user_status'),
-            'user_pass'     => md5('ymdhis'),
+            'user_name'         => $this->request->getPost('user_name'),
+            'user_role'         => $this->request->getPost('user_role'),
+            'user_fullname'     => $this->request->getPost('user_fullname'),
+            'user_email'        => $this->request->getPost('user_email'),
+            'user_status'       => $this->request->getPost('user_status'),
+            'user_pass'         => md5('ymdhis'),
         ];
 
         $user_image = $this->request->getFile('user_image');
@@ -191,10 +191,13 @@ class Users extends Controller
         }
 
         $insertData = [
-            'id_role'       => $this->request->getPost('id_role'),
-            'role_name'     => $this->request->getPost('role_name'),
-            'role_cap'      => $this->request->getPost('role_cap'),
-            'role_desc'     => $this->request->getPost('role_desc'),
+            'id_user'           => $this->request->getPost('id_user'),
+            'user_name'         => $this->request->getPost('user_name'),
+            'user_role'         => $this->request->getPost('user_role'),
+            'user_fullname'     => $this->request->getPost('user_fullname'),
+            'user_email'        => $this->request->getPost('user_email'),
+            'user_status'       => $this->request->getPost('user_status'),
+            'user_pass'         => md5('ymdhis'),
         ];
 
         $user_image = $this->request->getFile('user_image');
