@@ -305,6 +305,10 @@ class Survey extends Controller
         $harga_jual_nego        = (double)$this->request->getPost('survey_harga_jual_nego');
 
         
+        $survey_item_keterangan = $this->request->getPost('survey_item_keterangan');
+        $survey_divisi          = $this->request->getPost('survey_divisi');
+
+        
         $db = db_connect();
 
         $dataToInsert = [
@@ -315,7 +319,9 @@ class Survey extends Controller
             'survey_harga_pokok'       => $harga_pokok,
             'survey_harga_jual'        => $harga_jual,
             'survey_harga_pokok_nego'  => $harga_pokok_nego,
-            'survey_harga_jual_nego'   => $harga_jual_nego
+            'survey_harga_jual_nego'   => $harga_jual_nego,
+            'survey_item_keterangan'   => $survey_item_keterangan,
+            'survey_divisi'            => $survey_divisi
         ];
 
         $db->table('hasil_survey')
@@ -338,16 +344,38 @@ class Survey extends Controller
             'message'   => '',
         ];
 
-        $db = db_connect();
+  
+        $hasilSurveyModel = new HasilSurveyModel();
 
-        $id_survey = $this->request->getGet('id_survey');
+        $response['filters'] = $this->request->getGet('filters');
+        
+        if(!empty($this->request->getGet('filters'))) {
 
-        $results = $db->table('hasil_survey')
-            ->where('id_survey', $id_survey)
-            ->get()
-            ->getResult();
+            foreach($this->request->getGet('filters') as $filter) {
+
+                switch($filter['key']) {
+                    
+                    default:
+                    
+                    if(in_array($filter['key'], array_keys($hasilSurveyModel->filterby))) {
+                        $hasilSurveyModel->where($filter['key'], $filter['value']);
+
+                        $response['data']['filter_key'][] = [
+                            'key' => $filter['key'],
+                            'value' => $filter['value']
+                        ];
+                    }
+
+                    break;
+                }
+                
+            }
+
+        }
+        $results = $hasilSurveyModel->findAll();
 
         $response['data']['lists'] = $results;
+        $response['data']['last_query'] = $hasilSurveyModel->builder()->getCompiledSelect();
 
         return $this->response->setJson($response);
 
@@ -399,22 +427,25 @@ class Survey extends Controller
     
 
         $dataToInsert = [
-            'id_survey_item'            => $this->request->getPost('id_survey_item'),
             'id_survey'                 => $this->request->getPost('id_survey'),
             'survey_item_name'          => $this->request->getPost('survey_item_name'),
             'survey_item_qty'           => $this->request->getPost('survey_item_qty'),
             'survey_item_unit'          => $this->request->getPost('survey_item_unit'),
-            'survey_harga_pokok'        => $this->request->getPost('survey_harga_pokok'),
-            'survey_harga_jual'         => $this->request->getPost('survey_harga_jual'),
-            'survey_harga_pokok_nego'   => $this->request->getPost('survey_harga_pokok_nego'),
-            'survey_harga_jual_nego'    => $this->request->getPost('survey_harga_jual_nego'),
+            'survey_harga_pokok'        => (double)$this->request->getPost('survey_harga_pokok'),
+            'survey_harga_jual'         => (double)$this->request->getPost('survey_harga_jual'),
+            'survey_harga_pokok_nego'   => (double)$this->request->getPost('survey_harga_pokok_nego'),
+            'survey_harga_jual_nego'    => (double)$this->request->getPost('survey_harga_jual_nego'),
             'survey_item_keterangan'    => $this->request->getPost('survey_item_keterangan'),
             'survey_divisi'             => $this->request->getPost('survey_divisi')
 
         ];
-
-        $hasilSurveyModel = new HasilSurveyModel();
-        $hasilSurveyModel->save($dataToInsert);
+        $db = db_connect();
+        //$hasilSurveyModel = new HasilSurveyModel();
+        //$hasilSurveyModel->save($dataToInsert);
+        $db
+            ->table('hasil_survey')
+            ->where('id_survey_item', $this->request->getPost('id_survey_item'))
+            ->update($dataToInsert);
 
         $response['data']['item']   = $dataToInsert;
         $response['code']           = 200;

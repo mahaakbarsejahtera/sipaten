@@ -56,6 +56,7 @@ class Permintaan extends Controller
 
             permintaan.id_permintaan, permintaan.nama_pekerjaan, permintaan.permintaan_status,
             permintaan.permintaan_user, permintaan.permintaan_lokasi_survey, permintaan.permintaan_jadwal_survey, permintaan.date_create,
+            permintaan.keterangan_pekerjaan,
 
             users.id_user, users.user_fullname, users.user_name, users.user_status,
 
@@ -123,16 +124,17 @@ class Permintaan extends Controller
 
 
         $rules = [
-            'no_permintaan'         => 'required',
-            'no_survey'             => 'required',
-            'no_kontrak'            => 'required',
-            'permintaan_status'     => 'required',
-            'permintaan_user'       => 'required',
-            'permintaan_lokasi_survey'  => 'required',
-            'permintaan_jadwal_survey'  => 'required',
-            'date_create'  => 'required',
-            'permintaan_approval'  => 'required',
-            'approve_by'  => 'required',
+            'nama_pekerjaan' => 'required'
+            //'no_permintaan'         => 'required',
+            //'no_survey'             => 'required',
+            //'no_kontrak'            => 'required',
+            //'permintaan_status'     => 'required',
+            //'permintaan_user'       => 'required',
+            //'permintaan_lokasi_survey'  => 'required',
+            //'permintaan_jadwal_survey'  => 'required',
+            //'date_create'  => 'required',
+            //'permintaan_approval'  => 'required',
+            //'approve_by'  => 'required',
         ];
 
     
@@ -147,16 +149,18 @@ class Permintaan extends Controller
         }
 
         $insertData = [
+            'nama_pekerjaan'            => $this->request->getPost('nama_pekerjaan'),
             'no_permintaan'              => $this->request->getPost('no_permintaan'),
             'no_survey'                  => $this->request->getPost('no_survey'),
             'no_kontrak'                 => $this->request->getPost('no_kontrak'),
             'permintaan_status'          => $this->request->getPost('permintaan_status'),
             'permintaan_user'            => $this->request->getPost('permintaan_user'),
             'permintaan_lokasi_survey'   => $this->request->getPost('permintaan_lokasi_survey'),
-            'permintaan_jadwal_survey'   => $this->request->getPost('permintaan_jadwal_survey	'),
+            'permintaan_jadwal_survey'   => $this->request->getPost('permintaan_jadwal_survey'),
             'date_create'                => date('Y-m-d'),
             'permintaan_approval'        => $this->request->getPost('permintaan_approval'),
             'approve_by'                 => $this->request->getPost('approve_by'),
+            'keterangan_pekerjaan'      => $this->request->getPost('keterangan_pekerjaan')
         ];
 
         $permintaanModel = new PermintaanModel;
@@ -186,16 +190,7 @@ class Permintaan extends Controller
 
         $rules = [
             'id_permintaan'            => 'required',
-            'no_permintaan'            => 'required',
-            'no_survey'           => 'required',
-            'no_kontrak'         => 'required',
-            'permintaan_status'  => 'required',
-            'permintaan_user'  => 'required',
-            'permintaan_lokasi_survey'  => 'required',
-            'permintaan_jadwal_survey'  => 'required',
-            'date_create'  => 'required',
-            'permintaan_approval'  => 'required',
-            'approve_by'  => 'required',
+            'nama_pekerjaan'            => 'required'
         ];
 
     
@@ -211,6 +206,7 @@ class Permintaan extends Controller
 
         $insertData = [
             'id_permintaan'             => $this->request->getPost('id_permintaan'),
+            'nama_pekerjaan'            => $this->request->getPost('nama_pekerjaan'),
             'no_permintaan'             => $this->request->getPost('no_permintaan'),
             'no_survey'                 => $this->request->getPost('no_survey'),
             'no_kontrak'                => $this->request->getPost('no_kontrak'),
@@ -221,6 +217,7 @@ class Permintaan extends Controller
             'date_create'               => date('Y-m-d'),
             'permintaan_approval'       => $this->request->getPost('permintaan_approval'),
             'approve_by'                => $this->request->getPost('approve_by'),
+            'keterangan_pekerjaan'      => $this->request->getPost('keterangan_pekerjaan')
         ];
 
         $permintaanModel = new PermintaanModel;

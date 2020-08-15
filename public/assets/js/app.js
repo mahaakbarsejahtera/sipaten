@@ -57,20 +57,20 @@ $(document).on('change keyup', '[data-toggle=get-margin]', function(e){
     let target  = $($(this).data('target'))
     let action = $(this).data('action');
 
+    let persentase = 0.0;
+
     if(action == "harga-jual") {
-        let persentase = InternalCalculation.getPersentaseMargin(bind, value).toFixed(2);
-        persentase = !isNaN(persentase) ? persentase + "%" : 0;
-        target.html(persentase);
+        persentase = InternalCalculation.getPersentaseMargin(bind, value).toFixed(2);
     }
 
     if(action == "harga-pokok") {
-        let persentase = InternalCalculation.getPersentaseMargin(value, bind).toFixed(2);
-        persentase = !isNaN(persentase) ? persentase + "%" : 0;
-        target.html(persentase);
+        persentase = InternalCalculation.getPersentaseMargin(value, bind).toFixed(2);
+        
     }
 
+    persentase = !isNaN(persentase) && (persentase > 0) ? `<span class="text-success">${persentase}%<span>`: `<span class="text-danger">${persentase}%<span>`;
+    target.html(persentase);
     
-
 })
 
 
@@ -84,3 +84,21 @@ let InternalCalculation = {
     }
 
 }
+
+// esc value
+function escStr(value) { 
+
+    if (value === null || value === '') return '';
+
+    return value;
+}
+
+
+let anggaranSpreadSheet = x_spreadsheet('#anggaran-spreadsheet');
+anggaranSpreadSheet.loadData({ 
+
+    view: {
+        width: () => 300,
+    }
+
+})

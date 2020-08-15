@@ -1,28 +1,5 @@
 <?php $this->extend('admin/layouts'); ?>
 
-<?php $this->section('sidebarMenu'); ?>
-
-    <li class="nav-item">
-        <a href="<?php echo base_url('/dashboard/permintaan') ?>" class="nav-link">
-            <i class="nav-icon far fa-image"></i>
-            <p>Permintaan</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="<?php echo base_url('/dashboard/users') ?>" class="nav-link">
-            <i class="nav-icon far fa-user"></i>
-            <p>Users</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="<?php echo base_url('/dashboard/roles') ?>" class="nav-link">
-            <i class="nav-icon far fa-star"></i>
-            <p>Roles</p>
-        </a>
-    </li>
-
-<?php $this->endSection(); ?>
-
 <?php $this->section('content'); ?>
 
     <!-- Content Header (Page header) -->

@@ -19,7 +19,10 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
-  <script src="<?php echo base_url("assets/js/plugins/template7-1.4.1/dist/template7.min.js") ?>"></script>
+  <link rel="stylesheet" href="https://unpkg.com/x-data-spreadsheet@1.1.5/dist/xspreadsheet.css">
+  <!-- <script src="https://unpkg.com/x-data-spreadsheet@1.1.5/dist/xspreadsheet.js"></script> -->
+  <script src="<?php echo base_url('/assets/js/xspreadsheet.js') ?>"></script>
+
 </head>
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
@@ -172,9 +175,13 @@
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
+
+        
+
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-          <?php $this->renderSection('sidebarMenu') ?>
+          <?php echo $this->include('admin/menus/global'); ?>
+          <?php //$this->renderSection('sidebarMenu') ?>
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <!-- <li class="nav-item has-treeview">

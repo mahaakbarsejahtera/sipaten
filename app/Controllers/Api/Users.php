@@ -71,7 +71,7 @@ class Users extends Controller
                     default:
                     
                     if(in_array($filter['key'], array_keys($usersModel->filterby))) {
-                        $usersModel->where($filter['key'], $filter['valeu']);
+                        $usersModel->where($filter['key'], $filter['value']);
                     }
 
                     break;

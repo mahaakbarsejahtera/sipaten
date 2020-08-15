@@ -84,7 +84,6 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 	$routes->post('roles/destroy', 'Roles::destroy');
 
 	//ESTIMASI
-	
 
 
 });
@@ -96,6 +95,9 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 	$routes->get('roles', 'Roles::index');
 	$routes->get('permintaan', 'Permintaan::index');
 	$routes->get('survey', 'Survey::index');
+
+	$routes->get('laporan/lampiran-penawaran', 'Laporan::lampiranPenawaran');
+	$routes->get('laporan/lampiran-boq', 'Laporan::lampiranBoq');
 
 	// KAK NABILA
 

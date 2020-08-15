@@ -1,41 +1,5 @@
 <?php $this->extend('admin/layouts'); ?>
 
-<?php $this->section('sidebarMenu'); ?>
-
-    <li class="nav-item">
-        <a href="<?php echo base_url('/dashboard/permintaan') ?>" class="nav-link">
-            <i class="nav-icon far fa-image"></i>
-            <p>Permintaan</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="<?php echo base_url('/dashboard/users') ?>" class="nav-link">
-            <i class="nav-icon far fa-user"></i>
-            <p>Users</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="<?php echo base_url('/dashboard/roles') ?>" class="nav-link">
-            <i class="nav-icon far fa-star"></i>
-            <p>Roles</p>
-        </a>
-    </li>
-
-    <li class="nav-item">
-        <a href="<?php echo base_url('/dashboard/survey') ?>" class="nav-link">
-            <i class="nav-icon far fa-star"></i>
-            <p>Survey</p>
-        </a>
-    </li>
-
-    <li class="nav-item">
-        <a href="<?php echo base_url('/dashboard/estimasi') ?>" class="nav-link">
-            <i class="nav-icon far fa-star"></i>
-            <p>Estimasi</p>
-        </a>
-    </li>
-
-<?php $this->endSection(); ?>
 
 <?php $this->section('content'); ?>
 
@@ -261,6 +225,14 @@
 
             return $.ajax({
                 url: "<?php echo base_url('/api/users?page_group1=-1') ?>",
+                data: {
+                    filters: [
+                        {
+                            key: 'user_status',
+                            value: 'Active'
+                        }
+                    ]
+                }
             })
 
         }
@@ -446,7 +418,8 @@
                 id_survey: id_survey,
                 survey_item_name: item,
                 survey_item_qty: qty,
-                survey_item_unit: unit                            
+                survey_item_unit: unit,
+                survey_divisi: 'teknik'                            
             }
 
             return $.ajax({
@@ -508,12 +481,21 @@
         }
 
 
-        function loadHasilSurvey(id_survey) {
+        function loadHasilSurvey(id_survey, divisi = 'teknik') {
 
             return $.ajax({
                 url: "<?php echo base_url('/api/survey/item/load') ?>",
                 data: {
-                    id_survey: id_survey
+                    filters: [
+                        {
+                            key: 'id_survey',
+                            value: id_survey
+                        },
+                        { 
+                            key: 'survey_divisi',
+                            value: divisi,
+                        }
+                    ]
                 }
             })
 

@@ -6,14 +6,15 @@ use CodeIgniter\Model;
 
 class HasilSurveyModel extends Model
 {
-    
+
     protected $table = "hasil_survey";
     protected $primaryKey = "id_survey_item";
     
     protected $allowedFields = [
         'id_survey', 'survey_item_name', 'survey_item_qty',
         'survey_item_unit', 'survey_harga_pokok', '	survey_harga_jual',
-        'survey_harga_pokok_nego', 'survey_harga_jual_nego'
+        'survey_harga_pokok_nego', 'survey_harga_jual_nego',
+        'survey_item_keterangan', 'survey_divisi'
     ];
 
     protected $orderby = [
@@ -31,7 +32,8 @@ class HasilSurveyModel extends Model
         'survey_harga_pokok' => 'hasil_survey.survey_harga_pokok',
         'survey_harga_jual'=> 'hasil_survey.survey_harga_jual',
         'survey_harga_pokok_nego' => 'hasil_survey.survey_harga_pokok_nego',
-        'survey_harga_jual_nego' => 'hasil_survey.survey_harga_jual_nego'
+        'survey_harga_jual_nego' => 'hasil_survey.survey_harga_jual_nego',
+        'survey_divisi' => 'hasil_survey.survey_divisi'
     ];
 
 

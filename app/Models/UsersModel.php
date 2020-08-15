@@ -20,7 +20,8 @@ class UsersModel extends Model
     protected $filterby = [
         'user_name' => 'users.user_name',
         'user_fullname' => 'users.user_fullname',
-        'user_email' => 'users.user_email'
+        'user_email' => 'users.user_email',
+        'user_status' => 'users.user_status',
     ];
     
 }   

@@ -1,36 +1,9 @@
 <?php $this->extend('admin/layouts'); ?>
 
-<?php $this->section('sidebarMenu'); ?>
 
-    <li class="nav-item">
-        <a href="<?php echo base_url('/dashboard/permintaan') ?>" class="nav-link">
-            <i class="nav-icon far fa-image"></i>
-            <p>Permintaan</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="<?php echo base_url('/dashboard/users') ?>" class="nav-link">
-            <i class="nav-icon far fa-user"></i>
-            <p>Users</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="<?php echo base_url('/dashboard/roles') ?>" class="nav-link">
-            <i class="nav-icon far fa-star"></i>
-            <p>Roles</p>
-        </a>
-    </li>
-
-    <li class="nav-item">
-        <a href="<?php echo base_url('/dashboard/survey') ?>" class="nav-link">
-            <i class="nav-icon far fa-star"></i>
-            <p>Survey</p>
-        </a>
-    </li>
-
-<?php $this->endSection(); ?>
 
 <?php $this->section('content'); ?>
+
 
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -123,6 +96,8 @@
                             <input type="text" name="nama_pekerjaan" class="form-control" id="i-nama_pekerjaan">
                         </div>
 
+                        
+
                         <div class="form-group">
                             <label for="i-permintaan_lokasi_survey">Lokasi Survey</label>
                             <input type="text" name="permintaan_lokasi_survey" class="form-control" id="i-permintaan_lokasi_survey">
@@ -143,7 +118,12 @@
                             </select>
                         </div>
 
-                        <button class="btn btn-primary" id="js-save">Buat Permintaan</button>
+                        <div class="form-group">
+                            <label for="i-keterangan_pekerjaan">Keterangan</label>
+                            <textarea name="keterangan_pekerjaan" id="i-keterangan_pekerjaan" rows="5" class="form-control"></textarea>
+                        </div>
+
+                        <button class="btn btn-primary" id="js-save">Simpan Permintaan</button>
 
                     </form>
                 </div>
@@ -168,7 +148,10 @@
                 <div class="modal-body">
                     
                     <form action="" id="form-boq">
+
                         <input name="id_survey" type="hidden" id="i-id_survey">
+                        <input name="survey_divisi" type="hidden" id="i-survey_divisi">
+
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead>
@@ -178,26 +161,27 @@
                                         <th>Unit</th>
                                         <th>Harga Pokok</th>
                                         <th>Harga Jual</th>
+                                        <th>Total</th>
                                         <th>Margin</th>
-                                        <th>Aksi</th>
+                                        <th>Aksi</t>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
                                 <tfoot>
                                     <tr>
                                         <th>
-                                            <input name="items[name]" type="text" class="form-control" placeholder="Masukann Nama item" value="" id="i-survey_item_name">
+                                            <input name="items[name]" type="text" class="form-control form-control-sm" placeholder="Masukann Nama item" value="" id="i-survey_item_name">
                                         </th>
                                         <th width="100">
-                                            <input name="items[qty]" type="text" class="form-control" placeholder="Masukan Qty" value="" id="i-survey_item_qty">
+                                            <input name="items[qty]" type="text" class="form-control form-control-sm" placeholder="Masukan Qty" value="" id="i-survey_item_qty">
                                         </th>
                                         <th width="100">
-                                            <input name="items[unit]" type="text" class="form-control" placeholder="Masukan Unit" value="" id="i-survey_item_unit">
+                                            <input name="items[unit]" type="text" class="form-control form-control-sm" placeholder="Masukan Unit" value="" id="i-survey_item_unit">
                                         </th>
                                         <th>
                                             <input name="items[harga_pokok]"
                                             type="number" 
-                                            class="form-control" 
+                                            class="form-control form-control-sm" 
                                             placeholder="Masukan Harga Pokok" 
                                             value=""
                                             id="i-survey_harga_pokok">
@@ -208,13 +192,14 @@
                                                 <input 
                                                     name="item[harga_jual]" 
                                                     type="number" 
-                                                    class="form-control mr-2" 
+                                                    class="form-control form-control-sm" 
                                                     placeholder="Masukan Harga Jual" 
                                                     id="i-survey_harga_jual"
                                                     value=""
                                                     >
                                             </div>
                                         </th>
+                                        <th></th>
                                         <th></th>
                                         <th>
                                             <a href="javascript:void(0)" class="btn btn-primary js-add-item"><span class="fas fa-plus"></span></a>
@@ -229,6 +214,21 @@
         </div> 
     </div>
     <!-- /BOQ Modal -->
+
+    <!-- Anggaran Modal -->
+    
+    <div class="modal fade" id="modal-anggaran" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="anggaran-spreadsheet"></div>
+                </div>
+    
+            </div>
+        </div>
+    </div>
+
+    <!-- /Anggaran Modal -->
 
 <?php $this->endSection(); ?>
 
@@ -263,14 +263,22 @@
                         html += `
                         
                             <tr>
-                                <td>${v.nama_pekerjaan}</td>
+                                <td>
+                                    <div>${v.nama_pekerjaan}</div>
+                                </td>
                                 <td>${v.user_fullname}</td>
                                 <td>${v.permintaan_status}</td>
                                 <td>${v.date_create}</td>
                                 <td>
-                                    <ul>
-                                        <li><a href="javascript:void(0)" data-toggle="table-action" data-action="loadTeknikBoq" data-permintaan="${v.id_permintaan}" data-survey="${v.id_survey}">Teknik</a></li>
-                                        <li><a href="javascript:void(0)" data-toggle="table-action" data-action="loadPemasaranBoq" data-permintaan="${v.id_permintaan}" data-survey="${v.id_survey}">Pemasaran</a></li>
+                                    <ul style="padding: 0; margin: 0; list-style: none;">
+                                        <li>
+                                            <a href="javascript:void(0)" data-toggle="table-action" data-action="loadTeknikBoq" data-permintaan="${v.id_permintaan}" data-survey="${v.id_survey}">Teknik</a>
+                                            (<a href="<?php echo base_url('dashboard/laporan/lampiran-boq') ?>?permintaan=${v.id_permintaan}&id_survey=${v.id_survey}&divisi=teknik" target="_blank">PDF</a>)
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)" data-toggle="table-action" data-action="loadPemasaranBoq" data-permintaan="${v.id_permintaan}" data-survey="${v.id_survey}">Pemasaran</a>
+                                            (<a href="<?php echo base_url('dashboard/laporan/lampiran-boq') ?>?permintaan=${v.id_permintaan}&id_survey=${v.id_survey}&divisi=pemasaran">PDF</a>)
+                                        </li>
                                     </ul>
                                 </td>
                                 <td>
@@ -284,6 +292,13 @@
                                     </a>
 
                                     <a href="javascript:void(0)" class="btn btn-primary mb-2" title="Lihat Berkas" data-toggle="table-action"  data-action="delete" data-id="${v.id_permintaan}">
+                                        <span class="fas fa-file"></span>
+                                    </a>
+
+                                    <a 
+                                        href="javascript:void(0)" 
+                                        class="btn btn-warning mb-2" 
+                                        title="Lihat Berkas" data-toggle="table-action"  data-action="create-budget" data-id="${v.id_permintaan}">
                                         <span class="fas fa-file"></span>
                                     </a>
 
@@ -456,12 +471,22 @@
         
         })
 
-        function loadHasilSurvey( id_survey ) {
+        function loadHasilSurvey( id_survey, divisi = 'teknik' ) {
 
             return $.ajax({
                 url: "<?php echo base_url('/api/survey/item/load') ?>",
                 data: {
-                    id_survey: id_survey 
+                    
+                    filters: [
+                        { 
+                            key: 'id_survey',
+                            value: id_survey
+                        },
+                        {
+                            key: 'survey_divisi',
+                            value: divisi
+                        } 
+                    ]
                 }
             })
 
@@ -497,36 +522,127 @@
                     }
 
                     break;
-
+                
+                case 'loadPemasaranBoq':
                 case 'loadTeknikBoq':
 
-                    $('#modal-boq').modal('show');
-                    $('#i-id_survey').val(btn.data('survey'));
+                    let divisi = "teknik";
+                    if(action == 'loadPemasaranBoq') 
+                    { 
+                        divisi = "pemasaran";
+                        $('#i-survey_divisi').val('pemasaran');
+                    }
 
-                    loadHasilSurvey(btn.data('survey'))
+                    if(action == 'loadTeknikBoq') $('#i-survey_divisi').val('teknik');
+
+
+                    $('#modal-boq').modal('show');
+                   
+                    $('#i-id_survey').val(btn.data('survey'));
+                    $('#form-boq').find('tbody').html('');
+
+                    loadHasilSurvey(btn.data('survey'), divisi)
                     .then(response => {
 
-                        console.log('load teknik boq', response)
 
                         let html = '';
 
                         response.data.lists.map((v, i) => {
+                            let getMarin = InternalCalculation.getPersentaseMargin(v.survey_harga_pokok, v.survey_harga_jual).toFixed(2);
+                            let getMarginHTML = getMarin > 0 ? `<span class="text-success">${getMarin}%</span>` : `<span class="text-danger">${getMarin}%</span>`;
+                            html += `
+                                <tr>
+                                    <td>
+                                        <input name="items[name][${v.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukann Nama item" value="${v.survey_item_name}">
+                                    </td>
+                                    <td width="100">
+                                        <input name="items[qty][${v.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukan Qty" value="${v.survey_item_qty}">
+                                    </td>
+                                    <td width="100">
+                                        <input name="items[unit][${v.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukan Unit" value="${v.survey_item_unit}">
+                                    </td>
+                                    <td>
+                                        <input 
+                                            name="items[harga_pokok][${v.id_survey_item}]"
+                                            type="number" 
+                                            class="form-control form-control-sm" 
+                                            placeholder="Masukan Harga Pokok" 
+                                            value="${v.survey_harga_pokok}"
+                                            data-toggle="get-margin"  
+                                            data-action="harga-pokok"
+                                            data-bind="#js-harga-jual-${v.id_survey_item}"
+                                            data-target="#js-margin-${v.id_survey_item}"
+                                            id="js-harga-pokok-${v.id_survey_item}">
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <input 
+                                                name="item[harga_jual][${v.id_survey_item}]" 
+                                                type="number" class="form-control form-control-sm" 
+                                                placeholder="Masukan Harga Jual" 
+                                                value="${v.survey_harga_jual}"
+                                                data-toggle="get-margin" 
+                                                data-action="harga-jual"
+                                                data-bind="#js-harga-pokok-${v.id_survey_item}"
+                                                data-target="#js-margin-${v.id_survey_item}"
+                                                id="js-harga-jual-${v.id_survey_item}">
+                                                                                        
+                                        </div>
+                                    </td>
+                                    <td>${v.survey_item_qty * v.survey_harga_jual}</td>
+                                    <td id="js-margin-${v.id_survey_item}">${getMarginHTML}</td>
+                                    <td>
+                                        <a href="javascript:void(0)" data-item="${v.id_survey_item}" class="btn btn-danger js-remove-item"><span class="fas fa-minus"></span></a>
+                                        <a href="javascript:void(0)" data-item="${v.id_survey_item}" class="btn btn-warning js-update-item"><span class="fas fa-pen"></span></a>
+                                    </td>
+                                </tr>
+                            `;
+
+                            
+                        })
+
+                        $('#form-boq').find('tbody').html(html);
+
+                        btn.html((action == 'loadPemasaranBoq') ? "Pemasaran" : "Teknik")
+
+                    })
+                    break;
+
+                
+                    /**
+                    $('#modal-boq').modal('show');
+                    $('#i-survey_divisi').val('pemasaran');
+                    $('#i-id_survey').val(btn.data('survey'));
+                    $('#form-boq').find('tbody').html('');
+
+                    loadHasilSurvey(btn.data('survey'), 'pemasaran')
+                    .then(response => {
+
+                        console.log('load pemasaran boq', response)
+
+                        let html = '';
+
+                        response.data.lists.map((v, i) => {
+
+                            let getMarin = InternalCalculation.getPersentaseMargin(v.survey_harga_pokok, v.survey_harga_jual).toFixed(2);
+                            let getMarginHTML = getMarin > 0 ? `<span class="text-success">${getMarin}%</span>` : `<span class="text-danger">${getMarin}%</span>`;
+
                             html += `
                                 <tr>
                                     <th>
-                                        <input name="items[name][${v.id_survey_item}]" type="text" class="form-control" placeholder="Masukann Nama item" value="${v.survey_item_name}">
+                                        <input name="items[name][${v.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukann Nama item" value="${v.survey_item_name}">
                                     </th>
                                     <th width="100">
-                                        <input name="items[qty][${v.id_survey_item}]" type="text" class="form-control" placeholder="Masukan Qty" value="${v.survey_item_qty}">
+                                        <input name="items[qty][${v.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukan Qty" value="${v.survey_item_qty}">
                                     </th>
                                     <th width="100">
-                                        <input name="items[unit][${v.id_survey_item}]" type="text" class="form-control" placeholder="Masukan Unit" value="${v.survey_item_unit}">
+                                        <input name="items[unit][${v.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukan Unit" value="${v.survey_item_unit}">
                                     </th>
                                     <th>
                                         <input 
                                             name="items[harga_pokok][${v.id_survey_item}]"
                                             type="number" 
-                                            class="form-control" 
+                                            class="form-control form-control-sm" 
                                             placeholder="Masukan Harga Pokok" 
                                             value="${v.survey_harga_pokok}"
                                             data-toggle="get-margin"  
@@ -539,7 +655,7 @@
                                         <div class="d-flex align-items-center">
                                             <input 
                                                 name="item[harga_jual][${v.id_survey_item}]" 
-                                                type="number" class="form-control mr-2" 
+                                                type="number" class="form-control form-control-sm" 
                                                 placeholder="Masukan Harga Jual" 
                                                 value="${v.survey_harga_jual}"
                                                 data-toggle="get-margin" 
@@ -550,7 +666,8 @@
                                                                                         
                                         </div>
                                     </th>
-                                    <th id="js-margin-${v.id_survey_item}"></th>
+                                    <td>${v.survey_item_qty * v.survey_harga_jual}</td>
+                                    <td id="js-margin-${v.id_survey_item}">${getMarginHTML}</td>
                                     <th>
                                         <a href="javascript:void(0)" data-item="${v.id_survey_item}" class="btn btn-danger js-remove-item"><span class="fas fa-minus"></span></a>
                                         <a href="javascript:void(0)" data-item="${v.id_survey_item}" class="btn btn-warning js-update-item"><span class="fas fa-pen"></span></a>
@@ -563,18 +680,18 @@
 
                         $('#form-boq').find('tbody').html(html);
 
-                        btn.html('Teknik')
+                        btn.html('Pemasaran')
 
                     })
                     break;
-
-                case 'loadPemasaranBoq':
-                    
-                    $('#modal-boq').modal('show');
-                    break;
+                     */
 
                 case 'create-timeline': 
                     
+                    break;
+
+                case 'create-budget':
+                    $('#modal-anggaran').modal('show');
                     break;
             }
         })
@@ -635,6 +752,23 @@
 
         });
 
+        $(document).on('click', '.js-remove-item', function(e){
+
+            let btn = $(this);
+            let parent = btn.closest('tr');
+
+            deleteHasilSurvey(btn.data('item'))
+            .then(response => {
+
+                Toast('success', 'Data berhasil dihapus');
+                parent.remove();
+
+            })
+
+
+
+        });
+
 
         $(document).on('click', '.js-update-item', function(e){
             e.preventDefault();
@@ -653,12 +787,12 @@
                 id_survey_item: idSurveyItem,
                 id_survey: idSurvey,
                 survey_item_name: $(inputs[0]).val(),
-                survey_item_qty: $(inputs[1]).val(),
+                survey_item_qty: parseFloat($(inputs[1]).val()),
                 survey_item_unit: $(inputs[2]).val(),
-                survey_harga_pokok: $(inputs[3]).val(),
-                survey_harga_jual: $(inputs[4]).val(),
+                survey_harga_pokok: parseFloat($(inputs[3]).val()),
+                survey_harga_jual: parseFloat($(inputs[4]).val()),
+                survey_divisi: $('#i-survey_divisi').val()
             }
-
 
             updateHasilSurvey(data);
         });
@@ -671,6 +805,7 @@
             let unit        = $('#i-survey_item_unit').val();
             let harga_pokok = $('#i-survey_harga_pokok').val();
             let harga_jual  = $('#i-survey_harga_jual').val();
+            let survey_divisi = $('#i-survey_divisi').val();
 
             let data =  {
                 id_survey: id_survey,
@@ -678,7 +813,8 @@
                 survey_item_qty: qty,
                 survey_item_unit: unit,
                 survey_harga_pokok: harga_pokok,
-                survey_harga_jual: harga_jual                            
+                survey_harga_jual: harga_jual,
+                survey_divisi: survey_divisi,                            
             }
 
             return $.ajax({
@@ -694,23 +830,24 @@
                         case 200: 
 
                             Toast('success', 'Berhasil menambahkan data');
-
+                            let getMarin = InternalCalculation.getPersentaseMargin(response.data.item.survey_harga_pokok, response.data.item.survey_harga_jual).toFixed(2);
+                            let getMarginHTML =  getMarin > 0 ? `<span class="text-success">${getMarin}%</span>` : `<span class="text-danger">${getMarin}%</span>`;
                             html = `
                                 <tr>
                                     <th>
-                                        <input name="items[name][${response.data.item.id_survey_item}]" type="text" class="form-control" placeholder="Masukann Nama item" value="${response.data.item.survey_item_name}">
+                                        <input name="items[name][${response.data.item.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukann Nama item" value="${response.data.item.survey_item_name}">
                                     </th>
                                     <th width="100">
-                                        <input name="items[qty][${response.data.item.id_survey_item}]" type="text" class="form-control" placeholder="Masukan Qty" value="${response.data.item.survey_item_qty}">
+                                        <input name="items[qty][${response.data.item.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukan Qty" value="${response.data.item.survey_item_qty}">
                                     </th>
                                     <th width="100">
-                                        <input name="items[unit][${response.data.item.id_survey_item}]" type="text" class="form-control" placeholder="Masukan Unit" value="${response.data.item.survey_item_unit}">
+                                        <input name="items[unit][${response.data.item.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukan Unit" value="${response.data.item.survey_item_unit}">
                                     </th>
                                     <th>
                                         <input 
                                             name="items[harga_pokok][${response.data.item.id_survey_item}]"
                                             type="number" 
-                                            class="form-control" 
+                                            class="form-control form-control-sm" 
                                             placeholder="Masukan Harga Pokok" 
                                             value="${response.data.item.survey_harga_pokok}"
                                             data-toggle="get-margin"  
@@ -723,7 +860,8 @@
                                         <div class="d-flex align-items-center">
                                             <input 
                                                 name="item[harga_jual][${response.data.item.id_survey_item}]" 
-                                                type="number" class="form-control mr-2" 
+                                                type="number" 
+                                                class="form-control form-control-sm" 
                                                 placeholder="Masukan Harga Jual" 
                                                 value="${response.data.item.survey_harga_jual}"
                                                 data-toggle="get-margin" 
@@ -731,10 +869,15 @@
                                                 data-bind="#js-harga-pokok-${response.data.item.id_survey_item}"
                                                 data-target="#js-margin-${response.data.item.id_survey_item}"
                                                 id="js-harga-jual-${response.data.item.id_survey_item}">
-                                            <a href="javascript:void(0)" data-item="${response.data.item.id_survey_item}" class="btn btn-danger js-remove-item"><span class="fas fa-minus"></span></a>                                            
+                                                                                    
                                         </div>
                                     </th>
-                                    <th id="js-margin-${response.data.item.id_survey_item}"></th>
+                                    <td>${response.data.item.survey_item_qty * response.data.item.survey_harga_jual}</td>
+                                    <td id="js-margin-${response.data.item.id_survey_item}">${getMarginHTML}</td>
+                                    <th>
+                                        <a href="javascript:void(0)" data-item="${response.data.item.id_survey_item}" class="btn btn-danger js-remove-item"><span class="fas fa-minus"></span></a>
+                                        <a href="javascript:void(0)" data-item="${response.data.item.id_survey_item}" class="btn btn-warning js-update-item"><span class="fas fa-pen"></span></a>
+                                    </th>
                                 </tr>
                             `;
 
@@ -765,6 +908,7 @@
         }
 
         function updateHasilSurvey(data) {
+            
             return $.ajax({
                 method: 'POST',
                 url: "<?php echo base_url('/api/survey/item/update') ?>",
@@ -792,6 +936,13 @@
                 }
             })
 
+        }
+
+        function deleteHasilSurvey(id_survey_item) {
+            return $.ajax({
+                method: 'POST',
+                url: "<?php echo base_url('api/survey/item/delete') ?>/" + id_survey_item
+            })
         }
 
     })
