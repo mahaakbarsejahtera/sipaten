@@ -63,7 +63,7 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 	$routes->post('survey/item/delete/(:num)', 'Survey::deleteItem/$1');
 	$routes->post('survey/item/update', 'Survey::updateItem');
 
-	
+
 
 	// Permintaan
 	$routes->get('permintaan', 'Permintaan::index');
@@ -82,6 +82,7 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 	$routes->get('permintaan-item/show/(:num)', 'PermintaanItem::show/$1');
 	$routes->post('permintaan-item/add', 'PermintaanItem::store');
 	$routes->post('permintaan-item/update', 'PermintaanItem::update');
+	$routes->post('permintaan-item/update-estimasi', 'PermintaanItem::updateEstimasi');
 	$routes->post('permintaan-item/(:num)/delete', 'PermintaanItem::delete/$1');
 
 
@@ -132,6 +133,10 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 
 	$routes->get('laporan/lampiran-penawaran', 'Laporan::lampiranPenawaran');
 	$routes->get('laporan/lampiran-boq', 'Laporan::lampiranBoq');
+
+	$routes->group('laporan', function($routes) {
+		$routes->get('estimasi', 'Laporan::hasilEstimasi');
+	});
 
 	// KAK NABILA
 

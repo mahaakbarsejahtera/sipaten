@@ -120,8 +120,10 @@ class Permintaan extends Controller
         {
 
             $harga = (new PermintaanItemsModel)
-                ->builder("SUM(item_qty * item_hp) as estimasi_harga_pokok, SUM(item_qty * item_hj) as estimasi_harga_jual")
-                ->where('id_permintaan', $list->id_permintaan)
+                ->builder()
+                ->select("SUM(item_qty * item_hp) as estimasi_harga_pokok, SUM(item_qty * item_hj) as estimasi_harga_jual")
+                ->where('id_permintaan', $list['id_permintaan'])
+                ->groupBy('id_permintaan')
                 ->get()
                 ->getRow();
 

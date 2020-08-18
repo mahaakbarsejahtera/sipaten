@@ -130,3 +130,15 @@ function Rp( nominal ){
     })
     .format()
 }
+
+function selisihHasil(nilai1, nilai2) {
+
+    let hasil = nilai1 - nilai2;
+
+    if(isNaN(hasil)) return 0;
+
+    if(!isFinite(hasil)) return 0;
+
+    return hasil;
+
+}

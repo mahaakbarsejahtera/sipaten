@@ -44,5 +44,44 @@ class Laporan extends Controller
 
     }
 
+    public function hasilEstimasi() {
+
+        $db = db_connect();
+        $builder = $db->table('permintaan_item')
+            ->where('id_permintaan', $this->request->getGet('id_permintaan'));
+            //->where('survey_divisi', $this->request->getGet('divisi'));
+
+        $items = $builder->get()->getResult();
+
+
+        $permintaan = $db
+            ->table('permintaan')
+            ->where('id_permintaan', $this->request->getGet('id_permintaan'))
+            ->get()
+            ->getRowObject();
+        // echo "<pre>";
+        // var_dump($items);
+        // echo "</pre>";
+        // die();
+        $boq = view('laporan/estimasi', [
+            'permintaan' => $permintaan,
+            'items' => $items,
+        ]);
+        
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($boq);
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream($permintaan->nama_pekerjaan . "-" . date('his'));
+                    
+        return $boq;
+
+
+    }
+
+
 
 }

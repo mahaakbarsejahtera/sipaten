@@ -370,8 +370,9 @@
                                 </td>
                                 <td>
                                     <div class="d-flex flex-column">
-                                        <a href="javascript:void(0)" data-permintaan="${v.id_permintaan}" data-toggle="table-action" data-action="estimasi-harga">${Rp(v.estimasi_harga_jual)}</a>
-                                        <a href="javascript:void(0)">Download</a>
+                                        <a 
+                                            href="<?php echo base_url('/dashboard/laporan/estimasi/?id_permintaan=') ?>${v.id_permintaan}" download>${Rp(v.estimasi_harga_jual)}</a>
+  
                                     </div>
                                 </td>
                                 <td>
@@ -1206,8 +1207,18 @@
             console.log("margin", $('#margin-' + id));
             
             let marginHarga = InternalCalculation.getPersentaseMargin(value, hargaJual).toFixed(2)
+            let selisihHarga = selisihHasil(value, hargaJual);
 
-            $('#margin-' + id).html(marginHarga);
+            let marginHTML = `
+            
+            <div class="d-flex justify-content-between">
+                <span>${selisihHarga.toString()}</span>
+                <span>${marginHarga.toString()}%</span>
+            </div>
+
+            `;
+
+            $('#margin-' + id).html( marginHTML );
 
 
         })
@@ -1225,16 +1236,33 @@
 
             
             let marginHarga = InternalCalculation.getPersentaseMargin(hargaPokok, value).toFixed(2)
+            let selisihHarga = selisihHasil(hargaPokok, value);
 
-            $('#margin-' + id).html(marginHarga);
+            let marginHTML = `
+            
+            <div class="d-flex justify-content-between">
+                <span>${selisihHarga.toString()}</span>
+                <span>${marginHarga.toString()}%</span>
+            </div>
+
+            `
+
+            $('#margin-' + id).html( marginHTML );
 
 
 
         })
 
 
-        function updateItem() {
+        function updateItem(data) {
 
+            console.log('update item data', data)
+
+            return $.ajax({
+                method: 'POST',
+                data: data,
+                url: "<?php echo base_url("/api/permintaan-item/update-estimasi") ?>"
+            })
         }
 
         $('#js-save-estimasi').click(function(e){
@@ -1242,10 +1270,34 @@
 
             console.log('serialize', $('#form-estimasi').find('.js-bind-harga-jual'));
 
-            let inputs = $('#form-estimasi').find('.js-bind-harga-jual');
+            let inputs = $('#form-estimasi').find('.js-bind-harga-pokok');
 
+            let progress = 0;
             
+            inputs.map((i, el) => {
+                console.log(el);
+                let id = $(el).data('id');
+                let item_hp = $(el).val();
+                let item_hj = $('#js-bind-harga-jual-' + id ).val()
 
+                updateItem({
+                    id_item: id,
+                    item_hp: item_hp,
+                    item_hj: item_hj
+                })
+                .then((response) => {
+                    console.log(response)
+                    progress += 1;
+                    console.log('progress', progress, inputs.length);
+                    if(progress == inputs.length) {
+                        Toast('success', (progress) + ' item telah disimpan');
+                        loadData();
+                    }
+                })
+
+                
+
+            })
 
 
 

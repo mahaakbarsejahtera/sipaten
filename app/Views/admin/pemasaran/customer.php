@@ -81,7 +81,7 @@
                     <form action="" id="form">
 
                         <input type="hidden" name="truth_action" id="i-truth_action" value="">
-                        <input type="hidden" name="id_permintaan" id="i-id_customer">
+                        <input type="hidden" name="id_customer" id="i-id_customer">
                         <input type="hidden" name="_method" value="POST">
 
 
@@ -164,11 +164,11 @@
                                 <td>${v.alamat_customer}</td>
                                 <td>
 
-                                    <a href="javascript:void(0)" class="btn btn-warning mb-2" title="Edit Permintaan" data-toggle="table-action" data-action="edit" data-id="${v.id_permintaan}">
+                                    <a href="javascript:void(0)" class="btn btn-warning mb-2" title="Edit Permintaan" data-toggle="table-action" data-action="edit" data-id="${v.id_customer}">
                                         <span class="fas fa-edit"></span>
                                     </a>
                                     
-                                    <a href="javascript:void(0)" class="btn btn-danger mb-2" title="Hapus Permintaan" data-toggle="table-action"  data-action="delete" data-id="${v.id_permintaan}">
+                                    <a href="javascript:void(0)" class="btn btn-danger mb-2" title="Hapus Permintaan" data-toggle="table-action"  data-action="delete" data-id="${v.id_customer}">
                                         <span class="fas fa-trash"></span>
                                     </a>
 

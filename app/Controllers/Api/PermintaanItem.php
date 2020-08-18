@@ -122,14 +122,14 @@ class PermintaanItem extends Controller
 
         $insertData = [
             'id_permintaan'     => $this->request->getPost('id_permintaan'),
-            'item_name'      => $this->request->getPost('item_name'),
-            'item_keterangan'     => $this->request->getPost('item_keterangan'),
-            'item_qty'     => $this->request->getPost('item_qty'),
-            'item_unit'     => $this->request->getPost('item_unit'),
-            'item_hp'     => $this->request->getPost('item_hp'),
-            'item_hj'       => $this->request->getPost('item_hj'),
-            'item_hp_nego'     => $this->request->getPost('item_hp_nego'),
-            'item_hj_nego'     => $this->request->getPost('item_hj_nego'),
+            'item_name'         => (string)$this->request->getPost('item_name'),
+            'item_keterangan'   => (string)$this->request->getPost('item_keterangan'),
+            'item_qty'          => (double)$this->request->getPost('item_qty'),
+            'item_unit'         => $this->request->getPost('item_unit'),
+            'item_hp'           => (int)$this->request->getPost('item_hp'),
+            'item_hj'           => (int)$this->request->getPost('item_hj'),
+            'item_hp_nego'      => (int)$this->request->getPost('item_hp_nego'),
+            'item_hj_nego'      => (int)$this->request->getPost('item_hj_nego'),
         ];
 
         $db = db_connect();
@@ -178,15 +178,15 @@ class PermintaanItem extends Controller
 
         $insertData = [
             'id_item'           => $this->request->getPost('id_item'),
-            'id_permintaan'     => $this->request->getPost('id_permintaan'),
-            'item_name'         => $this->request->getPost('item_name'),
-            'item_keterangan'   => $this->request->getPost('item_keterangan'),
-            'item_qty'          => $this->request->getPost('item_qty'),
+            'id_permintaan'     => (int)$this->request->getPost('id_permintaan'),
+            'item_name'         => (string)$this->request->getPost('item_name'),
+            'item_keterangan'   => (string)$this->request->getPost('item_keterangan'),
+            'item_qty'          => (double)$this->request->getPost('item_qty'),
             'item_unit'         => $this->request->getPost('item_unit'),
-            'item_hp'           => $this->request->getPost('item_hp'),
-            'item_hj'           => $this->request->getPost('item_hj'),
-            'item_hp_nego'      => $this->request->getPost('item_hp_nego'),
-            'item_hj_nego'      => $this->request->getPost('item_hj_nego'),
+            'item_hp'           => (int)$this->request->getPost('item_hp'),
+            'item_hj'           => (int)$this->request->getPost('item_hj'),
+            'item_hp_nego'      => (int)$this->request->getPost('item_hp_nego'),
+            'item_hj_nego'      => (int)$this->request->getPost('item_hj_nego'),
         ];
 
         $rolesModel = new PermintaanItemsModel;
@@ -231,6 +231,50 @@ class PermintaanItem extends Controller
     public function destroy()
     {
 
+    }
+
+    public function updateEstimasi() {
+        $response = [
+            'data'      => [], 
+            'errors'    => [],
+            'code'      => 200, 
+            'message'   => '' 
+        ];
+
+
+        $rules = [
+            'id_item'       => 'required',
+        ];
+
+    
+        if(!$this->validate($rules))
+        {
+
+            $response['code']       = 400;
+            $response['message']    = 'Bad Request';
+            $response['errors']     = $this->validator->getErrors();
+            return $this->response->setJson($response);
+
+        }
+
+        $insertData = [
+            'id_item'           => (int)$this->request->getPost('id_item'),
+            'item_hp'           => (int)$this->request->getPost('item_hp'),
+            'item_hj'           => (int)$this->request->getPost('item_hj'),
+            'item_hp_nego'      => (int)$this->request->getPost('item_hp_nego'),
+            'item_hj_nego'      => (int)$this->request->getPost('item_hp_nego'),
+        ];
+
+        $rolesModel = new PermintaanItemsModel;
+        $rolesModel->save($insertData);
+
+        $response['code']       = 200;
+        $response['data']       = $insertData;
+        $response['model']      = $this->request->getPost('id_role');
+        //$response['data'] = $insertData;
+        $response['message']    = 'Update Success';
+
+        return $this->response->setJson($response);
     }
 
 

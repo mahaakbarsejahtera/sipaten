@@ -432,6 +432,8 @@
             let unit = $('#i-survey_item_unit').val()
             let id_permintaan = $('#i-id_permintaan').val();
             
+            console.log('id_permintaan', id_permintaan)
+
             addNewItem({
                 id_permintaan: id_permintaan,
                 item_name: name,
