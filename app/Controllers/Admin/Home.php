@@ -140,6 +140,15 @@ class Home extends Controller
                     'name' => 'Tanggal Permintaan',
                 ],
                 [
+                    'name' => 'Hasil Survey'
+                ],
+                [
+                    'name' => 'Estimasi Harga'
+                ],
+                [
+                    'name' => 'Lampiran Penawaran'
+                ],
+                [
                     'name' => 'Aksi'
                 ],
 

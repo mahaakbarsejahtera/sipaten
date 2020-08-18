@@ -3,6 +3,7 @@
 namespace App\Controllers\Api;
 
 use App\Models\PermintaanModel;
+use App\Models\PermintaanItemsModel;
 use CodeIgniter\Controller;
 
 class Permintaan extends Controller
@@ -108,10 +109,30 @@ class Permintaan extends Controller
         }
 
 
+        
+
+
         $lists = $permintaanModel->paginate(10, 'group1');
         $pager = $permintaanModel->pager;
 
-        $response['data']['lists'] = $lists;
+        $data = [];
+        foreach($lists as $list) 
+        {
+
+            $harga = (new PermintaanItemsModel)
+                ->builder("SUM(item_qty * item_hp) as estimasi_harga_pokok, SUM(item_qty * item_hj) as estimasi_harga_jual")
+                ->where('id_permintaan', $list->id_permintaan)
+                ->get()
+                ->getRow();
+
+            $data[] = $list + [
+                'estimasi_harga_pokok'  => (int)$harga->estimasi_harga_pokok,
+                'estimasi_harga_jual'   => (int)$harga->estimasi_harga_jual
+            ];
+
+        }
+
+        $response['data']['lists']      = $data;
         $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
         
 
@@ -137,7 +158,7 @@ class Permintaan extends Controller
             //'no_kontrak'            => 'required',
             //'permintaan_status'     => 'required',
             //'permintaan_user'       => 'required',
-            //'permintaan_lokasi_survey'  => 'required',
+            //'permintaan_fkasi_survey'  => 'required',
             //'permintaan_jadwal_survey'  => 'required',
             //'date_create'  => 'required',
             //'permintaan_approval'  => 'required',

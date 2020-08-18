@@ -156,6 +156,81 @@
                     
                     <form action="" id="form-boq">
 
+                        <!-- <input name="id_survey" type="hidden" id="i-id_survey">
+                        <input name="survey_divisi" type="hidden" id="i-survey_divisi"> -->
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th width="50">Qty</th>
+                                        <th width="50">Unit</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                                <!-- <tfoot>
+                                    <tr>
+                                        <th>
+                                            <input name="items[name]" type="text" class="form-control form-control-sm" placeholder="Masukann Nama item" value="" id="i-survey_item_name">
+                                        </th>
+                                        <th width="100">
+                                            <input name="items[qty]" type="text" class="form-control form-control-sm" placeholder="Masukan Qty" value="" id="i-survey_item_qty">
+                                        </th>
+                                        <th width="100">
+                                            <input name="items[unit]" type="text" class="form-control form-control-sm" placeholder="Masukan Unit" value="" id="i-survey_item_unit">
+                                        </th>
+                                        <th>
+                                            <input name="items[harga_pokok]"
+                                            type="number" 
+                                            class="form-control form-control-sm" 
+                                            placeholder="Masukan Harga Pokok" 
+                                            value=""
+                                            id="i-survey_harga_pokok">
+                                        </th>
+                                        <th>
+                                            <div class="d-flex align-items-center">
+
+                                                <input 
+                                                    name="item[harga_jual]" 
+                                                    type="number" 
+                                                    class="form-control form-control-sm" 
+                                                    placeholder="Masukan Harga Jual" 
+                                                    id="i-survey_harga_jual"
+                                                    value=""
+                                                    >
+                                            </div>
+                                        </th>
+                                        <th></th>
+                                        <th></th>
+                                        <th>
+                                            <a href="javascript:void(0)" class="btn btn-primary js-add-item"><span class="fas fa-plus"></span></a>
+                                        </th>
+                                    </tr>
+                                </tfoot> -->
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div> 
+    </div>
+    <!-- /BOQ Modal -->
+
+    <!-- BOQ Modal -->
+    <div class="modal fade" id="modal-estimasi" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Estimasi Harga</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                <div class="modal-body">
+                    
+                    <form action="" id="form-boq">
+
                         <input name="id_survey" type="hidden" id="i-id_survey">
                         <input name="survey_divisi" type="hidden" id="i-survey_divisi">
 
@@ -254,7 +329,7 @@
             
             tableData.find('tbody').html(`
                 <tr>
-                    <td colspan="7">Loading...</td>
+                    <td colspan="12">Loading...</td>
                 </tr>
             `);
 
@@ -262,11 +337,12 @@
                 url: "<?php echo base_url('/api/permintaan') ?>",
                 data: data,
                 success: function(response) {
-                    console.log(response);
+                    console.log('load data', response);
                     let html =  ``;
 
                     // `<td><a href="javascript:void(0)" data-toggle="table-action" data-action="create-timeline" data-id="${v.id_permintaan}">Buat Timeline</a></td><td><a href="">Berkas</a></td>`
                     response.data.lists.map((v, i) => {
+                        
                         html += `
                         
                             <tr>
@@ -281,6 +357,16 @@
                                 <td>${v.user_fullname}</td>
                                 <td>${v.permintaan_status}</td>
                                 <td>${v.date_create}</td>
+                                <td><a href="javascript:void(0)" data-permintaan="${v.id_permintaan}" title="Lihat Hasil Survey" data-toggle="table-action" data-action="hasil-survey">BOQ</a></td>
+                                <td>
+                                    <a href="javascript:void(0)" data-permintaan="${v.id_permintaan}" data-toggle="table-action" data-action="estimasi-harga">Rp. 1.000.000</a>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column">
+                                        <a href="javascript:void(0)" data-permintaan="${v.id_permintaan}" data-toggle="table-action" data-action="estimasi-harga">Rp. 1.000.000</a>
+                                        <a href="javascript:void(0)">Download</a>
+                                    </div>
+                                </td>
                                 <td>
 
                                     <a href="javascript:void(0)" class="btn btn-warning mb-2" title="Edit Permintaan" data-toggle="table-action" data-action="edit" data-id="${v.id_permintaan}">
@@ -484,16 +570,16 @@
         
         })
 
-        function loadHasilSurvey( id_survey, divisi = 'teknik' ) {
+        function loadHasilPermintaan( id_permintaan, divisi = 'teknik' ) {
 
             return $.ajax({
-                url: "<?php echo base_url('/api/survey/item/load') ?>",
+                url: "<?php echo base_url('/api/permintaan-item') ?>",
                 data: {
                     
                     filters: [
                         { 
-                            key: 'id_survey',
-                            value: id_survey
+                            key: 'id_permintaan',
+                            value: id_permintaan
                         },
                         {
                             key: 'survey_divisi',
@@ -533,6 +619,40 @@
                     }else {
                         btn.html(`<span class="fas fa-trash"></span>`)
                     }
+
+                    break;
+                
+                case 'hasil-survey':
+                    
+                    let tbody = $('#form-boq').find('tbody');
+                    
+                    tbody.html('');
+
+                    loadHasilPermintaan($(this).data('permintaan'))
+                    .then(response => {
+
+                        console.log('load items');
+
+                        let html = "";
+                        response.data.lists.map((v, i) => {
+                            
+                            html += `
+
+                                <tr>
+                                    <td>${v.item_name}</td>
+                                    <td>${v.item_qty}</td>
+                                    <td>${v.item_unit}</td>
+                                </tr>
+
+                            `
+
+                        })
+
+                        tbody.html(html);
+                        $('#modal-boq').modal('show');
+                    
+                        btn.html('BOQ');
+                    });
 
                     break;
                 
@@ -958,6 +1078,28 @@
             })
         }
 
+
+        // Load Hasil Survey
+        function loadHasilSurvey( id_permintaan, divisi = 'teknik' ) {
+
+            return $.ajax({
+                url: "<?php echo base_url('/api/survey/item/load') ?>",
+                data: {
+                    
+                    filters: [
+                        { 
+                            key: 'id_permintaan',
+                            value: id_permintaan
+                        },
+                        {
+                            key: 'survey_divisi',
+                            value: divisi
+                        } 
+                    ]
+                }
+            })
+
+        }
     })
 </script>
 

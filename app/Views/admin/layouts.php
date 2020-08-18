@@ -178,7 +178,7 @@
 
         
 
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <ul class="nav nav-pills nav-sidebar flex-column nav-legacy" data-widget="treeview" role="menu" data-accordion="false">
 
           <?php echo $this->include('admin/menus/global'); ?>
           <?php //$this->renderSection('sidebarMenu') ?>
