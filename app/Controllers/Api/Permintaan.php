@@ -126,6 +126,10 @@ class Permintaan extends Controller
                 ->getRow();
 
             $data[] = $list + [
+                'item_hp'               => (int)$list['item_hp'],
+                'item_hj'               => (int)$list['item_hp'],
+                'item_hp_nego'          => (int)$list['item_hp_nego'],
+                'item_hj_nego'          => (int)$list['item_hj_nego'],
                 'estimasi_harga_pokok'  => (int)$harga->estimasi_harga_pokok,
                 'estimasi_harga_jual'   => (int)$harga->estimasi_harga_jual
             ];

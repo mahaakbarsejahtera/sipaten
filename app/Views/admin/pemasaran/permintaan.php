@@ -229,67 +229,74 @@
                 </div>
                 <div class="modal-body">
                     
-                    <form action="" id="form-boq">
-
-                        <input name="id_survey" type="hidden" id="i-id_survey">
-                        <input name="survey_divisi" type="hidden" id="i-survey_divisi">
-
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
+                    <form action="" id="form-estimasi">
+                        
+                        <div class="table table-responsive">
+                            <table class="table table-bordered  table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Item</th>
-                                        <th>Qty</th>
-                                        <th>Unit</th>
-                                        <th>Harga Pokok</th>
-                                        <th>Harga Jual</th>
+                                        <th rowspan="2">No</th>
+                                        <th rowspan="2">Item</th>
+                                        <th rowspan="2">Qty</th>
+                                        <th colspan="2">Harga Pokok</th>
+                                        <th colspan="2">Harga Jual</th>
+                                        <th rowspan="2">Margin</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Harga</th>
                                         <th>Total</th>
-                                        <th>Margin</th>
-                                        <th>Aksi</t>
+                                        <th>Harga</th>
+                                        <th>Total</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>
-                                            <input name="items[name]" type="text" class="form-control form-control-sm" placeholder="Masukann Nama item" value="" id="i-survey_item_name">
-                                        </th>
-                                        <th width="100">
-                                            <input name="items[qty]" type="text" class="form-control form-control-sm" placeholder="Masukan Qty" value="" id="i-survey_item_qty">
-                                        </th>
-                                        <th width="100">
-                                            <input name="items[unit]" type="text" class="form-control form-control-sm" placeholder="Masukan Unit" value="" id="i-survey_item_unit">
-                                        </th>
-                                        <th>
-                                            <input name="items[harga_pokok]"
-                                            type="number" 
-                                            class="form-control form-control-sm" 
-                                            placeholder="Masukan Harga Pokok" 
-                                            value=""
-                                            id="i-survey_harga_pokok">
-                                        </th>
-                                        <th>
-                                            <div class="d-flex align-items-center">
-
-                                                <input 
-                                                    name="item[harga_jual]" 
-                                                    type="number" 
-                                                    class="form-control form-control-sm" 
-                                                    placeholder="Masukan Harga Jual" 
-                                                    id="i-survey_harga_jual"
-                                                    value=""
-                                                    >
-                                            </div>
-                                        </th>
-                                        <th></th>
-                                        <th></th>
-                                        <th>
-                                            <a href="javascript:void(0)" class="btn btn-primary js-add-item"><span class="fas fa-plus"></span></a>
-                                        </th>
-                                    </tr>
-                                </tfoot>
                             </table>
                         </div>
+                        <!-- <div class="row">
+                            <div class="col-7 col-md-7">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Item</th>
+                                                <th>Qty</th>
+                                                <th colspan="2">Harga Pokok</th>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td>Harga</td>
+                                                <td>Total</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                            <div class="col-5 col-md-5">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2">Harga Jual</th>
+                                                <th>Margin</th>
+                                            </tr>
+                                            <tr>
+                                                <td>Harga</td>
+                                                <td>Total</td>
+                                                <td></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                        
+                                    </table>
+                                </div>
+                            </div>
+                        </div> -->
+
+                        <button class="btn btn-primary" id="js-save-estimasi">Simpan Estimasi</button>
+                        
                     </form>
                 </div>
             </div>
@@ -359,11 +366,11 @@
                                 <td>${v.date_create}</td>
                                 <td><a href="javascript:void(0)" data-permintaan="${v.id_permintaan}" title="Lihat Hasil Survey" data-toggle="table-action" data-action="hasil-survey">BOQ</a></td>
                                 <td>
-                                    <a href="javascript:void(0)" data-permintaan="${v.id_permintaan}" data-toggle="table-action" data-action="estimasi-harga">Rp. 1.000.000</a>
+                                    <a href="javascript:void(0)" data-permintaan="${v.id_permintaan}" data-toggle="table-action" data-action="estimasi-harga">${Rp(v.estimasi_harga_pokok)}</a>
                                 </td>
                                 <td>
                                     <div class="d-flex flex-column">
-                                        <a href="javascript:void(0)" data-permintaan="${v.id_permintaan}" data-toggle="table-action" data-action="estimasi-harga">Rp. 1.000.000</a>
+                                        <a href="javascript:void(0)" data-permintaan="${v.id_permintaan}" data-toggle="table-action" data-action="estimasi-harga">${Rp(v.estimasi_harga_jual)}</a>
                                         <a href="javascript:void(0)">Download</a>
                                     </div>
                                 </td>
@@ -591,15 +598,17 @@
 
         }
 
+        
+
         $(document).on('click', '[data-toggle=table-action]', function(e){
             e.preventDefault();
             
             let btn = $(this);
             let action = btn.data('action');
+            let tbody ;
 
 
             btn.html(`<span class="fas fa-spin fa-spinner"></span>`);
-
             console.log(action);
             switch(action) {    
                 case 'edit':
@@ -624,7 +633,7 @@
                 
                 case 'hasil-survey':
                     
-                    let tbody = $('#form-boq').find('tbody');
+                    tbody = $('#form-boq').find('tbody');
                     
                     tbody.html('');
 
@@ -654,6 +663,88 @@
                         btn.html('BOQ');
                     });
 
+                    break;
+
+                case 'estimasi-harga':
+
+                    
+                    tbody = $('#modal-estimasi').find('tbody');
+                    
+                    tbody.html('');
+
+                    let btnInnerHTML = btn.html();
+
+                    loadHasilPermintaan($(this).data('permintaan'))
+                    .then(response => {
+
+                        console.log('load items');
+
+                        let html = "";
+                        let no = 0;
+
+
+                        response.data.lists.map((v, i) => {
+
+                            v.item_hp = parseFloat(v.item_hp);
+                            v.item_hj = parseFloat(v.item_hj);
+
+                            let total_harga_pokok   = parseFloat(v.item_hp) * parseFloat(v.item_qty);     
+                            let total_harga_jual    = parseFloat(v.item_hj) * parseFloat(v.item_qty);     
+
+                            
+                            let hargaPokokInput = `
+
+                                <input 
+                                    name="item_hp[${v.id_item}]"
+                                    class="form-control js-bind-harga-pokok" 
+                                    id="js-bind-harga-pokok-${v.id_item}"
+                                    data-id="${v.id_item}"
+                                    data-target="#total-harga-pokok-${v.id_item}" 
+                                    data-qty="${v.item_qty}" value="${v.item_hp}"
+                                    data-margin="margin-${v.id_item}">
+
+                            `;
+
+                            let hargaPokokJual = `
+
+                                <input
+                                    name="item_hj[${v.id_item}]"
+                                    class="form-control js-bind-harga-jual"  
+                                    id="js-bind-harga-jual-${v.id_item}"
+                                    data-id="${v.id_item}"
+                                    data-target="#total-harga-jual-${v.id_item}" 
+                                    data-qty="${v.item_qty}" value="${v.item_hj}"
+                                    data-margin="margin-${v.id_item}">
+
+                            `;
+
+
+                            let marginHarga = InternalCalculation.getPersentaseMargin(v.item_hp, v.item_hj).toFixed(2)
+                            
+
+                            html += `
+
+                                <tr>
+                                    <td>${++no}</td>
+                                    <td>${v.item_name}</td>
+                                    <td>${v.item_qty} ${v.item_unit}</td>
+                                    <td>${hargaPokokInput}</td>
+                                    <td id="total-harga-pokok-${v.id_item}">${Rp(total_harga_pokok)}</td>
+                                    <td>${hargaPokokJual}</td>
+                                    <td id="total-harga-jual-${v.id_item}">${Rp(total_harga_jual)}</td>
+                                    <td id="margin-${v.id_item}">${marginHarga}</td>
+                                </tr>
+
+                            `
+
+                        })
+
+                        tbody.html(html);
+                        $('#modal-estimasi').modal('show');
+                    
+                        btn.html(btnInnerHTML);
+                    });
+                    
                     break;
                 
                 case 'loadPemasaranBoq':
@@ -1100,6 +1191,65 @@
             })
 
         }
+
+
+        $(document).on('change keyup', '.js-bind-harga-pokok', function(){
+
+            let id          = $(this).data('id');
+            let target      = $($(this).data('target'));
+            let qty         = parseFloat($(this).data('qty'));
+            let value       = parseFloat($(this).val());
+            let hargaJual   = $('#js-bind-harga-jual-' + id).val()
+
+            target.html(Rp(qty * value));
+
+            console.log("margin", $('#margin-' + id));
+            
+            let marginHarga = InternalCalculation.getPersentaseMargin(value, hargaJual).toFixed(2)
+
+            $('#margin-' + id).html(marginHarga);
+
+
+        })
+
+        $(document).on('change keyup', '.js-bind-harga-jual', function(){
+
+            let id          = $(this).data('id');
+            let target      = $($(this).data('target'));
+            let qty         = parseFloat($(this).data('qty'));
+            let value       = parseFloat($(this).val());
+            let hargaPokok  = $('#js-bind-harga-pokok-' + id).val()
+
+            target.html(Rp(qty * value));
+
+
+            
+            let marginHarga = InternalCalculation.getPersentaseMargin(hargaPokok, value).toFixed(2)
+
+            $('#margin-' + id).html(marginHarga);
+
+
+
+        })
+
+
+        function updateItem() {
+
+        }
+
+        $('#js-save-estimasi').click(function(e){
+            e.preventDefault();
+
+            console.log('serialize', $('#form-estimasi').find('.js-bind-harga-jual'));
+
+            let inputs = $('#form-estimasi').find('.js-bind-harga-jual');
+
+            
+
+
+
+
+        })
     })
 </script>
 

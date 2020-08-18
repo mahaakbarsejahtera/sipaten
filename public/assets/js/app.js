@@ -79,7 +79,13 @@ let InternalCalculation = {
 
     getPersentaseMargin: function(hargaPokok, hargaJual) {
 
-        return ((hargaJual - hargaPokok) / hargaPokok) * 100;
+        let selisih = (hargaJual - hargaPokok);
+        let selisihPer = selisih / hargaPokok;
+        let persentase = selisihPer * 100;
+
+        if(isNaN(persentase)) return 0
+
+        return persentase;
 
     }
 
@@ -116,6 +122,11 @@ function createRowHasilSurvey(id = 0, name = '', qty = 0, unit = '') {
 
 }
 
-function Rp(nominal ){
-    return 0;
+function Rp( nominal ){
+    return currency(nominal, {
+        separator: '.', 
+        precision: 0,
+        symbol: 'Rp. '
+    })
+    .format()
 }
