@@ -21,6 +21,7 @@
 
   <link rel="stylesheet" href="https://unpkg.com/x-data-spreadsheet@1.1.5/dist/xspreadsheet.css">
   <!-- <script src="https://unpkg.com/x-data-spreadsheet@1.1.5/dist/xspreadsheet.js"></script> -->
+  
   <script src="<?php echo base_url('/assets/js/xspreadsheet.js') ?>"></script>
 
 </head>
@@ -750,7 +751,10 @@
 <script src="<?php echo base_url('assets/adminlte/dist/js/demo.js') ?>"></script>
 
 <!-- Toastr -->
-<script src="<?php echo base_url('/assets/plugins/toastr-master/build/toastr.min.js') ?>"></script>
+<script src="<?php echo base_url('assets/plugins/toastr-master/build/toastr.min.js') ?>"></script>
+
+<!-- Currency Js -->
+<script src="<?php echo base_url("assets/js/currency.js") ?>"></script>
 
 <!-- Custom Script -->
 <script src="<?php echo base_url('assets/js/app.js'); ?>"></script>

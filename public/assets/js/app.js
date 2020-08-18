@@ -116,3 +116,6 @@ function createRowHasilSurvey(id = 0, name = '', qty = 0, unit = '') {
 
 }
 
+function Rp(nominal ){
+    return 0;
+}
