@@ -740,6 +740,14 @@
 </div>
 <!-- ./wrapper -->
 
+<script type="text/javascript">
+/* <![CDATA[ */
+
+  let baseUrl = "<?php echo base_url(); ?>";
+
+/* ]]> */
+</script>
+
 
 <!-- jQuery -->
 <script src="<?php echo base_url('assets/adminlte/plugins/jquery/jquery.min.js') ?>"></script>
@@ -760,5 +768,8 @@
 <script src="<?php echo base_url('assets/js/app.js'); ?>"></script>
 
 <?php $this->renderSection('footerScript'); ?>
+
+
+
 </body>
 </html>

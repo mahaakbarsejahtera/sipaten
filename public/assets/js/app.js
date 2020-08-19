@@ -139,6 +139,49 @@ function selisihHasil(nilai1, nilai2) {
 
     if(!isFinite(hasil)) return 0;
 
+    hasil = Math.abs(hasil);
+
     return hasil;
+
+}
+
+
+function createRowBoq(data) {
+
+    let html = ``;
+
+    let itemNameInputHTML = `
+        <input name="item_name[${data.id_item}]" data-id="${data.id_item}" class="form-control" value="${data.item_name}" id="boq-item-name-${data.id_item}">                             
+    `
+
+    let itemQtyInputHTML = `
+        <input name="item_qty[${data.id_item}]" data-id="${data.id_item}" class="form-control" value="${data.item_qty}" id="boq-item-qty-${data.id_item}">        
+    `
+
+    let itemUnitInputHTML = `
+        <input name="item_unit[${data.id_item}]" data-id="${data.id_item}" class="form-control" value="${data.item_unit}" id="boq-item-unit-${data.id_item}">        
+    `
+
+    html += `
+
+        <tr>
+            <td>${itemNameInputHTML}</td>
+            <td>${itemQtyInputHTML}</td>
+            <td>${itemUnitInputHTML}</td>
+            <td>
+                <a href="javascript:void(0)" class="btn btn-danger js-delete-boq-item" data-id="${data.id_item}">
+                    <span class="fas fa-trash"></span>
+                </a>
+                <a href="javascript:void(0)" class="btn btn-warning js-update-boq-item" data-id="${data.id_item}">
+                    <span class="fas fa-edit"></span>
+                </a>
+            </td>
+        </tr>
+
+    `
+
+
+    return html;
+
 
 }

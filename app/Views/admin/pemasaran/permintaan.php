@@ -144,7 +144,7 @@
 
     <!-- BOQ Modal -->
     <div class="modal fade" id="modal-boq" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">BOQ</h5>
@@ -164,50 +164,29 @@
                                 <thead>
                                     <tr>
                                         <th>Item</th>
-                                        <th width="50">Qty</th>
-                                        <th width="50">Unit</th>
+                                        <th width="80">Qty</th>
+                                        <th width="80">Unit</th>
+                                        <th width="120">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
-                                <!-- <tfoot>
+                                <tfoot>
                                     <tr>
                                         <th>
-                                            <input name="items[name]" type="text" class="form-control form-control-sm" placeholder="Masukann Nama item" value="" id="i-survey_item_name">
-                                        </th>
-                                        <th width="100">
-                                            <input name="items[qty]" type="text" class="form-control form-control-sm" placeholder="Masukan Qty" value="" id="i-survey_item_qty">
-                                        </th>
-                                        <th width="100">
-                                            <input name="items[unit]" type="text" class="form-control form-control-sm" placeholder="Masukan Unit" value="" id="i-survey_item_unit">
+                                            <input name="items[name]" type="text" class="form-control form-control-sm" placeholder="Masukann Nama item" value="" id="boq-item_name">
                                         </th>
                                         <th>
-                                            <input name="items[harga_pokok]"
-                                            type="number" 
-                                            class="form-control form-control-sm" 
-                                            placeholder="Masukan Harga Pokok" 
-                                            value=""
-                                            id="i-survey_harga_pokok">
+                                            <input name="items[qty]" type="text" class="form-control form-control-sm" placeholder="Masukan Qty" value="" id="boq-item_qty">
                                         </th>
                                         <th>
-                                            <div class="d-flex align-items-center">
-
-                                                <input 
-                                                    name="item[harga_jual]" 
-                                                    type="number" 
-                                                    class="form-control form-control-sm" 
-                                                    placeholder="Masukan Harga Jual" 
-                                                    id="i-survey_harga_jual"
-                                                    value=""
-                                                    >
-                                            </div>
+                                            <input name="items[unit]" type="text" class="form-control form-control-sm" placeholder="Masukan Unit" value="" id="boq-item_unit">
                                         </th>
-                                        <th></th>
-                                        <th></th>
+                                       
                                         <th>
-                                            <a href="javascript:void(0)" class="btn btn-primary js-add-item"><span class="fas fa-plus"></span></a>
+                                            <a href="javascript:void(0)" class="btn btn-primary" id="js-add-boq"><span class="fas fa-plus"></span></a>
                                         </th>
                                     </tr>
-                                </tfoot> -->
+                                </tfoot>
                             </table>
                         </div>
                     </form>
@@ -235,18 +214,20 @@
                             <table class="table table-bordered  table-striped">
                                 <thead>
                                     <tr>
-                                        <th rowspan="2">No</th>
-                                        <th rowspan="2">Item</th>
-                                        <th rowspan="2">Qty</th>
-                                        <th colspan="2">Harga Pokok</th>
-                                        <th colspan="2">Harga Jual</th>
-                                        <th rowspan="2">Margin</th>
+                                        <th rowspan="2" valign="middle" class="text-center">
+                                            <span>No</span>
+                                        </th>
+                                        <th rowspan="2" class="text-center">Item</th>
+                                        <th rowspan="2" class="text-center">Qty</th>
+                                        <th colspan="2" class="text-center">Harga Pokok</th>
+                                        <th colspan="2" class="text-center">Harga Jual</th>
+                                        <th rowspan="2" class="text-center">Margin</th>
                                     </tr>
                                     <tr>
-                                        <th>Harga</th>
-                                        <th>Total</th>
-                                        <th>Harga</th>
-                                        <th>Total</th>
+                                        <th class="text-center">Harga</th>
+                                        <th class="text-center">Total</th>
+                                        <th class="text-center">Harga</th>
+                                        <th class="text-center">Total</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -580,6 +561,7 @@
 
         function loadHasilPermintaan( id_permintaan, divisi = 'teknik' ) {
 
+
             return $.ajax({
                 url: "<?php echo base_url('/api/permintaan-item') ?>",
                 data: {
@@ -609,7 +591,7 @@
             let tbody ;
 
 
-            btn.html(`<span class="fas fa-spin fa-spinner"></span>`);
+            //btn.html(`<span class="fas fa-spin fa-spinner"></span>`);
             console.log(action);
             switch(action) {    
                 case 'edit':
@@ -633,30 +615,60 @@
                     break;
                 
                 case 'hasil-survey':
-                    
+
+                    let idPermintaan = $(this).data('permintaan');
+                    $('#js-add-boq').data('permintaan', idPermintaan)
+                    console.log('permintaan', idPermintaan)
+
                     tbody = $('#form-boq').find('tbody');
-                    
                     tbody.html('');
 
-                    loadHasilPermintaan($(this).data('permintaan'))
+                    loadHasilPermintaan(idPermintaan)
                     .then(response => {
 
-                        console.log('load items');
+                        console.log('load items hasil survey');
 
                         let html = "";
                         response.data.lists.map((v, i) => {
-                            
+                            console.log(v);
+                           /**let itemNameInputHTML = `
+                                <input name="item_name[${v.id_item}]" data-id="${v.id_item}" class="form-control" value="${v.item_name}">                             
+                            `
+
+                            let itemQtyInputHTML = `
+                                <input name="item_qty[${v.id_item}]" data-id="${v.id_item}" class="form-control" value="${v.item_qty}">        
+                            `
+
+                            let itemUnitInputHTML = `
+                                <input name="item_unit[${v.id_item}]" data-id="${v.id_item}" class="form-control" value="${v.item_unit}">        
+                            `
+
+
+
                             html += `
 
                                 <tr>
-                                    <td>${v.item_name}</td>
-                                    <td>${v.item_qty}</td>
-                                    <td>${v.item_unit}</td>
+                                    <td>${itemNameInputHTML}</td>
+                                    <td>${itemQtyInputHTML}</td>
+                                    <td>${itemUnitInputHTML}</td>
+                                    <td>
+                                        <a href="javascript:void(0)" class="btn btn-danger js-delete-boq-item" data-id="${v.id_item}">
+                                            <span class="fas fa-trash"></span>
+                                        </a>
+                                        <a href="javascript:void(0)" class="btn btn-warning js-update-boq-item" data-id="${v.id_item}">
+                                            <span class="fas fa-edit"></span>
+                                        </a>
+                                    </td>
                                 </tr>
 
                             `
+                        */
+
+                            
+                            html += createRowBoq(v);
 
                         })
+                          
 
                         tbody.html(html);
                         $('#modal-boq').modal('show');
@@ -721,7 +733,17 @@
 
 
                             let marginHarga = InternalCalculation.getPersentaseMargin(v.item_hp, v.item_hj).toFixed(2)
-                            
+                            let selisihHarga = selisihHasil(v.item_hp, v.item_hj);
+
+                            let marginHTML = `
+            
+                                <div class="d-flex justify-content-between">
+                                    <span>${Rp(selisihHarga).toString()}</span>
+                                    <span>${marginHarga.toString()}%</span>
+                                </div>
+
+                            `
+
 
                             html += `
 
@@ -730,15 +752,17 @@
                                     <td>${v.item_name}</td>
                                     <td>${v.item_qty} ${v.item_unit}</td>
                                     <td>${hargaPokokInput}</td>
-                                    <td id="total-harga-pokok-${v.id_item}">${Rp(total_harga_pokok)}</td>
+                                    <td class="text-right" id="total-harga-pokok-${v.id_item}">${Rp(total_harga_pokok)}</td>
                                     <td>${hargaPokokJual}</td>
-                                    <td id="total-harga-jual-${v.id_item}">${Rp(total_harga_jual)}</td>
-                                    <td id="margin-${v.id_item}">${marginHarga}</td>
+                                    <td class="text-right" id="total-harga-jual-${v.id_item}">${Rp(total_harga_jual)}</td>
+                                    <td id="margin-${v.id_item}">${marginHTML}</td>
                                 </tr>
 
                             `
 
                         })
+
+                        $html += 
 
                         tbody.html(html);
                         $('#modal-estimasi').modal('show');
@@ -1212,7 +1236,7 @@
             let marginHTML = `
             
             <div class="d-flex justify-content-between">
-                <span>${selisihHarga.toString()}</span>
+                <span>${Rp(selisihHarga).toString()}</span>
                 <span>${marginHarga.toString()}%</span>
             </div>
 
@@ -1241,7 +1265,7 @@
             let marginHTML = `
             
             <div class="d-flex justify-content-between">
-                <span>${selisihHarga.toString()}</span>
+                <span>${Rp(selisihHarga).toString()}</span>
                 <span>${marginHarga.toString()}%</span>
             </div>
 
@@ -1301,6 +1325,127 @@
 
 
 
+        })
+
+        function addBoq(data) {
+            return $.ajax({
+                method: 'POST',
+                data: data, 
+                url: `${baseUrl}/api/permintaan-item/add`
+            })
+        }
+
+        function updateBoq(data) {
+            return $.ajax({
+                method: 'POST',
+                data: data, 
+                url: `${baseUrl}/api/permintaan-item/update-boq`
+            })
+        }
+
+        function deleteBoq(id) {
+            return $.ajax({
+                method: 'POST',
+                url: `${baseUrl}/api/permintaan-item/${id}/delete`,
+            })
+        }
+
+
+        $('#js-add-boq').click(function(e){
+            e.preventDefault();
+
+            
+
+            let idPermintaan = $(this).data('permintaan');
+            let itemName    = $('#boq-item_name').val();
+            let itemQty     = $('#boq-item_qty').val();
+            let itemUnit    = $('#boq-item_unit').val();
+
+            let data = {
+                id_permintaan: idPermintaan, 
+                item_name: itemName,
+                item_qty: itemQty,
+                item_unit: itemUnit
+            };
+
+            console.log('js add boq', data);
+
+            if(!idPermintaan  || !itemName || !itemQty || !itemUnit) {
+                
+                Toast('warning', 'Nama, Qty, Satuan harus di isi');
+                
+                return false;
+            }
+
+            
+
+            addBoq(data)
+            .then(response => {
+
+                
+
+                $('#form-boq').find('tbody').append(createRowBoq(response.data));
+                Toast('success', 'Berhasil menambahkan item');
+                loadData();
+
+                $('#boq-item_name').val('');
+                $('#boq-item_qty').val('');
+                $('#boq-item_unit').val('');
+
+            }) 
+
+        })
+
+        $(document).on('click', '.js-delete-boq-item', function(e){
+            e.preventDefault();
+
+            let confirmDelete = confirm('Delete ???');
+
+            if(confirmDelete) {
+
+                deleteBoq($(this).data('id'))
+                .then((response) => {
+                    
+                    Toast('success', 'Berhasil menghapus item');
+                    loadData();
+
+                })
+            }
+        })
+
+        $(document).on('click', '.js-update-boq-item', function(e){
+            e.preventDefault();
+
+
+            let idItem      = $(this).data('id');
+            let itemName    = $('#boq-item-name-' + idItem).val();
+            let itemQty     = $('#boq-item-qty-' + idItem).val();
+            let itemUnit    = $('#boq-item-unit-' + idItem).val();
+
+            let data = {
+                id_item: idItem, 
+                item_name: itemName,
+                item_qty: itemQty,
+                item_unit: itemUnit
+            };
+
+            console.log('js add boq', data);
+
+            if(!idItem  || !itemName || !itemQty || !itemUnit) {
+                
+                Toast('warning', 'Nama, Qty, Satuan harus di isi');
+                
+                return false;
+            }
+
+                updateBoq(data)
+                .then((response) => {
+                    
+                    Toast('success', 'Berhasil memperbaharui item');
+                    loadData();
+
+                })
+           
         })
     })
 </script>

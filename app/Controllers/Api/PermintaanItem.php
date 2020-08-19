@@ -47,7 +47,7 @@ class PermintaanItem extends Controller
 
 
         
-        $rolesModel = new PermintaanItemsModel();
+        $permintaanItemsModel = new PermintaanItemsModel();
 
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
@@ -58,14 +58,15 @@ class PermintaanItem extends Controller
                     
                     case 'search':
                         
-                        $rolesModel->like('permintaan_item.item_name', $filter['value']);
+                        $permintaanItemsModel->like('permintaan_item.item_name', $filter['value']);
 
                     break;
 
                     default:
                     
-                    if(in_array($filter['key'], array_keys($rolesModel->filterby))) {
+                    if(in_array($filter['key'], array_keys($permintaanItemsModel->filterby))) {
                         $response['filters'][] = $filter['key'];
+                        $permintaanItemsModel->where($filter['key'], $filter['value']);
                     }
 
                     break;
@@ -78,13 +79,13 @@ class PermintaanItem extends Controller
         if(!empty($this->request->getGet('orders'))) {
             foreach($this->request->getGet('orders') as $order) {
                 $response['orders'][] = $order['orderby'];
-                $rolesModel->orderBy($order['orderby'], $order['order']);
+                $permintaanItemsModel->orderBy($order['orderby'], $order['order']);
             }
         }
 
 
-        $lists = $rolesModel->paginate(10, 'group1');
-        $pager = $rolesModel->pager;
+        $lists = $permintaanItemsModel->paginate(10, 'group1');
+        $pager = $permintaanItemsModel->pager;
 
         $response['data']['lists'] = $lists;
         $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
@@ -138,7 +139,7 @@ class PermintaanItem extends Controller
             ->insert($insertData);
 
         $response['code']       = 200;
-        $response['data']       = [ 'id' => $db->insertID() ] + $insertData;
+        $response['data']       = [ 'id_item' => $db->insertID() ] + $insertData;
         //$response['data'] = $insertData;
         $response['message']    = 'Insert Success';
 
@@ -277,5 +278,47 @@ class PermintaanItem extends Controller
         return $this->response->setJson($response);
     }
 
+    public function updateBoq() 
+    {
+        $response = [
+            'data'      => [], 
+            'errors'    => [],
+            'code'      => 200, 
+            'message'   => '' 
+        ];
+
+
+        $rules = [
+            'id_item'       => 'required',
+        ];
+
+    
+        if(!$this->validate($rules))
+        {
+
+            $response['code']       = 400;
+            $response['message']    = 'Bad Request';
+            $response['errors']     = $this->validator->getErrors();
+            return $this->response->setJson($response);
+
+        }
+
+        $insertData = [
+            'id_item'           => (int)$this->request->getPost('id_item'),
+            'item_name'         => (string)$this->request->getPost('item_name'),
+            'item_qty'           => (int)$this->request->getPost('item_qty'),
+            'item_unit'           => (string)$this->request->getPost('item_unit'),
+        ];
+
+        $rolesModel = new PermintaanItemsModel;
+        $rolesModel->save($insertData);
+
+        $response['code']       = 200;
+        $response['data']       = $insertData;
+        //$response['data'] = $insertData;
+        $response['message']    = 'Update Success';
+
+        return $this->response->setJson($response);
+    }
 
 }

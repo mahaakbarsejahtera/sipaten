@@ -157,6 +157,53 @@ class Home extends Controller
         ]);
     }
 
+    public function pemasaranPenawaran() {
+        $breadcrumb = (new BreadCrumb)->set([
+            [
+                'name' => 'Dashboard',
+                'url' => base_url('dashboard'),
+            ],
+            [
+                'name' => 'Penawaran',
+                'active' => true
+            ],
+        ])->render();
+        
+        return view('admin/pemasaran/penawaran', [
+            'title' => 'Penawaran',
+            'breadcrumb' => $breadcrumb,
+            'table'         => (new Table())->setColumns([
+                [
+                    'field' => 'No Surat',
+                ],
+                [
+                    'name' => 'Pekerjaan',
+                ],
+                [
+                    'name' => 'Customer'
+                ],
+                [
+                    'name' => 'Sales'
+                ],
+                [
+                    'name' => 'Nilai Penawaran'
+                ],
+                [
+                    'name' => 'Tanggal',
+                ],  
+                [
+                    'name' => 'Kondisi Penawaran',
+                ],
+
+                [
+                    'name' => 'Aksi'
+                ],
+
+            ])
+            ->render("table-data")
+        ]);
+    }
+
 
     // TEKNIK
 

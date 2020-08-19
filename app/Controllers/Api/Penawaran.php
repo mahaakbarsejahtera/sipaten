@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Api;
 
-use App\Models\PermintaanModel;
+use App\Models\PenawaranModel;
 use App\Models\PermintaanItemsModel;
 use CodeIgniter\Controller;
 
@@ -23,9 +23,10 @@ class Permintaan extends Controller
             'errors'        => []
         ];
 
-        $find = (new PermintaanModel)
-            //->builder()
-            //->join('permi', 'users.user_role=roles.id_role', 'left')
+        $find = (new PenawaranModel)
+            ->builder()
+            ->join('permintaan', 'penawaran.id_permintaan=permintaan.id_permintaan', 'left')
+            ->join('customers', 'permintaan.id_customer=customers.id_customer')
             ->find( $id );
 
         if($find) {
@@ -51,8 +52,8 @@ class Permintaan extends Controller
 
 
         
-        $permintaanModel = new PermintaanModel();
-        $permintaanModel->builder()
+        $penawaranModel = new PenawaranModel();
+        $penawaranModel->builder()
         ->select("
 
             permintaan.id_permintaan, permintaan.nama_pekerjaan, permintaan.permintaan_status,
@@ -82,16 +83,16 @@ class Permintaan extends Controller
                     
                     case 'search':
                         
-                        $permintaanModel->like('permintaan.nama_pekerjaan', $filter['value'])
-                            ->orLike('permintaan.permintaan_lokasi_survey', $filter['value'])
-                            ->orLike('permintaan.permintaan_jadwal_survey', $filter['value']);
+                        $penawaranModel->like('penawaran.penawaran_no', $filter['value']);
+                            //->orLike('permintaan.permintaan_lokasi_survey', $filter['value'])
+                            //->orLike('permintaan.permintaan_jadwal_survey', $filter['value']);
 
                     break;
 
                     default:
                     
-                    if(in_array($filter['key'], array_keys($permintaanModel->filterby))) {
-                        $permintaanModel->where($filter['key'], $filter['value']);
+                    if(in_array($filter['key'], array_keys($penawaranModel->filterby))) {
+                        $penawaranModel->where($filter['key'], $filter['value']);
                     }
 
                     break;
@@ -104,7 +105,7 @@ class Permintaan extends Controller
         if(!empty($this->request->getGet('orders'))) {
             foreach($this->request->getGet('orders') as $order) {
                 $response['orders'][] = $order['orderby'];
-                $permintaanModel->orderBy($order['orderby'], $order['order']);
+                $penawaranModel->orderBy($order['orderby'], $order['order']);
             }
         }
 
@@ -112,8 +113,8 @@ class Permintaan extends Controller
         
 
 
-        $lists = $permintaanModel->paginate(10, 'group1');
-        $pager = $permintaanModel->pager;
+        $lists = $penawaranModel->paginate(10, 'group1');
+        $pager = $penawaranModel->pager;
 
         $data = [];
         foreach($lists as $list) 
@@ -198,8 +199,8 @@ class Permintaan extends Controller
             'keterangan_pekerjaan'       => $this->request->getPost('keterangan_pekerjaan')
         ];
 
-        $permintaanModel = new PermintaanModel;
-        $permintaanModel->save($insertData);
+        $penawaranModel = new PenawaranModel;
+        $penawaranModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
@@ -260,8 +261,8 @@ class Permintaan extends Controller
             'permintaan_supervisi_status' => $this->request->getPost('permintaan_supervisi_status')
         ];
 
-        $permintaanModel = new PermintaanModel;
-        $permintaanModel->save($insertData);
+        $penawaranModel = new PenawaranModel;
+        $penawaranModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
@@ -280,10 +281,10 @@ class Permintaan extends Controller
             'errors'        => []
         ];
 
-        $find = (new PermintaanModel)->find( $id );
+        $find = (new PenawaranModel)->find( $id );
         if($find) {
 
-            (new PermintaanModel)->delete($id);
+            (new PenawaranModel)->delete($id);
 
             $response = [
                 'code'      => 200,
@@ -319,7 +320,7 @@ class Permintaan extends Controller
             'permintaan_supervisi' => $this->request->getPost('permintaan_supervisi')
         ];
 
-        (new PermintaanModel)->save($dataToInsert);
+        (new PenawaranModel)->save($dataToInsert);
 
         $response['code']       = 200;
         $response['message']    = 'Success';
@@ -345,7 +346,7 @@ class Permintaan extends Controller
             'permintaan_hasil_survey_status'    => $this->request->getPost('permintaan_hasil_survey_status')
         ];
 
-        (new PermintaanModel)->save($dataToInsert);
+        (new PenawaranModel)->save($dataToInsert);
 
         $response['code']       = 200;
         $response['message']    = 'Success';

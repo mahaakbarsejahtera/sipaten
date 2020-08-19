@@ -83,6 +83,7 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 	$routes->post('permintaan-item/add', 'PermintaanItem::store');
 	$routes->post('permintaan-item/update', 'PermintaanItem::update');
 	$routes->post('permintaan-item/update-estimasi', 'PermintaanItem::updateEstimasi');
+	$routes->post('permintaan-item/update-boq', 'PermintaanItem::updateBoq');
 	$routes->post('permintaan-item/(:num)/delete', 'PermintaanItem::delete/$1');
 
 
@@ -121,6 +122,7 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 
 		$routes->get('customer', 'Home::pemasaranCustomer');
 		$routes->get('permintaan', 'Home::pemasaranPermintaan');
+		$routes->get('penawaran', 'Home::pemasaranPenawaran');
 
 	});
 

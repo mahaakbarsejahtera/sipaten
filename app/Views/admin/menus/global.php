@@ -11,16 +11,23 @@
     </a>
     <ul class="nav nav-treeview">
         <li class="nav-item">
-        <a href="<?php echo base_url('dashboard/pemasaran/customer') ?>" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Customer</p>
-        </a>
+            <a href="<?php echo base_url('dashboard/pemasaran/customer') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Customer</p>
+            </a>
         </li>
         <li class="nav-item">
-        <a href="<?php echo base_url('dashboard/pemasaran/permintaan') ?>" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Permintaan Survey</p>
-        </a>
+            <a href="<?php echo base_url('dashboard/pemasaran/permintaan') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Permintaan Survey</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="<?php echo base_url('dashboard/pemasaran/penawaran') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Penawaran</p>
+            </a>
         </li>
     </ul>
 </li>
