@@ -136,6 +136,7 @@ class Users extends Controller
             'user_email'        => $this->request->getPost('user_email'),
             'user_status'       => $this->request->getPost('user_status'),
             'user_pass'         => md5('ymdhis'),
+            'user_code'         => $this->request->getPost('user_code')
         ];
 
         $user_image = $this->request->getFile('user_image');
@@ -198,6 +199,7 @@ class Users extends Controller
             'user_email'        => $this->request->getPost('user_email'),
             'user_status'       => $this->request->getPost('user_status'),
             'user_pass'         => md5('ymdhis'),
+            'user_code'         => $this->request->getPost('user_code')
         ];
 
         $user_image = $this->request->getFile('user_image');

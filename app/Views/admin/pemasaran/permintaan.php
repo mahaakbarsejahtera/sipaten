@@ -762,7 +762,7 @@
 
                         })
 
-                        $html += 
+                        //$html += 
 
                         tbody.html(html);
                         $('#modal-estimasi').modal('show');

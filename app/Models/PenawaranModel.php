@@ -6,8 +6,8 @@ use CodeIgniter\Model;
 
 class PenawaranModel extends Model
 {
-    protected $table = "permintaan";
-    protected $primaryKey = "id_permintaan";
+    protected $table = "penawaran";
+    protected $primaryKey = "id_penawaran";
     
     protected $allowedFields = [
         'id_permintaan', 'penawaran_no', 'penawaran_due_date',

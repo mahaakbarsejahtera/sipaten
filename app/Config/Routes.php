@@ -95,6 +95,7 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 
 	$routes->post('penawaran/(:num)/delete', 'Penawaran::delete/$1');
 	$routes->post('penawaran/destroy', 'Penawaran::destroy');
+	$routes->get('penawaran/no-penawaran/(:num)', 'Penawaran::noPenawaran/$1');
 
 
 	// Roles
@@ -143,14 +144,14 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 
 	});
 
-	$routes->get('laporan/lampiran-penawaran', 'Laporan::lampiranPenawaran');
 	$routes->get('laporan/lampiran-boq', 'Laporan::lampiranBoq');
 
 	$routes->group('laporan', function($routes) {
 		$routes->get('estimasi', 'Laporan::hasilEstimasi');
+		$routes->get('lampiran-penawaran', 'Laporan::lampiranPenawaran');
 	});
 
-	// KAK NABILA
+	 
 
 
 });

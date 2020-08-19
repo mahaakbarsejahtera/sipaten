@@ -84,7 +84,10 @@
                         <input type="hidden" name="id_customer" id="i-id_customer">
                         <input type="hidden" name="_method" value="POST">
 
-
+                        <div class="form-group">
+                            <label for="i-kode_customer">Kode</label>
+                            <input type="text" name="kode_customer" class="form-control" id="i-kode_customer">
+                        </div>
 
                         <div class="form-group">
                             <label for="i-nama_customer">Nama </label>
@@ -102,7 +105,6 @@
                                 <input type="text" name="pic_no_customer" class="form-control" id="i-pic_no_customer">
                             </div>
                         </div>
-
 
                         <div class="form-group">
                             <label for="i-alamat_customer">Alamat</label>

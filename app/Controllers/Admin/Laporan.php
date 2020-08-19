@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Admin;
 
+use App\Models\PermintaanModel;
 use CodeIgniter\Controller;
 use Template\BreadCrumb;
 use Template\Table;
@@ -11,7 +12,23 @@ class Laporan extends Controller
 {
 
     public function lampiranPenawaran() {
-        return view('laporan/lampiran-penawaran');
+
+        
+        $penawaran = (new PermintaanModel())
+            ->builder()
+            ->join('customers', 'permintaan.id_customer = customers.id_customer')
+            ->join('users as sales', 'permintaan.permintaan_sales=sales.id_user')
+            ->join('penawaran', 'permintaan.id_permintaan=penawaran.id_permintaan')
+            ->where('penawaran.id_penawaran', $this->request->getGet('id_penawaran'))
+            ->get()->getRow();
+
+        //var_dump($penawaran);
+
+
+
+        return view('laporan/lampiran-penawaran', [
+            'penawaran' => $penawaran
+        ]);
     }
 
     public function lampiranBoq() {

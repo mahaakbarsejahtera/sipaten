@@ -174,7 +174,7 @@ class Home extends Controller
             'breadcrumb' => $breadcrumb,
             'table'         => (new Table())->setColumns([
                 [
-                    'field' => 'No Surat',
+                    'name' => 'No Surat',
                 ],
                 [
                     'name' => 'Pekerjaan',

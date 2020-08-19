@@ -4,9 +4,10 @@ namespace App\Controllers\Api;
 
 use App\Models\PenawaranModel;
 use App\Models\PermintaanItemsModel;
+use App\Models\PermintaanModel;
 use CodeIgniter\Controller;
 
-class Permintaan extends Controller
+class Penawaran extends Controller
 {
 
     public function __construct() {
@@ -56,6 +57,8 @@ class Permintaan extends Controller
         $penawaranModel->builder()
         ->select("
 
+            penawaran.id_penawaran, penawaran.penawaran_no, penawaran.penawaran_validasi_date, penawaran.penawaran_due_date, penawaran.penawaran_term, 
+
             permintaan.id_permintaan, permintaan.nama_pekerjaan, permintaan.permintaan_status,
             permintaan.permintaan_sales, permintaan.permintaan_lokasi_survey, permintaan.permintaan_jadwal_survey, permintaan.date_create,
             permintaan.keterangan_pekerjaan, permintaan.permintaan_supervisi, permintaan.permintaan_supervisi_status,
@@ -66,9 +69,10 @@ class Permintaan extends Controller
             survey.id_survey, 
             customers.id_customer, customers.nama_customer, customers.pic_nama_customer, customers.pic_no_customer,
 
-            supervisi.user_fullname as nama_supervisi,
+            supervisi.user_fullname as nama_supervisi
 
         ")
+        ->join('permintaan', 'penawaran.id_permintaan=permintaan.id_permintaan', 'left')
         ->join('users as sales', 'permintaan.permintaan_sales=sales.id_user', 'left')
         ->join('survey', 'permintaan.id_permintaan=survey.id_permintaan', 'left')
         ->join('users as supervisi', 'permintaan.permintaan_supervisi=supervisi.id_user', 'left')
@@ -83,9 +87,9 @@ class Permintaan extends Controller
                     
                     case 'search':
                         
-                        $penawaranModel->like('penawaran.penawaran_no', $filter['value']);
-                            //->orLike('permintaan.permintaan_lokasi_survey', $filter['value'])
-                            //->orLike('permintaan.permintaan_jadwal_survey', $filter['value']);
+                        $penawaranModel->like('penawaran.penawaran_no', $filter['value'])
+                        ->orLike('permintaan.nama_pekerjaan', $filter['value'])
+                    ->orLike('penawaran.penawaran_no', $filter['value']);
 
                     break;
 
@@ -173,11 +177,11 @@ class Permintaan extends Controller
         }
 
         $insertData = [
-           'id_permintaan'              => $this->request->getPost('id_permintaan'),
-           'penawaran_no'               => $this->request->getPost('penawaran_no'),
-           'penawaran_due_date'         => $this->request->getPost('penawaran_due_date'),
-           'penawaran_validasi_date'    => $this->request->getPost('penawaran_validasi_date'),
-           'penawaran_term'             => $this->request->getPost('penawaran_term'),
+           'id_permintaan'              => (int)$this->request->getPost('id_permintaan'),
+           'penawaran_no'               => (string)$this->noPenawaran($this->request->getPost('id_permintaan')),
+           'penawaran_due_date'         => (string)$this->request->getPost('penawaran_due_date'),
+           'penawaran_validasi_date'    => (string)$this->request->getPost('penawaran_validasi_date'),
+           'penawaran_term'             => (string)$this->request->getPost('penawaran_term'),
         ];
 
         $penawaranModel = new PenawaranModel;
@@ -221,14 +225,21 @@ class Permintaan extends Controller
 
         }
 
+
         $insertData = [
-            'id_penawaran'               => $this->request->getPost('id_penawaran'),
-            'id_permintaan'              => $this->request->getPost('id_permintaan'),
-            'penawaran_no'               => $this->request->getPost('penawaran_no'),
-            'penawaran_due_date'         => $this->request->getPost('penawaran_due_date'),
-            'penawaran_validasi_date'    => $this->request->getPost('penawaran_validasi_date'),
-            'penawaran_term'             => $this->request->getPost('penawaran_term')
+            'id_penawaran'               => (int)$this->request->getPost('id_penawaran'),
+            'id_permintaan'              => (int)$this->request->getPost('id_permintaan'),
+            'penawaran_no'               => (string)$this->noPenawaran($this->request->getPost('id_permintaan')),
+            'penawaran_due_date'         => (string)$this->request->getPost('penawaran_due_date'),
+            'penawaran_validasi_date'    => (string)$this->request->getPost('penawaran_validasi_date'),
+            'penawaran_term'             => (string)$this->request->getPost('penawaran_term')
          ];
+
+         
+        $find = (new PenawaranModel())->find((int)$this->request->getPost('id_penawaran'));
+        
+        if($find->id_permintaan == $this->request->getPost('id_permintaan')) unset($insertData['penawaran_no']);
+        
         $penawaranModel = new PenawaranModel;
         $penawaranModel->save($insertData);
 
@@ -266,7 +277,52 @@ class Permintaan extends Controller
         return $this->response->setJson($response);
     }
 
+    public function noPenawaran( $id_permintaan ) {
 
+        $permintaan = (new PermintaanModel)
+            ->builder()
+            ->select("
+            
+
+                customers.kode_customer, 
+                sales.user_code
+            
+            
+            ")
+            ->join('customers', 'permintaan.id_customer=customers.id_customer')
+            ->join('users as sales', 'permintaan.permintaan_sales = sales.id_user')
+            ->where('permintaan.id_permintaan', $id_permintaan)
+            ->get()->getRow();
+
+   
+
+        $user_code = $permintaan->user_code;
+        $customer_code = $permintaan->kode_customer;
+
+        $penawaranModel = new PenawaranModel;
+        $no_penawaran = (int)$penawaranModel
+        ->builder()
+        ->select("COUNT(*) as no_penawaran")
+        ->where('YEAR(penawaran_validasi_date)', date('Y'))
+        ->get()
+        ->getRow()->no_penawaran;
+        
+
+        //var_dump($no_penawaran);
+        //return ;
+
+        $months = [
+            'I', 'II', 'III',
+            'IV', 'V', 'VI',
+            'VII', 'VIII', 'IX',
+            'X', 'XI', 'XII'
+        ];
+        $no_penawaran++;
+        $strNoPenawaran = "{$no_penawaran}/PN/{$user_code}/{$customer_code}/" . $months[(int)date('m')-1] ."/" . date('Y');
+
+        return $strNoPenawaran;
+
+    }
 
   
 }

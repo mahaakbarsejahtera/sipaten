@@ -185,3 +185,29 @@ function createRowBoq(data) {
 
 
 }
+
+
+function getCurrentMonth() {
+    let currentDate = new Date();
+    var n = currentDate.getMonth();
+
+    let monthGreek = [
+        'I', 'II', 'III', 'IV',
+        'V', 'VI', 'VII', 'VIII',
+        'IX', 'X', 'XI', 'XII',
+    ];
+
+
+
+    return monthGreek[n
+    ];
+}
+
+function getNoPenawaran() {
+    return $.ajax({
+        method: 'GET',
+        
+    })
+}
+
+

@@ -88,7 +88,7 @@
 
 
                         <div class="form-group">
-                            <label for="i-penawaran_no">Nomor</label>
+                            <label>Nomor</label>
                             <input type="text" class="form-control" id="i-penawaran_no" value="" readonly>
                         </div>
 
@@ -153,8 +153,15 @@
         let form = $('#form');
 
         tinymce.init({
-        selector: '#i-penawaran_term'
-      });
+            selector: '#i-penawaran_term',
+            menubar: false,
+            plugins: "lists",
+            toolbar: "numlist bullist",
+        });
+
+        $('#form-modal').on('hide.bs.modal', function () {
+            clearForm();
+        })
 
         loadData();
         function loadData(data = {}) {
@@ -172,41 +179,34 @@
                     console.log('load data', response);
                     let html =  ``;
 
-                    // `<td><a href="javascript:void(0)" data-toggle="table-action" data-action="create-timeline" data-id="${v.id_permintaan}">Buat Timeline</a></td><td><a href="">Berkas</a></td>`
                     response.data.lists.map((v, i) => {
                         
                         html += `
                         
                             <tr>
                                 <td>
+                                    <a href="${baseUrl}/dashboard/laporan/lampiran-penawaran?id_penawaran=${v.id_penawaran}" target="_blank">${v.penawaran_no}</a>
+                                </td>
+                                <td>
                                     <div>${v.nama_pekerjaan}</div>
                                 </td>
                                 <td>${v.nama_customer}</td>
-                                <td>${v.permintaan_lokasi_survey}</td>
-                                <td>${v.permintaan_jadwal_survey}</td>
-                                <td>${v.keterangan_pekerjaan}</td>
-                                
                                 <td>${v.user_fullname}</td>
-                                <td>${v.permintaan_status}</td>
-                                <td>${v.date_create}</td>
-                                <td><a href="javascript:void(0)" data-permintaan="${v.id_permintaan}" title="Lihat Hasil Survey" data-toggle="table-action" data-action="hasil-survey">BOQ</a></td>
+                                <td>${Rp(v.estimasi_harga_pokok)}</td>
                                 <td>
-                                    <a href="javascript:void(0)" data-permintaan="${v.id_permintaan}" data-toggle="table-action" data-action="estimasi-harga">${Rp(v.estimasi_harga_pokok)}</a>
+                                    <ol style="list-style: none;" class="p-0">
+                                        <li>Due Date: <b>${v.penawaran_due_date}</b></li>
+                                        <li>Tanggal Penawaran: <b>${v.penawaran_validasi_date}</b></li>
+                                    <ol>
                                 </td>
-                                <td>
-                                    <div class="d-flex flex-column">
-                                        <a 
-                                            href="<?php echo base_url('/dashboard/laporan/estimasi/?id_permintaan=') ?>${v.id_permintaan}" download>${Rp(v.estimasi_harga_jual)}</a>
-  
-                                    </div>
-                                </td>
+                                <td>${v.penawaran_term}</td>
                                 <td>
 
-                                    <a href="javascript:void(0)" class="btn btn-warning mb-2" title="Edit Permintaan" data-toggle="table-action" data-action="edit" data-id="${v.id_permintaan}">
+                                    <a href="javascript:void(0)" class="btn btn-warning mb-2" title="Edit Permintaan" data-toggle="table-action" data-action="edit" data-id="${v.id_penawaran}" data-permintaan="${v.id_permintaan}">
                                         <span class="fas fa-edit"></span>
                                     </a>
                                     
-                                    <a href="javascript:void(0)" class="btn btn-danger mb-2" title="Hapus Permintaan" data-toggle="table-action"  data-action="delete" data-id="${v.id_permintaan}">
+                                    <a href="javascript:void(0)" class="btn btn-danger mb-2" title="Hapus Permintaan" data-toggle="table-action"  data-action="delete" data-id="${v.id_penawaran}">
                                         <span class="fas fa-trash"></span>
                                     </a>
 
@@ -265,10 +265,13 @@
             .then(response => {
 
                 console.log('infor permintaan', response);
-
+                $('#i-penawaran').val(`PN/${response.data.sales_code}/`);
                 $('#i-nama_customer').val(response.data.nama_customer);
                 $('#i-nama_sales').val(response.data.user_fullname);
                 $('#i-nilai_penawaran').val(Rp(response.data.estimasi_harga_jual));
+                
+                
+
 
             })
         });
@@ -277,8 +280,17 @@
 
         function addData() {
 
-            let data = form.serialize();
+            let data =  {
+                id_permintaan: $('#i-id_permintaan').val(),
+                //penawaran_no: $('#i-penawaran_no').val(),
+                penawaran_term: tinyMCE.activeEditor.getContent(),
+                penawaran_due_date: $('#i-penawaran_due_date').val(),
+                penawaran_validasi_date: $('#i-penawaran_validasi_date').val()
+            }
 
+            console.log(data);
+            //return false;
+            
             return $.ajax({
                 method: 'POST',
                 url: "<?php echo base_url('/api/penawaran') ?>",
@@ -309,7 +321,15 @@
 
         function updateData() {
             
-            let data = form.serialize();
+            let data =  {
+                id_penawaran: $('#i-id_penawaran').val(),
+                id_permintaan: $('#i-id_permintaan').val(),
+                //penawaran_no: $('#i-penawaran_no').val(),
+                penawaran_term: tinyMCE.activeEditor.getContent(),
+                penawaran_due_date: $('#i-penawaran_due_date').val(),
+                penawaran_validasi_date: $('#i-penawaran_validasi_date').val()
+            }
+
 
             return $.ajax({
                 method: 'POST',
@@ -352,6 +372,8 @@
                     }
                     
                     $('#form-modal').modal('show');
+
+                    return response;
                 }
             })
 
@@ -388,6 +410,7 @@
 
         function clearForm() {
             $('#form')[0].reset();
+            $('#i-id_permintaan').val(null).trigger('change');
         }
 
 
@@ -424,8 +447,17 @@
 
                 case 'edit':
 
+
+                    $('#i-id_permintaan').val($(this).data('permintaan'));
+                    $('#i-id_permintaan').trigger('change');
+
                     getData($(this).data('id'))
-                    .then(() => btn.html(`<span class="fas fa-edit"></span>`));
+                    .then((response) => {
+                        
+                        tinymce.activeEditor.setContent(response.data.penawaran_term);
+                        btn.html(`<span class="fas fa-edit"></span>`)
+                    
+                    });
 
                     break;
 

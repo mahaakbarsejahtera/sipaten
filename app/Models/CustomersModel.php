@@ -10,7 +10,7 @@ class CustomersModel extends Model
     protected $primaryKey = "id_customer";
     protected $allowedFields = [
         'nama_customer', 'alamat_customer', 'pic_nama_customer',
-        'pic_no_customer'
+        'pic_no_customer', 'kode_customer'
     ];
 
     protected $orderby = [

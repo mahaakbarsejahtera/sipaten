@@ -120,10 +120,11 @@ class Customer extends Controller
         }
 
         $insertData = [
-            'nama_customer'         => $this->request->getPost('nama_customer'),
-            'alamat_customer'       => $this->request->getPost('alamat_customer'),
-            'pic_nama_customer'     => $this->request->getPost('pic_nama_customer'),
-            'pic_no_customer'       => $this->request->getPost('pic_no_customer'),
+            'nama_customer'         => (string)$this->request->getPost('nama_customer'),
+            'alamat_customer'       => (string)$this->request->getPost('alamat_customer'),
+            'pic_nama_customer'     => (string)$this->request->getPost('pic_nama_customer'),
+            'pic_no_customer'       => (string)$this->request->getPost('pic_no_customer'),
+            'kode_customer'         => (string)$this->request->getPost('kode_customer')
         ];
 
         $customersModel = new CustomersModel;
@@ -169,11 +170,12 @@ class Customer extends Controller
         }
 
         $insertData = [
-            'id_customer'           => $this->request->getPost('id_customer'),
-            'nama_customer'         => $this->request->getPost('nama_customer'),
-            'alamat_customer'       => $this->request->getPost('alamat_customer'),
-            'pic_nama_customer'     => $this->request->getPost('pic_nama_customer'),
-            'pic_no_customer'       => $this->request->getPost('pic_no_customer')
+            'id_customer'           => (int)$this->request->getPost('id_customer'),
+            'nama_customer'         => (string)$this->request->getPost('nama_customer'),
+            'alamat_customer'       => (string)$this->request->getPost('alamat_customer'),
+            'pic_nama_customer'     => (string)$this->request->getPost('pic_nama_customer'),
+            'pic_no_customer'       => (string)$this->request->getPost('pic_no_customer'),
+            'kode_customer'         => (string)$this->request->getPost('kode_customer')
         ];
 
         $customersModel = new CustomersModel;

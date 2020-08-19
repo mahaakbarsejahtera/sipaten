@@ -15,14 +15,21 @@
     <div class="clearfix container">
         <div class="float-left">
             Kepada Yth, <br>
-            Bapak/Ibu</br>
-            PT. Hutama Karya (Persero),
-            Divisi Pengembangan Jalan Tol Ruas Medan Binjai,
-            Di Template
+            <strong>
+                Bapak/Ibu</br>
+                <?php echo $penawaran->nama_customer; ?></br>
+            </strong>
+
+            Di Tempat
         </div>
         <div class="float-right">
+            <?php 
+            
+            $validasi_date = new DateTime($penawaran->penawaran_validasi_date);
 
-            Medan, 7 Desember 2019
+            
+            ?>
+            Medan, <?php echo $validasi_date->format('d l Y') ?>            
             <table>
                 <tr>
                     <td>Nomor</td>
@@ -51,8 +58,8 @@
     <div class="clearfix mb-5"></div>
 
     <div class="clearfix container font-weight-bold">
-        <div class="float-left">Perihal:</div>
-        <div class="float-left"> Relokasi Tower CCTX 30M, Penambahan Stick Tower 5 Meter, Tower Extender 5 Meter dan Maintenance Sistem Video Surveilance Tower CCTV Pematang pasir dan Tower CCTV Baracuda</div>
+        <div class="float-left mr-1">Perihal:</div>
+        <div class="float-left"> <?php echo $penawaran->nama_pekerjaan; ?></div>
     </div>
 
     <div class="clearfix mb-4"></div>
@@ -61,7 +68,7 @@
         <div class="float-left">
             <p>
                 Dengan Hormat, </br>
-                Berkenan dengan adanya kebutuhan Pekerjaan "Perihal" di dalam lingkungan perusahaan/instansi yang bapak/ibu pimpin maka kami lampirkan penawaran harga sebagai berikut.
+                Berkenan dengan adanya kebutuhan Pekerjaan "<?php echo $penawaran->nama_pekerjaan; ?>" di dalam lingkungan perusahaan/instansi yang bapak/ibu pimpin maka kami lampirkan penawaran harga sebagai berikut.
             </p>
         </div>
     </div>
@@ -72,7 +79,11 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th rowspan="2">1</th>
+                    <th rowspan="2">
+                        <div class="d-flex align-items-center">
+                            <span>1</span>
+                        </div>
+                    </th>
                     <th>
                     Relokasi Tower CCTX 30M, Penambahan Stick Tower 5 Meter, Tower Extender 5 Meter dan Maintenance Sistem Video Surveilance Tower CCTV Pematang pasir dan Tower CCTV Baracuda
                     </th>

@@ -32,12 +32,12 @@ class Permintaan extends Controller
             permintaan.keterangan_pekerjaan, permintaan.permintaan_supervisi, permintaan.permintaan_supervisi_status,
             permintaan.permintaan_hasil_survey_status,
 
-            sales.id_user, sales.user_fullname, sales.user_name, sales.user_status,
+            sales.id_user, sales.user_fullname, sales.user_name, sales.user_status, sales.user_code as sales_code,
 
             survey.id_survey, 
-            customers.id_customer, customers.nama_customer, customers.pic_nama_customer, customers.pic_no_customer,
+            customers.id_customer, customers.nama_customer, customers.pic_nama_customer, customers.pic_no_customer, customers.kode_customer,
 
-            supervisi.user_fullname as nama_supervisi,
+            supervisi.user_fullname as nama_supervisi, supervisi.user_code as supervisi_code
 
         ")
         ->join('users as sales', 'permintaan.permintaan_sales=sales.id_user', 'left')
