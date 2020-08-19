@@ -27,7 +27,8 @@ class PermintaanModel extends Model
     protected $filterby = [
         'no_survey' => 'permintaan.no_survey',
         'no_kontrak' => 'permintaan.no_kontrak',
-        'no_permintaan' => 'permintaan.no_permintaan'
+        'no_permintaan' => 'permintaan.no_permintaan',
+        'permintaan_status' => 'permintaan.permintaan_status'
     ];
 
 

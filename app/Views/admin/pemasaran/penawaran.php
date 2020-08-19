@@ -80,8 +80,8 @@
                         <input type="hidden" name="_method" value="POST">
                         
                         <div class="form-group">
-                            <label for="i-id_pekerjaan">Pekerjaan</label>
-                            <select name="id_pekerjaan" id="i-id_pekerjaan" class="form-control">
+                            <label for="id_permintaan">Pekerjaan</label>
+                            <select name="id_permintaan" id="i-id_permintaan" class="form-control">
                                 <option value="">Pilih</option>
                             </select>
                         </div>
@@ -93,43 +93,28 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="i-penawaran_no">Customer</label>
-                            <input type="text" class="form-control" id="i-penawaran_no" value="">
-                        </div>
-
-
-                        <div class="form-group">
-                            <label for="i-permintaan_sales">Sales</label>
-                            <select name="permintaan_sales" id="i-permintaan_sales" class="form-control">
-                                <option value="">Pilih</option>
-                            </select>
+                            <label for="i-nama_customer">Customer</label>
+                            <input type="text" class="form-control" id="i-nama_customer" value="">
                         </div>
 
                         <div class="form-group">
-                            <label for="i-nama_pekerjaan">Nama pekerjaan</label>
-                            <input type="text" name="nama_pekerjaan" class="form-control" id="i-nama_pekerjaan">
-                        </div>
-
-                        
-
-                        <div class="form-group">
-                            <label for="i-permintaan_lokasi_survey">Lokasi Survey</label>
-                            <input type="text" name="permintaan_lokasi_survey" class="form-control" id="i-permintaan_lokasi_survey">
+                            <label for="i-nama_sales">Sales</label>
+                            <input type="text" class="form-control" id="i-nama_sales" value="">
                         </div>
 
                         <div class="form-group">
-                            <label for="i-permintaan_jadwal_survey">Jadwal Survey</label>
-                            <input type="date" name="permintaan_jadwal_survey" class="form-control" id="i-permintaan_jadwal_survey">
+                            <label for="i-nilai_penawaran">Nilai Penawaran</label>
+                            <input type="text" name="nilai_penawaran" class="form-control" id="i-nilai_penawaran">
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="i-penawaran_validasi_date">Tanggal Penawaran</label>
+                            <input type="text" name="penawaran_validasi_date" class="form-control" id="i-penawaran_validasi_date">
                         </div>
 
                         <div class="form-group">
-                            <label for="i-permintaan_status">Status</label>
-                            <select name="permintaan_status" id="i-permintaan_status" class="form-control">
-                                <option value="Draft">Draft</option>
-                                <option value="Negosiasi">Negosiasi</option>
-                                <option value="Publish">Publish</option>
-                                <option value="Kontrak">Kontrak</option>
-                            </select>
+                            <label for="i-penawaran_due_date">Due Date Penawaran</label>
+                            <input type="text" name="penawaran_due_date" class="form-control" id="i-penawaran_due_date">
                         </div>
 
                         <div class="form-group">
@@ -152,13 +137,17 @@
 
 
 <?php $this->section('footerScript') ?>
-
+<script src="<?php echo base_url('/assets/plugins/tinymce/js/tinymce/tinymce.min.js') ?>"></script>
 <script>
     $(function(){
 
         let truthAction = $('#i-truth_action');
         let tableData = $('#table-data');
         let form = $('#form');
+
+        tinymce.init({
+        selector: '#i-penawaran_term'
+      });
 
         loadData();
         function loadData(data = {}) {
@@ -170,7 +159,7 @@
             `);
 
             $.ajax({
-                url: "<?php echo base_url('/api/permintaan') ?>",
+                url: "<?php echo base_url('/api/penawaran') ?>",
                 data: data,
                 success: function(response) {
                     console.log('load data', response);
@@ -228,49 +217,39 @@
 
         }
 
-        getUsers()
+        getPermintaan()
         .then(response => {
             let html = '<option value="">Pilih</option>';
 
             response.data.lists.map((v, i) => {
-                html += `<option value="${v.id_user}">${v.user_fullname} - ${v.role_name}</option>`;
+                html += `<option value="${v.id_permintaan}">${v.nama_pekerjaan}</option>`;
             })
 
-            $('#i-permintaan_sales').html(html);
+            $('#i-id_permintaan').html(html);
+            $('#i-id_permintaan').select2();
 
         });
 
-        getCustomers()
-        .then(response => {
-            console.log('getCustomers');
-            let html = '<option value="">Pilih</option>';
 
-            response.data.lists.map((v, i) => {
-                html += `<option value="${v.id_customer}">${v.nama_customer}</option>`;
-            })
-
-            $('#i-id_customer').html(html);
-
-        }).catch(err => {
-            console.log(err);
-        });
-
-
-        function getUsers() {
+        function getPermintaan() {
 
             return $.ajax({
-                url: "<?php echo base_url('/api/users?page_group1=-1') ?>",
+                url: `${baseUrl}/api/permintaan?page_group1=-1`,
+                data: {
+                    filters: [{
+                        key: 'permintaan_status',
+                        value: 'Publish'
+                    }]
+                }
             })
 
         }
 
-        function getCustomers() {
 
-            return $.ajax({
-                url: "<?php echo base_url('/api/customer?page_group1=-1') ?>",
-            })
+        $('#i-id_permintaan').change(function(){
 
-        }
+        });
+
 
 
         function addData() {
@@ -279,7 +258,7 @@
 
             return $.ajax({
                 method: 'POST',
-                url: "<?php echo base_url('/api/permintaan') ?>",
+                url: "<?php echo base_url('/api/penawaran') ?>",
                 data: data, 
                 success: function(response) {
                     console.log('success response add', response);
@@ -311,7 +290,7 @@
 
             return $.ajax({
                 method: 'POST',
-                url: "<?php echo base_url('/api/permintaan/update') ?>",
+                url: "<?php echo base_url('/api/penawaran/update') ?>",
                 data: data, 
                 success: function(response) {
                     console.log('success response add', response);
@@ -340,7 +319,7 @@
         function getData( id ) {
             
             return $.ajax({
-                url: `<?php echo base_url('/api/permintaan/show') ?>/${id}`,
+                url: `<?php echo base_url('/api/penawaran/show') ?>/${id}`,
                 success: function(response) {
 
                     truthAction.val('update');
@@ -358,7 +337,7 @@
         function deleteData( id ) {
             return $.ajax({
                 method: 'POST',
-                url: `<?php echo base_url('/api/permintaan') ?>/${id}/delete`,
+                url: `<?php echo base_url('/api/penawaran') ?>/${id}/delete`,
                 success: function(response) {
                     switch(response.code) {
                         case 200:
