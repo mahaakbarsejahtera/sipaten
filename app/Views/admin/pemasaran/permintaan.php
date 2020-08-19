@@ -198,7 +198,7 @@
 
     <!-- BOQ Modal -->
     <div class="modal fade" id="modal-estimasi" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-dialog" role="document" style="max-width: 100%;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Estimasi Harga</h5>
@@ -211,23 +211,24 @@
                     <form action="" id="form-estimasi">
                         
                         <div class="table table-responsive">
-                            <table class="table table-bordered  table-striped">
+                            <table class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th rowspan="2" valign="middle" class="text-center">
+                                        <th rowspan="2" valign="middle" class="text-center align-middle" width="80">
                                             <span>No</span>
                                         </th>
-                                        <th rowspan="2" class="text-center">Item</th>
-                                        <th rowspan="2" class="text-center">Qty</th>
+                                        <th rowspan="2" class="text-center align-middle">Item</th>
+                                        <th rowspan="2" class="text-center align-middle">Qty</th>
                                         <th colspan="2" class="text-center">Harga Pokok</th>
+                                        <th width="10" rowspan="2" class="border-top-0 border-right-0 border-bottom-0"></th>
                                         <th colspan="2" class="text-center">Harga Jual</th>
-                                        <th rowspan="2" class="text-center">Margin</th>
+                                        <th rowspan="2" class="text-center align-middle" width="150">Margin</th>
                                     </tr>
                                     <tr>
-                                        <th class="text-center">Harga</th>
-                                        <th class="text-center">Total</th>
-                                        <th class="text-center">Harga</th>
-                                        <th class="text-center">Total</th>
+                                        <th class="text-center" width="120">Harga</th>
+                                        <th class="text-center" width="120">Total</th>
+                                        <th class="text-center" width="120">Harga</th>
+                                        <th class="text-center" width="120">Total</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -285,20 +286,6 @@
     </div>
     <!-- /BOQ Modal -->
 
-    <!-- Anggaran Modal -->
-    
-    <div class="modal fade" id="modal-anggaran" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div id="anggaran-spreadsheet"></div>
-                </div>
-    
-            </div>
-        </div>
-    </div>
-
-    <!-- /Anggaran Modal -->
 
 <?php $this->endSection(); ?>
 
@@ -328,7 +315,6 @@
                     console.log('load data', response);
                     let html =  ``;
 
-                    // `<td><a href="javascript:void(0)" data-toggle="table-action" data-action="create-timeline" data-id="${v.id_permintaan}">Buat Timeline</a></td><td><a href="">Berkas</a></td>`
                     response.data.lists.map((v, i) => {
                         
                         html += `
@@ -351,8 +337,7 @@
                                 </td>
                                 <td>
                                     <div class="d-flex flex-column">
-                                        <a 
-                                            href="<?php echo base_url('/dashboard/laporan/estimasi/?id_permintaan=') ?>${v.id_permintaan}" download>${Rp(v.estimasi_harga_jual)}</a>
+                                        <a href="<?php echo base_url('/dashboard/laporan/estimasi/?id_permintaan=') ?>${v.id_permintaan}" download>${Rp(v.estimasi_harga_jual)}</a>
   
                                     </div>
                                 </td>
@@ -631,39 +616,7 @@
                         let html = "";
                         response.data.lists.map((v, i) => {
                             console.log(v);
-                           /**let itemNameInputHTML = `
-                                <input name="item_name[${v.id_item}]" data-id="${v.id_item}" class="form-control" value="${v.item_name}">                             
-                            `
-
-                            let itemQtyInputHTML = `
-                                <input name="item_qty[${v.id_item}]" data-id="${v.id_item}" class="form-control" value="${v.item_qty}">        
-                            `
-
-                            let itemUnitInputHTML = `
-                                <input name="item_unit[${v.id_item}]" data-id="${v.id_item}" class="form-control" value="${v.item_unit}">        
-                            `
-
-
-
-                            html += `
-
-                                <tr>
-                                    <td>${itemNameInputHTML}</td>
-                                    <td>${itemQtyInputHTML}</td>
-                                    <td>${itemUnitInputHTML}</td>
-                                    <td>
-                                        <a href="javascript:void(0)" class="btn btn-danger js-delete-boq-item" data-id="${v.id_item}">
-                                            <span class="fas fa-trash"></span>
-                                        </a>
-                                        <a href="javascript:void(0)" class="btn btn-warning js-update-boq-item" data-id="${v.id_item}">
-                                            <span class="fas fa-edit"></span>
-                                        </a>
-                                    </td>
-                                </tr>
-
-                            `
-                        */
-
+    
                             
                             html += createRowBoq(v);
 
@@ -714,7 +667,8 @@
                                     data-id="${v.id_item}"
                                     data-target="#total-harga-pokok-${v.id_item}" 
                                     data-qty="${v.item_qty}" value="${v.item_hp}"
-                                    data-margin="margin-${v.id_item}">
+                                    data-margin="margin-${v.id_item}"
+                                    style="max-width: 150px">
 
                             `;
 
@@ -727,7 +681,8 @@
                                     data-id="${v.id_item}"
                                     data-target="#total-harga-jual-${v.id_item}" 
                                     data-qty="${v.item_qty}" value="${v.item_hj}"
-                                    data-margin="margin-${v.id_item}">
+                                    data-margin="margin-${v.id_item}"
+                                    style="max-width: 150px">
 
                             `;
 
@@ -749,10 +704,11 @@
 
                                 <tr>
                                     <td>${++no}</td>
-                                    <td>${v.item_name}</td>
-                                    <td>${v.item_qty} ${v.item_unit}</td>
+                                    <td width="300">${v.item_name}</td>
+                                    <td width="80">${v.item_qty} ${v.item_unit}</td>
                                     <td>${hargaPokokInput}</td>
                                     <td class="text-right" id="total-harga-pokok-${v.id_item}">${Rp(total_harga_pokok)}</td>
+                                    <td class="border-0" style="background-color: transparent;"></td>
                                     <td>${hargaPokokJual}</td>
                                     <td class="text-right" id="total-harga-jual-${v.id_item}">${Rp(total_harga_jual)}</td>
                                     <td id="margin-${v.id_item}">${marginHTML}</td>
@@ -761,8 +717,6 @@
                             `
 
                         })
-
-                        //$html += 
 
                         tbody.html(html);
                         $('#modal-estimasi').modal('show');
@@ -857,91 +811,8 @@
                     })
                     break;
 
-                
-                    /**
-                    $('#modal-boq').modal('show');
-                    $('#i-survey_divisi').val('pemasaran');
-                    $('#i-id_survey').val(btn.data('survey'));
-                    $('#form-boq').find('tbody').html('');
-
-                    loadHasilSurvey(btn.data('survey'), 'pemasaran')
-                    .then(response => {
-
-                        console.log('load pemasaran boq', response)
-
-                        let html = '';
-
-                        response.data.lists.map((v, i) => {
-
-                            let getMarin = InternalCalculation.getPersentaseMargin(v.survey_harga_pokok, v.survey_harga_jual).toFixed(2);
-                            let getMarginHTML = getMarin > 0 ? `<span class="text-success">${getMarin}%</span>` : `<span class="text-danger">${getMarin}%</span>`;
-
-                            html += `
-                                <tr>
-                                    <th>
-                                        <input name="items[name][${v.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukann Nama item" value="${v.survey_item_name}">
-                                    </th>
-                                    <th width="100">
-                                        <input name="items[qty][${v.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukan Qty" value="${v.survey_item_qty}">
-                                    </th>
-                                    <th width="100">
-                                        <input name="items[unit][${v.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukan Unit" value="${v.survey_item_unit}">
-                                    </th>
-                                    <th>
-                                        <input 
-                                            name="items[harga_pokok][${v.id_survey_item}]"
-                                            type="number" 
-                                            class="form-control form-control-sm" 
-                                            placeholder="Masukan Harga Pokok" 
-                                            value="${v.survey_harga_pokok}"
-                                            data-toggle="get-margin"  
-                                            data-action="harga-pokok"
-                                            data-bind="#js-harga-jual-${v.id_survey_item}"
-                                            data-target="#js-margin-${v.id_survey_item}"
-                                            id="js-harga-pokok-${v.id_survey_item}">
-                                    </th>
-                                    <th>
-                                        <div class="d-flex align-items-center">
-                                            <input 
-                                                name="item[harga_jual][${v.id_survey_item}]" 
-                                                type="number" class="form-control form-control-sm" 
-                                                placeholder="Masukan Harga Jual" 
-                                                value="${v.survey_harga_jual}"
-                                                data-toggle="get-margin" 
-                                                data-action="harga-jual"
-                                                data-bind="#js-harga-pokok-${v.id_survey_item}"
-                                                data-target="#js-margin-${v.id_survey_item}"
-                                                id="js-harga-jual-${v.id_survey_item}">
-                                                                                        
-                                        </div>
-                                    </th>
-                                    <td>${v.survey_item_qty * v.survey_harga_jual}</td>
-                                    <td id="js-margin-${v.id_survey_item}">${getMarginHTML}</td>
-                                    <th>
-                                        <a href="javascript:void(0)" data-item="${v.id_survey_item}" class="btn btn-danger js-remove-item"><span class="fas fa-minus"></span></a>
-                                        <a href="javascript:void(0)" data-item="${v.id_survey_item}" class="btn btn-warning js-update-item"><span class="fas fa-pen"></span></a>
-                                    </th>
-                                </tr>
-                            `;
-
-                            
-                        })
-
-                        $('#form-boq').find('tbody').html(html);
-
-                        btn.html('Pemasaran')
-
-                    })
-                    break;
-                     */
-
-                case 'create-timeline': 
-                    
-                    break;
-
-                case 'create-budget':
-                    $('#modal-anggaran').modal('show');
-                    break;
+    
+        
             }
         })
 

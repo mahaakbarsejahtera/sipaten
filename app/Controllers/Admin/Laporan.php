@@ -2,11 +2,14 @@
 
 namespace App\Controllers\Admin;
 
+use App\Controllers\Api\PermintaanItem;
+use App\Models\PermintaanItemsModel;
 use App\Models\PermintaanModel;
 use CodeIgniter\Controller;
 use Template\BreadCrumb;
 use Template\Table;
 use Dompdf\Dompdf;
+use Template\Total;
 
 class Laporan extends Controller
 {
@@ -22,13 +25,34 @@ class Laporan extends Controller
             ->where('penawaran.id_penawaran', $this->request->getGet('id_penawaran'))
             ->get()->getRow();
 
-        //var_dump($penawaran);
+        $harga = (new PermintaanItemsModel())
+            ->builder()
+            ->select("SUM(item_qty * item_hp) as estimasi_harga_pokok, SUM(item_qty * item_hj) as estimasi_harga_jual")
+            ->where('id_permintaan', $penawaran->id_permintaan)
+            ->groupBy('id_permintaan')
+            ->get()
+            ->getRow();
+
+    
 
 
-
-        return view('laporan/lampiran-penawaran', [
-            'penawaran' => $penawaran
+        $penawaran_html = view('laporan/lampiran-penawaran', [
+            'penawaran' => $penawaran,
+            'harga' => $harga,
+            'terbilang' => ucwords((new Total)->terbilang($harga->estimasi_harga_jual))
         ]);
+
+
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($penawaran_html);
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream($penawaran->penawaran_no . "-" . date('his'));
+                    
+        return $penawaran_html;
     }
 
     public function lampiranBoq() {
