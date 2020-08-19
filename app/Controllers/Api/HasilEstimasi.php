@@ -43,7 +43,16 @@ class HasilEstimasi extends Controller
 
 
         
-        $rolesModel = new HasilEstimasiModel();
+        $hasilEstimasiModel = new HasilEstimasiModel();
+        $hasilModel -> builder()
+        ->select("
+        hasil_estimasi.id_estimasi_item, hasil_estimasi.id_estimasi, hasil_estimasi.estimasi_item_name, 
+        hasil_estimasi.estimasi_item_qty, hasil_estimasi.estimasi_item_unit, hasil_estimasi.estimasi_harga_pokok,
+        hasil_estimasi.estimasi_harga_jual, hasil_estimasi.estimasi_harga_pokok_nego, 
+        hasil_estimasi.estimasi_harga_jual_nego,
+        estimasi.id_permintaan, estimasi.estimasi_approve_status, estimasi.estimasi_approve_by
+    ")
+    ->join('estimasi', 'hasil_estimasi.id_estimasi=estimasi.id_estimasi', 'left');
 
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
@@ -54,13 +63,13 @@ class HasilEstimasi extends Controller
                     
                     case 'search':
                         
-                        $rolesModel->like('roles.role_name', $filter['value']);
+                        $hasilEstimasiModel->like('hasil_estimasi.estimasi_item_name', $filter['value']);
 
                     break;
 
                     default:
                     
-                    if(in_array($filter['key'], array_keys($rolesModel->filterby))) {
+                    if(in_array($filter['key'], array_keys($hasilEstimasiModel->filterby))) {
                         $response['filters'][] = $filter['key'];
                     }
 
@@ -74,13 +83,13 @@ class HasilEstimasi extends Controller
         if(!empty($this->request->getGet('orders'))) {
             foreach($this->request->getGet('orders') as $order) {
                 $response['orders'][] = $order['orderby'];
-                $rolesModel->orderBy($order['orderby'], $order['order']);
+                $hasilEstimasiModel->orderBy($order['orderby'], $order['order']);
             }
         }
 
 
-        $lists = $rolesModel->paginate(10, 'group1');
-        $pager = $rolesModel->pager;
+        $lists = $hasilEstimasiModel->paginate(10, 'group1');
+        $pager = $hasilEstimasiModel->pager;
 
         $response['data']['lists'] = $lists;
         $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
@@ -101,13 +110,13 @@ class HasilEstimasi extends Controller
 
         // Dinamis ikuti table
         $rules = [
-            'id_estimasi'     => 'required',
-            'estimasi_item_name'     => 'required',
-            'estimasi_item_qty'      => 'required',
-            'estimasi_item_unit'      => 'required',
-            'estimasi_harga_pokok'      => 'required',
-            'estimasi_harga_pokok_nego'    => 'required',
-            'estimasi_harga_jual_nego'      => 'required'
+            'id_estimasi'                => 'required',
+            'estimasi_item_name'         => 'required',
+            'estimasi_item_qty'          => 'required',
+            'estimasi_item_unit'         => 'required',
+            'estimasi_harga_pokok'       => 'required',
+            'estimasi_harga_pokok_nego'  => 'required',
+            'estimasi_harga_jual_nego'   => 'required'
         ];
 
     
@@ -124,23 +133,23 @@ class HasilEstimasi extends Controller
 
         // Dinamis ikuti table
         $insertData = [
-            'id_estimasi'     => $this->request->getPost('id_estimasi'),
-            'estimasi_item_name'      => $this->request->getPost('estimasi_item_name'),
-            'estimasi_item_qty'     => $this->request->getPost('estimasi_item_qty'),
-            'estimasi_item_unit'     => $this->request->getPost('estimasi_item_unit'),
-            'estimasi_harga_pokok'     => $this->request->getPost('estimasi_harga_pokok'),
-            'estimasi_harga_pokok_nego'     => $this->request->getPost('estimasi_harga_pokok_nego'),
-            'estimasi_harga_jual_nego'     => $this->request->getPost('estimasi_harga_jual_nego'),
+            'id_estimasi'                => $this->request->getPost('id_estimasi'),
+            'estimasi_item_name'         => $this->request->getPost('estimasi_item_name'),
+            'estimasi_item_qty'          => $this->request->getPost('estimasi_item_qty'),
+            'estimasi_item_unit'         => $this->request->getPost('estimasi_item_unit'),
+            'estimasi_harga_pokok'       => $this->request->getPost('estimasi_harga_pokok'),
+            'estimasi_harga_pokok_nego'  => $this->request->getPost('estimasi_harga_pokok_nego'),
+            'estimasi_harga_jual_nego'   => $this->request->getPost('estimasi_harga_jual_nego'),
 
         ];
 
 
-        $rolesModel = new HasilEstimasiModel;
-        $rolesModel->save($insertData);
+        $hasilEstimasiModel = new HasilEstimasiModel;
+        $hasilEstimasiModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
-        $response['model']      = $rolesModel->getInsertID();
+        $response['model']      = $hasilEstimasiModel->getInsertID();
         //$response['data'] = $insertData;
         $response['message']    = 'Insert Success';
 
@@ -162,14 +171,14 @@ class HasilEstimasi extends Controller
 
 
         $rules = [
-            'id_estimasi_item'       => 'required',
-            'id_estimasi'     => 'required',
-            'estimasi_item_name'     => 'required',
-            'estimasi_item_qty'      => 'required',
-            'estimasi_item_unit'      => 'required',
-            'estimasi_harga_pokok'      => 'required',
-            'estimasi_harga_pokok_nego'    => 'required',
-            'estimasi_harga_jual_nego'      => 'required'
+            'id_estimasi_item'           => 'required',
+            'id_estimasi'                => 'required',
+            'estimasi_item_name'         => 'required',
+            'estimasi_item_qty'          => 'required',
+            'estimasi_item_unit'         => 'required',
+            'estimasi_harga_pokok'       => 'required',
+            'estimasi_harga_pokok_nego'  => 'required',
+            'estimasi_harga_jual_nego'   => 'required'
         ];
 
     
@@ -184,18 +193,18 @@ class HasilEstimasi extends Controller
         }
 
         $insertData = [
-            'id_estimasi_item'       => $this->request->getPost('id_estimasi_item'),
-            'id_estimasi'     => $this->request->getPost('id_estimasi'),
-            'estimasi_item_name'      => $this->request->getPost('estimasi_item_name'),
-            'estimasi_item_qty'     => $this->request->getPost('estimasi_item_qty'),
-            'estimasi_item_unit'     => $this->request->getPost('estimasi_item_unit'),
-            'estimasi_harga_pokok'     => $this->request->getPost('estimasi_harga_pokok'),
-            'estimasi_harga_pokok_nego'     => $this->request->getPost('estimasi_harga_pokok_nego'),
-            'estimasi_harga_jual_nego'     => $this->request->getPost('estimasi_harga_jual_nego'),
+            'id_estimasi_item'           => $this->request->getPost('id_estimasi_item'),
+            'id_estimasi'                => $this->request->getPost('id_estimasi'),
+            'estimasi_item_name'         => $this->request->getPost('estimasi_item_name'),
+            'estimasi_item_qty'          => $this->request->getPost('estimasi_item_qty'),
+            'estimasi_item_unit'         => $this->request->getPost('estimasi_item_unit'),
+            'estimasi_harga_pokok'       => $this->request->getPost('estimasi_harga_pokok'),
+            'estimasi_harga_pokok_nego'  => $this->request->getPost('estimasi_harga_pokok_nego'),
+            'estimasi_harga_jual_nego'   => $this->request->getPost('estimasi_harga_jual_nego'),
         ];
 
-        $rolesModel = new HasilEstimasiModel;
-        $rolesModel->save($insertData);
+        $hasilEstimasiModel = new HasilEstimasiModel;
+        $hasilEstimasiModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;

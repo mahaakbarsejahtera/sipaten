@@ -63,8 +63,7 @@ class PermintaanFile extends Controller
             survey.id_survey, survey.survey_user
 
         ")
-        ->join('users', 'permintaan.permintaan_user=users.id_user', 'left')
-        ->join('survey', 'permintaan.id_permintaan=survey.id_permintaan', 'left');
+        ->join('permintaan', 'permintaan_file.id_permintaan=permintaan.id_permintaan', 'left');
 
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
@@ -76,8 +75,7 @@ class PermintaanFile extends Controller
                     case 'search':
                         
                         $permintaanFileModel->like('permintaan.nama_pekerjaan', $filter['value'])
-                            ->orLike('permintaan.permintaan_lokasi_survey', $filter['value'])
-                            ->orLike('permintaan.permintaan_jadwal_survey', $filter['value']);
+                            ->orLike('permintaan_file.nama_file', $filter['value']);
 
                     break;
 
