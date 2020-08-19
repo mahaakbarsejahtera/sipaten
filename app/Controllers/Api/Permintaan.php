@@ -24,11 +24,49 @@ class Permintaan extends Controller
         ];
 
         $find = (new PermintaanModel)
-            //->builder()
-            //->join('permi', 'users.user_role=roles.id_role', 'left')
-            ->find( $id );
+        ->builder()
+        ->select("
+
+            permintaan.id_permintaan, permintaan.nama_pekerjaan, permintaan.permintaan_status,
+            permintaan.permintaan_sales, permintaan.permintaan_lokasi_survey, permintaan.permintaan_jadwal_survey, permintaan.date_create,
+            permintaan.keterangan_pekerjaan, permintaan.permintaan_supervisi, permintaan.permintaan_supervisi_status,
+            permintaan.permintaan_hasil_survey_status,
+
+            sales.id_user, sales.user_fullname, sales.user_name, sales.user_status,
+
+            survey.id_survey, 
+            customers.id_customer, customers.nama_customer, customers.pic_nama_customer, customers.pic_no_customer,
+
+            supervisi.user_fullname as nama_supervisi,
+
+        ")
+        ->join('users as sales', 'permintaan.permintaan_sales=sales.id_user', 'left')
+        ->join('survey', 'permintaan.id_permintaan=survey.id_permintaan', 'left')
+        ->join('users as supervisi', 'permintaan.permintaan_supervisi=supervisi.id_user', 'left')
+        ->join('customers', 'permintaan.id_customer=customers.id_customer', 'left')
+        ->find( $id );
+
+        
 
         if($find) {
+
+            $harga = (new PermintaanItemsModel)
+                ->builder()
+                ->select("SUM(item_qty * item_hp) as estimasi_harga_pokok, SUM(item_qty * item_hj) as estimasi_harga_jual")
+                ->where('id_permintaan', $id)
+                ->groupBy('id_permintaan')
+                ->get()
+                ->getRow();
+
+            $find = $find + [
+                'item_hp'               => (int)$find['item_hp'],
+                'item_hj'               => (int)$find['item_hp'],
+                'item_hp_nego'          => (int)$find['item_hp_nego'],
+                'item_hj_nego'          => (int)$find['item_hj_nego'],
+                'estimasi_harga_pokok'  => (int)$harga->estimasi_harga_pokok,
+                'estimasi_harga_jual'   => (int)$harga->estimasi_harga_jual
+            ];
+
             $response['data']       = $find;
             $response['code']       = 200;
             $response['message']    = 'Success';

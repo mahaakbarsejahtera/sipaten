@@ -81,7 +81,7 @@
                         
                         <div class="form-group">
                             <label for="id_permintaan">Pekerjaan</label>
-                            <select name="id_permintaan" id="i-id_permintaan" class="form-control">
+                            <select name="id_permintaan" id="i-id_permintaan" class="form-control" style="width: 100%;">
                                 <option value="">Pilih</option>
                             </select>
                         </div>
@@ -89,32 +89,32 @@
 
                         <div class="form-group">
                             <label for="i-penawaran_no">Nomor</label>
-                            <input type="text" class="form-control" id="i-penawaran_no" value="">
+                            <input type="text" class="form-control" id="i-penawaran_no" value="" readonly>
                         </div>
 
                         <div class="form-group">
                             <label for="i-nama_customer">Customer</label>
-                            <input type="text" class="form-control" id="i-nama_customer" value="">
+                            <input type="text" class="form-control" id="i-nama_customer" value="" readonly>
                         </div>
 
                         <div class="form-group">
                             <label for="i-nama_sales">Sales</label>
-                            <input type="text" class="form-control" id="i-nama_sales" value="">
+                            <input type="text" class="form-control" id="i-nama_sales" value="" readonly>
                         </div>
 
                         <div class="form-group">
                             <label for="i-nilai_penawaran">Nilai Penawaran</label>
-                            <input type="text" name="nilai_penawaran" class="form-control" id="i-nilai_penawaran">
+                            <input type="text" name="nilai_penawaran" class="form-control" id="i-nilai_penawaran" readonly>
                         </div>
                     
                         <div class="form-group">
                             <label for="i-penawaran_validasi_date">Tanggal Penawaran</label>
-                            <input type="text" name="penawaran_validasi_date" class="form-control" id="i-penawaran_validasi_date">
+                            <input type="date" name="penawaran_validasi_date" class="form-control" id="i-penawaran_validasi_date">
                         </div>
 
                         <div class="form-group">
                             <label for="i-penawaran_due_date">Due Date Penawaran</label>
-                            <input type="text" name="penawaran_due_date" class="form-control" id="i-penawaran_due_date">
+                            <input type="date" name="penawaran_due_date" class="form-control" id="i-penawaran_due_date">
                         </div>
 
                         <div class="form-group">
@@ -135,8 +135,15 @@
 
 <?php $this->endSection(); ?>
 
+<?php $this->section('headerScript'); ?>
+
+    <link rel="stylesheet" href="<?php echo base_url("/assets/adminlte/plugins/select2/css/select2.min.css") ?>"/>
+    <link rel="stylesheet" href="<?php echo base_url("/assets/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css") ?>"/>
+
+<?php $this->endSection(); ?>
 
 <?php $this->section('footerScript') ?>
+<script src="<?php echo base_url('/assets/adminlte/plugins/select2/js/select2.min.js') ?>"></script>
 <script src="<?php echo base_url('/assets/plugins/tinymce/js/tinymce/tinymce.min.js') ?>"></script>
 <script>
     $(function(){
@@ -226,7 +233,9 @@
             })
 
             $('#i-id_permintaan').html(html);
-            $('#i-id_permintaan').select2();
+            $('#i-id_permintaan').select2({
+                themes: 'bootstrap'
+            });
 
         });
 
@@ -245,9 +254,23 @@
 
         }
 
+        function getInfoPermintaan(id) {
+            return $.ajax({
+                url: `${baseUrl}/api/permintaan/show/` + id,
+            })
+        }
 
         $('#i-id_permintaan').change(function(){
+            getInfoPermintaan($(this).val())
+            .then(response => {
 
+                console.log('infor permintaan', response);
+
+                $('#i-nama_customer').val(response.data.nama_customer);
+                $('#i-nama_sales').val(response.data.user_fullname);
+                $('#i-nilai_penawaran').val(Rp(response.data.estimasi_harga_jual));
+
+            })
         });
 
 

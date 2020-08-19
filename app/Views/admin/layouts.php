@@ -7,6 +7,9 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  
+  <?php $this->renderSection('headerScript'); ?>
+
   <!-- Toastr -->
   <link rel="stylesheet" href="<?php echo base_url('/assets/plugins/toastr-master/build/toastr.min.css') ?>">
 
@@ -23,6 +26,7 @@
   <!-- <script src="https://unpkg.com/x-data-spreadsheet@1.1.5/dist/xspreadsheet.js"></script> -->
   
   <script src="<?php echo base_url('/assets/js/xspreadsheet.js') ?>"></script>
+
 
 </head>
 <body class="hold-transition sidebar-mini">

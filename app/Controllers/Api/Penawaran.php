@@ -158,18 +158,7 @@ class Permintaan extends Controller
 
 
         $rules = [
-            'id_customer' => 'required',
-            'nama_pekerjaan' => 'required'
-            //'no_permintaan'         => 'required',
-            //'no_survey'             => 'required',
-            //'no_kontrak'            => 'required',
-            //'permintaan_status'     => 'required',
-            //'permintaan_user'       => 'required',
-            //'permintaan_fkasi_survey'  => 'required',
-            //'permintaan_jadwal_survey'  => 'required',
-            //'date_create'  => 'required',
-            //'permintaan_approval'  => 'required',
-            //'approve_by'  => 'required',
+            'id_permintaan' => 'required'
         ];
 
     
@@ -184,19 +173,11 @@ class Permintaan extends Controller
         }
 
         $insertData = [
-            'id_customer'                => $this->request->getPost('id_customer'),
-            'nama_pekerjaan'             => $this->request->getPost('nama_pekerjaan'),
-            'no_permintaan'              => $this->request->getPost('no_permintaan'),
-            'no_survey'                  => $this->request->getPost('no_survey'),
-            'no_kontrak'                 => $this->request->getPost('no_kontrak'),
-            'permintaan_status'          => $this->request->getPost('permintaan_status'),
-            'permintaan_sales'            => $this->request->getPost('permintaan_sales'),
-            'permintaan_lokasi_survey'   => $this->request->getPost('permintaan_lokasi_survey'),
-            'permintaan_jadwal_survey'   => $this->request->getPost('permintaan_jadwal_survey'),
-            'date_create'                => date('Y-m-d'),
-            'permintaan_approval'        => $this->request->getPost('permintaan_approval'),
-            'approve_by'                 => $this->request->getPost('approve_by'),
-            'keterangan_pekerjaan'       => $this->request->getPost('keterangan_pekerjaan')
+           'id_permintaan'              => $this->request->getPost('id_permintaan'),
+           'penawaran_no'               => $this->request->getPost('penawaran_no'),
+           'penawaran_due_date'         => $this->request->getPost('penawaran_due_date'),
+           'penawaran_validasi_date'    => $this->request->getPost('penawaran_validasi_date'),
+           'penawaran_term'             => $this->request->getPost('penawaran_term'),
         ];
 
         $penawaranModel = new PenawaranModel;
@@ -225,9 +206,8 @@ class Permintaan extends Controller
 
 
         $rules = [
-            'id_permintaan'            => 'required',
-            'id_customer'               => 'required',
-            'nama_pekerjaan'            => 'required'
+            'id_penawaran'            => 'required',
+            'id_permintaan'           => 'required',
         ];
 
     
@@ -242,25 +222,13 @@ class Permintaan extends Controller
         }
 
         $insertData = [
-            
-            'id_customer'                => $this->request->getPost('id_customer'),
-            'id_permintaan'             => $this->request->getPost('id_permintaan'),
-            'nama_pekerjaan'            => $this->request->getPost('nama_pekerjaan'),
-            'no_permintaan'             => $this->request->getPost('no_permintaan'),
-            'no_survey'                 => $this->request->getPost('no_survey'),
-            'no_kontrak'                => $this->request->getPost('no_kontrak'),
-            'permintaan_status'         => $this->request->getPost('permintaan_status'),
-            'permintaan_sales'           => $this->request->getPost('permintaan_sales'),
-            'permintaan_lokasi_survey'  => $this->request->getPost('permintaan_lokasi_survey'),
-            'permintaan_jadwal_survey'  => $this->request->getPost('permintaan_jadwal_survey	'),
-            'date_create'               => date('Y-m-d'),
-            'permintaan_approval'       => $this->request->getPost('permintaan_approval'),
-            'approve_by'                => $this->request->getPost('approve_by'),
-            'keterangan_pekerjaan'      => $this->request->getPost('keterangan_pekerjaan'),
-            'permintaan_supervisi'      => $this->request->getPost('permintaan_supervisi'),
-            'permintaan_supervisi_status' => $this->request->getPost('permintaan_supervisi_status')
-        ];
-
+            'id_penawaran'               => $this->request->getPost('id_penawaran'),
+            'id_permintaan'              => $this->request->getPost('id_permintaan'),
+            'penawaran_no'               => $this->request->getPost('penawaran_no'),
+            'penawaran_due_date'         => $this->request->getPost('penawaran_due_date'),
+            'penawaran_validasi_date'    => $this->request->getPost('penawaran_validasi_date'),
+            'penawaran_term'             => $this->request->getPost('penawaran_term')
+         ];
         $penawaranModel = new PenawaranModel;
         $penawaranModel->save($insertData);
 
@@ -295,68 +263,10 @@ class Permintaan extends Controller
 
         }
 
-        
-
         return $this->response->setJson($response);
     }
 
-    public function destroy()
-    {
 
-    }
-
-    public function accPenunjukan($id_permintaan) {
-
-        $response = [
-            'code'      => 0,
-            'message'   => '',
-            'data'      => [],
-            'errors'    => []
-        ];
-
-        $dataToInsert = [
-            'id_permintaan' => $id_permintaan,
-            'permintaan_supervisi_status' => $this->request->getPost('permintaan_supervisi_status'),
-            'permintaan_supervisi' => $this->request->getPost('permintaan_supervisi')
-        ];
-
-        (new PenawaranModel)->save($dataToInsert);
-
-        $response['code']       = 200;
-        $response['message']    = 'Success';
-        $response['data']       = $dataToInsert;
-
-
-        return $response;
-
-    }
-
-    public function accHasilSurvey($id_permintaan) {
-
-        $response = [
-            'code'      => 0,
-            'message'   => '',
-            'data'      => [],
-            'errors'    => []
-        ];
-
-        $dataToInsert = [
-            'id_permintaan'                     => $id_permintaan,
-            'permintaan_supervisi'              => $this->request->getPost('permintaan_supervisi'),
-            'permintaan_hasil_survey_status'    => $this->request->getPost('permintaan_hasil_survey_status')
-        ];
-
-        (new PenawaranModel)->save($dataToInsert);
-
-        $response['code']       = 200;
-        $response['message']    = 'Success';
-        $response['data']       = $dataToInsert;
-
-
-        return $response;
-
-    }
 
   
-
 }

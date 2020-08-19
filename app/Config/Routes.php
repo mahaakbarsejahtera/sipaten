@@ -85,6 +85,16 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 	$routes->post('permintaan-item/update-estimasi', 'PermintaanItem::updateEstimasi');
 	$routes->post('permintaan-item/update-boq', 'PermintaanItem::updateBoq');
 	$routes->post('permintaan-item/(:num)/delete', 'PermintaanItem::delete/$1');
+	
+	// Penawaran
+	$routes->get('penawaran', 'Penawaran::index');
+	$routes->get('penawaran/show/(:num)', 'Penawaran::show/$1');
+
+	$routes->post('penawaran', 'Penawaran::store');
+	$routes->post('penawaran/update', 'Penawaran::update');
+
+	$routes->post('penawaran/(:num)/delete', 'Penawaran::delete/$1');
+	$routes->post('penawaran/destroy', 'Penawaran::destroy');
 
 
 	// Roles
