@@ -29,6 +29,13 @@
                 <p>Penawaran</p>
             </a>
         </li>
+
+        <li class="nav-item">
+            <a href="<?php echo base_url('dashboard/pemasaran/negosiasi') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Negosiasi</p>
+            </a>
+        </li>
     </ul>
 </li>
 

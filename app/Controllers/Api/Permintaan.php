@@ -36,6 +36,7 @@ class Permintaan extends Controller
 
             survey.id_survey, 
             customers.id_customer, customers.nama_customer, customers.pic_nama_customer, customers.pic_no_customer, customers.kode_customer,
+            pic.id_pic, pic.nama_pic, pic.divisi_pic, pic.kontak_pic, pic.jabatan_pic, 
 
             supervisi.user_fullname as nama_supervisi, supervisi.user_code as supervisi_code
 
@@ -44,6 +45,7 @@ class Permintaan extends Controller
         ->join('survey', 'permintaan.id_permintaan=survey.id_permintaan', 'left')
         ->join('users as supervisi', 'permintaan.permintaan_supervisi=supervisi.id_user', 'left')
         ->join('customers', 'permintaan.id_customer=customers.id_customer', 'left')
+        ->join('pic', 'permintaan.id_pic=pic.id_pic', 'left')
         ->find( $id );
 
         
@@ -96,20 +98,22 @@ class Permintaan extends Controller
             permintaan.id_permintaan, permintaan.nama_pekerjaan, permintaan.permintaan_status,
             permintaan.permintaan_sales, permintaan.permintaan_lokasi_survey, permintaan.permintaan_jadwal_survey, permintaan.date_create,
             permintaan.keterangan_pekerjaan, permintaan.permintaan_supervisi, permintaan.permintaan_supervisi_status,
-            permintaan.permintaan_hasil_survey_status,
+            permintaan.permintaan_hasil_survey_status, permintaan.id_pic,
 
             sales.id_user, sales.user_fullname, sales.user_name, sales.user_status,
 
             survey.id_survey, 
             customers.id_customer, customers.nama_customer, customers.pic_nama_customer, customers.pic_no_customer,
+            pic.nama_pic, pic.divisi_pic, pic.kontak_pic, pic.jabatan_pic, 
 
-            supervisi.user_fullname as nama_supervisi,
+            supervisi.user_fullname as nama_supervisi
 
         ")
         ->join('users as sales', 'permintaan.permintaan_sales=sales.id_user', 'left')
         ->join('survey', 'permintaan.id_permintaan=survey.id_permintaan', 'left')
         ->join('users as supervisi', 'permintaan.permintaan_supervisi=supervisi.id_user', 'left')
-        ->join('customers', 'permintaan.id_customer=customers.id_customer', 'left');
+        ->join('customers', 'permintaan.id_customer=customers.id_customer', 'left')
+        ->join('pic', 'permintaan.id_pic=pic.id_pic', 'left');
 
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
@@ -221,13 +225,14 @@ class Permintaan extends Controller
         }
 
         $insertData = [
+            'id_pic'                     => $this->request->getPost('id_pic'),
             'id_customer'                => $this->request->getPost('id_customer'),
             'nama_pekerjaan'             => $this->request->getPost('nama_pekerjaan'),
             'no_permintaan'              => $this->request->getPost('no_permintaan'),
             'no_survey'                  => $this->request->getPost('no_survey'),
             'no_kontrak'                 => $this->request->getPost('no_kontrak'),
             'permintaan_status'          => $this->request->getPost('permintaan_status'),
-            'permintaan_sales'            => $this->request->getPost('permintaan_sales'),
+            'permintaan_sales'           => $this->request->getPost('permintaan_sales'),
             'permintaan_lokasi_survey'   => $this->request->getPost('permintaan_lokasi_survey'),
             'permintaan_jadwal_survey'   => $this->request->getPost('permintaan_jadwal_survey'),
             'date_create'                => date('Y-m-d'),
@@ -279,8 +284,8 @@ class Permintaan extends Controller
         }
 
         $insertData = [
-            
-            'id_customer'                => $this->request->getPost('id_customer'),
+            'id_pic'                    => $this->request->getPost('id_pic'),
+            'id_customer'               => $this->request->getPost('id_customer'),
             'id_permintaan'             => $this->request->getPost('id_permintaan'),
             'nama_pekerjaan'            => $this->request->getPost('nama_pekerjaan'),
             'no_permintaan'             => $this->request->getPost('no_permintaan'),
@@ -289,7 +294,7 @@ class Permintaan extends Controller
             'permintaan_status'         => $this->request->getPost('permintaan_status'),
             'permintaan_sales'           => $this->request->getPost('permintaan_sales'),
             'permintaan_lokasi_survey'  => $this->request->getPost('permintaan_lokasi_survey'),
-            'permintaan_jadwal_survey'  => $this->request->getPost('permintaan_jadwal_survey	'),
+            'permintaan_jadwal_survey'  => $this->request->getPost('permintaan_jadwal_survey'),
             'date_create'               => date('Y-m-d'),
             'permintaan_approval'       => $this->request->getPost('permintaan_approval'),
             'approve_by'                => $this->request->getPost('approve_by'),

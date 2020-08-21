@@ -2,11 +2,10 @@
 
 namespace App\Controllers\Api;
 
-use App\Models\CustomersModel;
 use App\Models\PicModel;
 use CodeIgniter\Controller;
 
-class Customer extends Controller
+class Pic extends Controller
 {
 
     public function __construct() {
@@ -23,7 +22,7 @@ class Customer extends Controller
             'errors'        => []
         ];
 
-        $find = (new CustomersModel)->find( $id );
+        $find = (new PicModel)->find( $id );
 
         if($find) {
             $response['data']       = $find;
@@ -48,7 +47,7 @@ class Customer extends Controller
 
 
         
-        $customersModel = new CustomersModel();
+        $picModel = new PicModel();
 
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
@@ -59,14 +58,15 @@ class Customer extends Controller
                     
                     case 'search':
                         
-                        $customersModel->like('customers.nama_customer', $filter['value']);
+                        $picModel->like('pic.nama_pic', $filter['value']);
 
                     break;
 
                     default:
                     
-                    if(in_array($filter['key'], array_keys($customersModel->filterby))) {
+                    if(in_array($filter['key'], array_keys($picModel->filterby))) {
                         $response['filters'][] = $filter['key'];
+                        $picModel->where($filter['key'], $filter['value']);
                     }
 
                     break;
@@ -79,24 +79,15 @@ class Customer extends Controller
         if(!empty($this->request->getGet('orders'))) {
             foreach($this->request->getGet('orders') as $order) {
                 $response['orders'][] = $order['orderby'];
-                $customersModel->orderBy($order['orderby'], $order['order']);
+                $picModel->orderBy($order['orderby'], $order['order']);
             }
         }
 
 
-        $lists = $customersModel->paginate(10, 'group1');
-        $pager = $customersModel->pager;
+        $lists = $picModel->paginate(10, 'group1');
+        $pager = $picModel->pager;
 
-        $data = [];
-        foreach($lists as $list)
-        {
-            $data[] = $list + [
-                'pics' => (new PicModel)->where('id_customer', $list['id_customer'])->findAll()
-            ];
-        }
-
-    
-        $response['data']['lists'] = $data;
+        $response['data']['lists'] = $lists;
         $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
         
 
@@ -115,7 +106,8 @@ class Customer extends Controller
 
 
         $rules = [
-            'nama_customer'     => 'required',
+            'id_customer'       => 'required',
+            'nama_pic'          => 'required'
         ];
 
     
@@ -130,20 +122,19 @@ class Customer extends Controller
         }
 
         $insertData = [
-            'nama_customer'         => (string)$this->request->getPost('nama_customer'),
-            'alamat_customer'       => (string)$this->request->getPost('alamat_customer'),
-            // 'pic_nama_customer'     => (string)$this->request->getPost('pic_nama_customer'),
-            // 'pic_no_customer'       => (string)$this->request->getPost('pic_no_customer'),
-            'kode_customer'         => (string)$this->request->getPost('kode_customer')
+            'id_customer'   => (int)$this->request->getPost('id_customer'),
+            'nama_pic'      => (string)$this->request->getPost('nama_pic'),
+            'divisi_pic'    => (string)$this->request->getPost('divisi_pic'),
+            'jabatan_pic'   => (string)$this->request->getPost('jabatan_pic'),
+            'kontak_pic'    => (string)$this->request->getPost('kontak_pic')
         ];
 
-        $customersModel = new CustomersModel;
-        $customersModel->save($insertData);
+        $picModel = new PicModel;
+        $picModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
-        $response['model']      = $customersModel->getInsertID();
-        //$response['data'] = $insertData;
+        $response['model']      = $picModel->getInsertID();
         $response['message']    = 'Insert Success';
 
         return $this->response->setJson($response);
@@ -180,20 +171,19 @@ class Customer extends Controller
         }
 
         $insertData = [
-            'id_customer'           => (int)$this->request->getPost('id_customer'),
-            'nama_customer'         => (string)$this->request->getPost('nama_customer'),
-            'alamat_customer'       => (string)$this->request->getPost('alamat_customer'),
-            // 'pic_nama_customer'     => (string)$this->request->getPost('pic_nama_customer'),
-            // 'pic_no_customer'       => (string)$this->request->getPost('pic_no_customer'),
-            'kode_customer'         => (string)$this->request->getPost('kode_customer')
+            'id_pic'        => (int)$this->request->getPost('id_pic'),
+            'id_customer'   => (int)$this->request->getPost('id_customer'),
+            'nama_pic'      => (string)$this->request->getPost('nama_pic'),
+            'divisi_pic'    => (string)$this->request->getPost('divisi_pic'),
+            'jabatan_pic'   => (string)$this->request->getPost('jabatan_pic'),
+            'kontak_pic'    => (string)$this->request->getPost('kontak_pic')
         ];
 
-        $customersModel = new CustomersModel;
-        $customersModel->save($insertData);
+        $picModel = new PicModel;
+        $picModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
-        $response['model']      = $this->request->getPost('id_role');
         //$response['data'] = $insertData;
         $response['message']    = 'Update Success';
 
@@ -209,10 +199,10 @@ class Customer extends Controller
             'errors'        => []
         ];
 
-        $find = (new CustomersModel)->find( $id );
+        $find = (new PicModel)->find( $id );
         if($find) {
 
-            (new CustomersModel)->delete($id);
+            (new PicModel)->delete($id);
 
             $response = [
                 'code'      => 200,
@@ -226,14 +216,5 @@ class Customer extends Controller
         return $this->response->setJson($response);
     }
 
-    public function destroy()
-    {
-
-    }
-
-    public function changePassword() 
-    {
-
-    }
 
 }

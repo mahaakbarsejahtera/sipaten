@@ -204,6 +204,53 @@ class Home extends Controller
         ]);
     }
 
+    public function pemasaranNegoisasi() {
+        $breadcrumb = (new BreadCrumb)->set([
+            [
+                'name' => 'Dashboard',
+                'url' => base_url('dashboard'),
+            ],
+            [
+                'name' => 'Negosiasi',
+                'active' => true
+            ],
+        ])->render();
+        
+        return view('admin/pemasaran/negosiasi', [
+            'title' => 'Negosiasi',
+            'breadcrumb' => $breadcrumb,
+            'table'         => (new Table())->setColumns([
+                [
+                    'name' => 'No Surat',
+                ],
+                [
+                    'name' => 'Pekerjaan',
+                ],
+                [
+                    'name' => 'Customer'
+                ],
+                [
+                    'name' => 'Sales'
+                ],
+                [
+                    'name' => 'Nilai Penawaran'
+                ],
+                [
+                    'name' => 'Tanggal',
+                ],  
+                [
+                    'name' => 'Kondisi Penawaran',
+                ],
+
+                [
+                    'name' => 'Aksi'
+                ],
+
+            ])
+            ->render("table-data")
+        ]);
+    }
+
 
     // TEKNIK
 

@@ -129,7 +129,10 @@
             </thead>
         </table>
 
-        <div><?php echo $penawaran->penawaran_term ?></div>
+        <div>
+            <div>Kondisi Penawaran</div>
+            <?php echo $penawaran->penawaran_term ?>
+        </div>
 
         <p>Demikian penawaran ini kami buat dan besar harapan kami mendapatkan respon positif dari Bapak/Ibu segera, atas kerja sama dan perhatiannya kami ucapkan terimkasih.</p>
     

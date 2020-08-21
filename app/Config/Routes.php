@@ -97,7 +97,6 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 	$routes->post('penawaran/destroy', 'Penawaran::destroy');
 	$routes->get('penawaran/no-penawaran/(:num)', 'Penawaran::noPenawaran/$1');
 
-
 	// Roles
 	$routes->get('roles', 'Roles::index');
 	$routes->get('roles/show/(:num)', 'Roles::show/$1');
@@ -118,6 +117,15 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 	$routes->post('customer/(:num)/delete', 'Customer::delete/$1');
 	$routes->post('customer/destroy', 'Customer::destroy');
 
+	//PIC
+	$routes->get('pic', 'Pic::index');
+	$routes->get('pic/show/(:num)', 'Pic::show/$1');
+
+	$routes->post('pic', 'Pic::store');
+	$routes->post('pic/update', 'Pic::update');
+
+	$routes->post('pic/(:num)/delete', 'Pic::delete/$1');
+	$routes->post('pic/destroy', 'Pic::destroy');
 
 });
 
@@ -134,6 +142,7 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 		$routes->get('customer', 'Home::pemasaranCustomer');
 		$routes->get('permintaan', 'Home::pemasaranPermintaan');
 		$routes->get('penawaran', 'Home::pemasaranPenawaran');
+		$routes->get('negosiasi', 'Home::pemasaranNegoisasi');
 
 	});
 

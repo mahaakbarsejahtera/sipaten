@@ -91,6 +91,8 @@
                             </select>
                         </div>
 
+                
+
                         <div class="form-group">
                             <label for="i-nama_pekerjaan">Nama pekerjaan</label>
                             <input type="text" name="nama_pekerjaan" class="form-control" id="i-nama_pekerjaan">
@@ -944,6 +946,9 @@
                 url: "<?php echo base_url('api/survey/item/delete') ?>/" + id_survey_item
             })
         }
+
+
+        
 
     })
 </script>

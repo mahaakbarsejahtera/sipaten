@@ -305,7 +305,8 @@ class Penawaran extends Controller
         ->select("COUNT(*) as no_penawaran")
         ->where('YEAR(penawaran_validasi_date)', date('Y'))
         ->get()
-        ->getRow()->no_penawaran;
+        ->getRow()
+        ->no_penawaran;
         
 
         //var_dump($no_penawaran);
@@ -317,7 +318,7 @@ class Penawaran extends Controller
             'VII', 'VIII', 'IX',
             'X', 'XI', 'XII'
         ];
-        $no_penawaran++;
+        $no_penawaran = sprintf("%'.03d\n", ++$no_penawaran);
         $strNoPenawaran = "{$no_penawaran}/PN/{$user_code}/{$customer_code}/" . $months[(int)date('m')-1] ."/" . date('Y');
 
         return $strNoPenawaran;

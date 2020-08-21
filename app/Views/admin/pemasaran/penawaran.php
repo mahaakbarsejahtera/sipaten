@@ -185,7 +185,8 @@
                         
                             <tr>
                                 <td>
-                                    <a href="${baseUrl}/dashboard/laporan/lampiran-penawaran?id_penawaran=${v.id_penawaran}" target="_blank">${v.penawaran_no}</a>
+                                    <a href="${baseUrl}/dashboard/laporan/lampiran-penawaran?id_penawaran=${v.id_penawaran}" target="_blank">${v.penawaran_no}</a><br/>
+                                    <a href="${baseUrl}/dashboard/laporan/estimasi/?id_permintaan=${v.id_permintaan}" target="_blank">${Rp(v.estimasi_harga_jual)}</a>
                                 </td>
                                 <td>
                                     <div>${v.nama_pekerjaan}</div>
