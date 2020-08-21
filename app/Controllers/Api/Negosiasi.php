@@ -7,7 +7,7 @@ use App\Models\PermintaanItemsModel;
 use App\Models\NegosiasiModel;
 use CodeIgniter\Controller;
 
-class Permintaan extends Controller
+class Negosiasi extends Controller
 {
 
 
@@ -26,9 +26,12 @@ class Permintaan extends Controller
         ->builder()
         ->select("
 
-            negosiasi.id_nego, negosiasi.nego_term, negosiasi.nego_pic_nama, negosiasi.nego_pic_jabatan, 
+            negosiasi.id_permintaan, negosiasi.id_nego, negosiasi.nego_term, negosiasi.nego_pic_nama, negosiasi.nego_pic_jabatan, 
 
-            permintaan.id_permintaan, permintaan.nama_pekerjaan, permintaan.permintaan_status,
+            
+            penawaran.penawaran_no, penawaran.penawaran_due_date, penawaran.penawaran_validasi_date, penawaran.penawaran_term,
+
+            permintaan.nama_pekerjaan, permintaan.permintaan_status,
             permintaan.permintaan_sales, permintaan.permintaan_lokasi_survey, permintaan.permintaan_jadwal_survey, permintaan.date_create,
             permintaan.keterangan_pekerjaan, permintaan.permintaan_supervisi, permintaan.permintaan_supervisi_status,
             permintaan.permintaan_hasil_survey_status,
@@ -43,6 +46,7 @@ class Permintaan extends Controller
 
         ")
         ->join('permintaan', 'negosiasi.id_permintaan=permintaan.id_permintaan', 'left')
+        ->join('penawaran', 'negosiasi.id_permintaan=penawaran.id_permintaan', 'left')
         ->join('users as sales', 'permintaan.permintaan_sales=sales.id_user', 'left')
         ->join('survey', 'permintaan.id_permintaan=survey.id_permintaan', 'left')
         ->join('users as supervisi', 'permintaan.permintaan_supervisi=supervisi.id_user', 'left')
@@ -56,7 +60,11 @@ class Permintaan extends Controller
 
             $harga = (new PermintaanItemsModel)
                 ->builder()
-                ->select("SUM(item_qty * item_hp) as estimasi_harga_pokok, SUM(item_qty * item_hj) as estimasi_harga_jual")
+                ->select("
+                    SUM(item_qty * item_hp) as estimasi_harga_pokok, 
+                    SUM(item_qty * item_hj) as estimasi_harga_jual, 
+                    SUM(item_qty * item_hj_nego) as estimasi_harga_nego
+                ")
                 ->where('id_permintaan', $find['id_permintaan'])
                 ->groupBy('id_permintaan')
                 ->get()
@@ -68,7 +76,8 @@ class Permintaan extends Controller
                 'item_hp_nego'          => (int)$find['item_hp_nego'],
                 'item_hj_nego'          => (int)$find['item_hj_nego'],
                 'estimasi_harga_pokok'  => (int)$harga->estimasi_harga_pokok,
-                'estimasi_harga_jual'   => (int)$harga->estimasi_harga_jual
+                'estimasi_harga_jual'   => (int)$harga->estimasi_harga_jual,
+                'estimasi_harga_nego'   => (int)$harga->estimasi_harga_nego
             ];
 
             $response['data']       = $find;
@@ -108,10 +117,14 @@ class Permintaan extends Controller
             customers.id_customer, customers.nama_customer, customers.pic_nama_customer, customers.pic_no_customer,
             pic.nama_pic, pic.divisi_pic, pic.kontak_pic, pic.jabatan_pic, 
 
-            supervisi.user_fullname as nama_supervisi
+            supervisi.user_fullname as nama_supervisi,
+
+            penawaran.penawaran_no, penawaran.penawaran_due_date, penawaran.penawaran_validasi_date, penawaran.penawaran_term,
+            negosiasi.id_nego, negosiasi.nego_term, negosiasi.nego_pic_nama, negosiasi.nego_pic_jabatan
 
         ")
         ->join('permintaan', 'negosiasi.id_permintaan=permintaan.id_permintaan', 'left')
+        ->join('penawaran', 'negosiasi.id_permintaan=penawaran.id_permintaan', 'left')
         ->join('users as sales', 'permintaan.permintaan_sales=sales.id_user', 'left')
         ->join('survey', 'permintaan.id_permintaan=survey.id_permintaan', 'left')
         ->join('users as supervisi', 'permintaan.permintaan_supervisi=supervisi.id_user', 'left')
@@ -227,7 +240,7 @@ class Permintaan extends Controller
             'nego_pic_jabatan'          => $this->request->getPost('nego_pic_jabatan'),
         ];
 
-        $permintaanModel = new PermintaanModel;
+        $permintaanModel = new NegosiasiModel();
         $permintaanModel->save($insertData);
 
         $response['code']       = 200;
@@ -296,10 +309,10 @@ class Permintaan extends Controller
             'errors'        => []
         ];
 
-        $find = (new PermintaanModel)->find( $id );
+        $find = (new NegosiasiModel)->find( $id );
         if($find) {
 
-            (new PermintaanModel)->delete($id);
+            (new NegosiasiModel)->delete($id);
 
             $response = [
                 'code'      => 200,
@@ -320,7 +333,7 @@ class Permintaan extends Controller
 
     }
 
-    public function accPenunjukan($id_permintaan) {
+    public function updateNegosiasi() {
 
         $response = [
             'code'      => 0,
@@ -330,38 +343,11 @@ class Permintaan extends Controller
         ];
 
         $dataToInsert = [
-            'id_permintaan' => $id_permintaan,
-            'permintaan_supervisi_status' => $this->request->getPost('permintaan_supervisi_status'),
-            'permintaan_supervisi' => $this->request->getPost('permintaan_supervisi')
+            'id_item'           => $this->request->getPost('id_item'),
+            'item_hj_nego'      => $this->request->getPost('item_hj_nego'),
         ];
 
-        (new PermintaanModel)->save($dataToInsert);
-
-        $response['code']       = 200;
-        $response['message']    = 'Success';
-        $response['data']       = $dataToInsert;
-
-
-        return $response;
-
-    }
-
-    public function accHasilSurvey($id_permintaan) {
-
-        $response = [
-            'code'      => 0,
-            'message'   => '',
-            'data'      => [],
-            'errors'    => []
-        ];
-
-        $dataToInsert = [
-            'id_permintaan'                     => $id_permintaan,
-            'permintaan_supervisi'              => $this->request->getPost('permintaan_supervisi'),
-            'permintaan_hasil_survey_status'    => $this->request->getPost('permintaan_hasil_survey_status')
-        ];
-
-        (new PermintaanModel)->save($dataToInsert);
+        (new PermintaanItemsModel())->save($dataToInsert);
 
         $response['code']       = 200;
         $response['message']    = 'Success';

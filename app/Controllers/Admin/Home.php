@@ -220,9 +220,7 @@ class Home extends Controller
             'title' => 'Negosiasi',
             'breadcrumb' => $breadcrumb,
             'table'         => (new Table())->setColumns([
-                [
-                    'name' => 'No Surat',
-                ],
+                [ 'name' => 'No Surat' ],
                 [
                     'name' => 'Pekerjaan',
                 ],

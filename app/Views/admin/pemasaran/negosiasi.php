@@ -38,7 +38,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-md-3">
-                    <a href="javascript:void(0)" data-toggle="modal" data-target="#form-modal" class="btn btn-primary mb-3">Tambah Data</a>
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#modal-estimasi" class="btn btn-primary mb-3">Tambah Data</a>
                 </div>
                 <div class="col-12 col-md-9">
                     <form class="w-100" id="filter-form">
@@ -66,170 +66,57 @@
     </section>
     <!-- /.content -->
 
-    
-    <!-- Modal -->
-    <div class="modal fade" id="form-modal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <!-- <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                </div> -->
-                <div class="modal-body">
-                    <form action="" id="form">
 
-                        <input type="hidden" name="truth_action" id="i-truth_action" value="">
-                        <input type="hidden" name="id_permintaan" id="i-id_permintaan">
-                        <input type="hidden" name="_method" value="POST">
-                        
-                        <div class="form-group">
-                            <label for="i-id_customer">Customer</label>
-                            <select name="id_customer" id="i-id_customer" class="form-control">
-                                <option value="">Pilih</option>
-                            </select>
-                        </div>
 
-                        <div class="form-group">
-                            <label for="i-id_pic">Divisi</label>
-                            <select name="id_pic" id="i-id_pic" class="form-control">
-                                <option value="">Pilih</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="i-permintaan_sales">Sales</label>
-                            <select name="permintaan_sales" id="i-permintaan_sales" class="form-control">
-                                <option value="">Pilih</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="i-nama_pekerjaan">Nama pekerjaan</label>
-                            <input type="text" name="nama_pekerjaan" class="form-control" id="i-nama_pekerjaan">
-                        </div>
-
-                        
-
-                        <div class="form-group">
-                            <label for="i-permintaan_lokasi_survey">Lokasi Survey</label>
-                            <input type="text" name="permintaan_lokasi_survey" class="form-control" id="i-permintaan_lokasi_survey">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="i-permintaan_jadwal_survey">Jadwal Survey</label>
-                            <input type="date" name="permintaan_jadwal_survey" class="form-control" id="i-permintaan_jadwal_survey">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="i-permintaan_status">Status</label>
-                            <select name="permintaan_status" id="i-permintaan_status" class="form-control">
-                                <option value="Draft">Draft</option>
-                                <option value="Negosiasi">Negosiasi</option>
-                                <option value="Publish">Publish</option>
-                                <option value="Kontrak">Kontrak</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="i-keterangan_pekerjaan">Keterangan</label>
-                            <textarea name="keterangan_pekerjaan" id="i-keterangan_pekerjaan" rows="5" class="form-control"></textarea>
-                        </div>
-
-                        <button class="btn btn-primary" id="js-save">Simpan Permintaan</button>
-
-                    </form>
-                </div>
-                <!-- <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save</button>
-                </div> -->
-            </div>
-        </div>
-    </div>
-
-    <!-- BOQ Modal -->
-    <div class="modal fade" id="modal-boq" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">BOQ</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                </div>
-                <div class="modal-body">
-                    
-                    <form action="" id="form-boq">
-
-                        <!-- <input name="id_survey" type="hidden" id="i-id_survey">
-                        <input name="survey_divisi" type="hidden" id="i-survey_divisi"> -->
-
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Item</th>
-                                        <th width="80">Qty</th>
-                                        <th width="80">Unit</th>
-                                        <th width="120">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>
-                                            <input name="items[name]" type="text" class="form-control form-control-sm" placeholder="Masukann Nama item" value="" id="boq-item_name">
-                                        </th>
-                                        <th>
-                                            <input name="items[qty]" type="text" class="form-control form-control-sm" placeholder="Masukan Qty" value="" id="boq-item_qty">
-                                        </th>
-                                        <th>
-                                            <input name="items[unit]" type="text" class="form-control form-control-sm" placeholder="Masukan Unit" value="" id="boq-item_unit">
-                                        </th>
-                                       
-                                        <th>
-                                            <a href="javascript:void(0)" class="btn btn-primary" id="js-add-boq"><span class="fas fa-plus"></span></a>
-                                        </th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div> 
-    </div>
-    <!-- /BOQ Modal -->
 
     <!-- BOQ Modal -->
     <div class="modal fade" id="modal-estimasi" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-        <div class="modal-dialog" role="document" style="max-width: 100%;">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Estimasi Harga</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                    <h5 class="modal-title">Negosiasi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     
                     <form action="" id="form-estimasi">
+                        <input type="hidden" name="truth_action" id="i-truth_action" value="">
+                        <input type="hidden" name="id_nego" id="i-id_nego">
+                        <input type="hidden" name="_method" value="POST">
                         
+                        <div class="form-row">
+                            <div class="form-group col-12 col-md-4" >
+                                <label for="i-id_permintaan">Permintaan</label>
+                                <select name="id_permintaan" id="i-id_permintaan" class="form-control">
+                                    <option value="">Pilih</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-12 col-md-4">
+                                <label for="i-nego_pic_nama">Negosiator</label>
+                                <input type="text" name="nego_pic_nama" id="i-nego_pic_nama" class="form-control">
+                            </div>
+
+                            <div class="form-group col-12 col-md-4">
+                                <label for="i-nego_pic_jabatan">Jabatan</label>
+                                <input type="text" name="nego_pic_jabatan" id="i-nego_pic_jabatan" class="form-control">
+                            </div>
+                        </div>
+
                         <div class="table table-responsive">
                             <table class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th rowspan="2" valign="middle" class="text-center align-middle" width="80">
+                                        <th rowspan="2" valign="middle" class="text-center align-middle" width="40">
                                             <span>No</span>
                                         </th>
                                         <th rowspan="2" class="text-center align-middle">Item</th>
                                         <th rowspan="2" class="text-center align-middle">Qty</th>
-                                        <th colspan="2" class="text-center">Harga Pokok</th>
-                                        <th width="10" rowspan="2" class="border-top-0 border-right-0 border-bottom-0"></th>
                                         <th colspan="2" class="text-center">Harga Jual</th>
-                                        <th rowspan="2" class="text-center align-middle" width="150">Margin</th>
+                                        <th width="10" rowspan="2" class="border-top-0 border-right-0 border-bottom-0"></th>
+                                        <th colspan="2" class="text-center">Harga Nego</th>
                                     </tr>
                                     <tr>
                                         <th class="text-center" width="120">Harga</th>
@@ -241,50 +128,15 @@
                                 <tbody></tbody>
                             </table>
                         </div>
-                        <!-- <div class="row">
-                            <div class="col-7 col-md-7">
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Item</th>
-                                                <th>Qty</th>
-                                                <th colspan="2">Harga Pokok</th>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td>Harga</td>
-                                                <td>Total</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
 
-                            </div>
-                            <div class="col-5 col-md-5">
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th colspan="2">Harga Jual</th>
-                                                <th>Margin</th>
-                                            </tr>
-                                            <tr>
-                                                <td>Harga</td>
-                                                <td>Total</td>
-                                                <td></td>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                        
-                                    </table>
-                                </div>
-                            </div>
-                        </div> -->
 
-                        <button class="btn btn-primary" id="js-save-estimasi">Simpan Estimasi</button>
+                        <div class="form-group">
+                            <label for="i-nego_term">Kondisi Negosiasi</label>
+                            <textarea name="nego_term" id="i-nego_term" rows="10" class="form-control"></textarea>
+                        </div>
+
+
+                        <button class="btn btn-primary" id="js-save-estimasi">Simpan Negosiasi</button>
                         
                     </form>
                 </div>
@@ -299,12 +151,22 @@
 
 <?php $this->section('footerScript') ?>
 
+<script src="<?php echo base_url('/assets/adminlte/plugins/select2/js/select2.min.js') ?>"></script>
+<script src="<?php echo base_url('/assets/plugins/tinymce/js/tinymce/tinymce.min.js') ?>"></script>
+
 <script>
     $(function(){
 
         let truthAction = $('#i-truth_action');
         let tableData = $('#table-data');
         let form = $('#form');
+
+        tinymce.init({
+            selector: '#i-nego_term',
+            menubar: false,
+            plugins: "lists",
+            toolbar: "numlist bullist",
+        });
 
         loadData();
         function loadData(data = {}) {
@@ -316,10 +178,10 @@
             `);
 
             $.ajax({
-                url: "<?php echo base_url('/api/permintaan') ?>",
+                url: "<?php echo base_url('/api/negosiasi') ?>",
                 data: data,
                 success: function(response) {
-                    console.log('load data', response);
+
                     let html =  ``;
 
                     response.data.lists.map((v, i) => {
@@ -328,33 +190,32 @@
                         
                             <tr>
                                 <td>
+                                    <ul>
+                                        <li><a href="${baseUrl}/dashboard/laporan/lampiran-penawaran?id_penawaran=${v.id_penawaran}" target="_blank">${v.penawaran_no}</a></li>
+                                        <li>Harga Jual: <a href="${baseUrl}/dashboard/laporan/estimasi/?id_permintaan=${v.id_permintaan}" target="_blank">${Rp(v.estimasi_harga_jual)}</a></li>
+                                        <li>Harga Nego: <a href="${baseUrl}/dashboard/laporan/nego/?id_permintaan=${v.id_permintaan}" target="_blank">${Rp(v.estimasi_harga_nego)}</a></li>
+                                    </ul>
+                                </td>
+                                <td>
                                     <div>${v.nama_pekerjaan}</div>
                                 </td>
                                 <td>${v.nama_customer}</td>
-                                <td>${v.permintaan_lokasi_survey}</td>
-                                <td>${v.permintaan_jadwal_survey}</td>
-                                <td>${v.keterangan_pekerjaan}</td>
-                                
                                 <td>${v.user_fullname}</td>
-                                <td>${v.permintaan_status}</td>
-                                <td>${v.date_create}</td>
-                                <td><a href="javascript:void(0)" data-permintaan="${v.id_permintaan}" title="Lihat Hasil Survey" data-toggle="table-action" data-action="hasil-survey">BOQ</a></td>
+                                <td>${Rp(v.estimasi_harga_pokok)}</td>
                                 <td>
-                                    <a href="javascript:void(0)" data-permintaan="${v.id_permintaan}" data-toggle="table-action" data-action="estimasi-harga">${Rp(v.estimasi_harga_pokok)}</a>
+                                    <ol style="list-style: none;" class="p-0">
+                                        <li>Due Date: <b>${v.penawaran_due_date}</b></li>
+                                        <li>Tanggal Penawaran: <b>${v.penawaran_validasi_date}</b></li>
+                                    <ol>
                                 </td>
-                                <td>
-                                    <div class="d-flex flex-column">
-                                        <a href="${baseUrl + '/dashboard/laporan/estimasi/?id_permintaan=' + v.id_permintaan}" download>${Rp(v.estimasi_harga_jual)}</a>
-  
-                                    </div>
-                                </td>
+                                <td>${v.nego_term}</td>
                                 <td>
 
-                                    <a href="javascript:void(0)" class="btn btn-warning mb-2" title="Edit Permintaan" data-toggle="table-action" data-action="edit" data-id="${v.id_permintaan}">
+                                    <a href="javascript:void(0)" class="btn btn-warning mb-2" title="Edit Negosiasi" data-toggle="table-action" data-action="edit" data-id="${v.id_nego}" data-permintaan="${v.id_permintaan}">
                                         <span class="fas fa-edit"></span>
                                     </a>
                                     
-                                    <a href="javascript:void(0)" class="btn btn-danger mb-2" title="Hapus Permintaan" data-toggle="table-action"  data-action="delete" data-id="${v.id_permintaan}">
+                                    <a href="javascript:void(0)" class="btn btn-danger mb-2" title="Hapus Negosiasi" data-toggle="table-action"  data-action="delete" data-id="${v.id_nego}">
                                         <span class="fas fa-trash"></span>
                                     </a>
 
@@ -372,58 +233,52 @@
 
         }
 
-        getUsers()
-        .then(response => {
-            let html = '<option value="">Pilih</option>';
-
-            response.data.lists.map((v, i) => {
-                html += `<option value="${v.id_user}">${v.user_fullname} - ${v.role_name}</option>`;
-            })
-
-            $('#i-permintaan_sales').html(html);
-
-        });
-
-        getCustomers()
+    
+        getPermintaan()
         .then(response => {
             console.log('getCustomers');
             let html = '<option value="">Pilih</option>';
 
             response.data.lists.map((v, i) => {
-                html += `<option value="${v.id_customer}">${v.nama_customer}</option>`;
+                html += `<option value="${v.id_permintaan}">${v.nama_pekerjaan}</option>`;
             })
 
-            $('#i-id_customer').html(html);
+            $('#i-id_permintaan').html(html);
 
         }).catch(err => {
             console.log(err);
         });
 
 
-        function getUsers() {
+        function getPermintaan() {
 
             return $.ajax({
-                url: "<?php echo base_url('/api/users?page_group1=-1') ?>",
+                url: "<?php echo base_url('/api/permintaan?page_group1=-1') ?>",
+                data: {
+                    filters: [
+                        {
+                            key: 'permintaan_status',
+                            value: 'Publish'
+                        }
+                    ]
+                }
             })
 
         }
-
-        function getCustomers() {
-
-            return $.ajax({
-                url: "<?php echo base_url('/api/customer?page_group1=-1') ?>",
-            })
-
-        }
-
 
         function addData() {
 
-            let data = form.serialize();
+            let formEstimasi = $('#form-estimasi');
+            let data = {
+                id_permintaan: $('#i-id_permintaan').val(),
+                nego_term: tinyMCE.activeEditor.getContent(),
+                nego_pic_nama: $('#i-nego_pic_nama').val(),
+                nego_pic_jabatan: $('#i-nego_pic_jabatan').val()
+            }
 
             return $.ajax({
                 method: 'POST',
-                url: "<?php echo base_url('/api/permintaan') ?>",
+                url: `${baseUrl}/api/negosiasi`,
                 data: data, 
                 success: function(response) {
                     console.log('success response add', response);
@@ -455,7 +310,7 @@
 
             return $.ajax({
                 method: 'POST',
-                url: "<?php echo base_url('/api/permintaan/update') ?>",
+                url: "<?php echo base_url('/api/negosiasi/update') ?>",
                 data: data, 
                 success: function(response) {
                     console.log('success response add', response);
@@ -464,7 +319,6 @@
 
                         case 200: 
                             Toast('success', 'Berhasil memperbaharui data');
-                            clearForm();
                             loadData();
                         break;
 
@@ -484,7 +338,7 @@
         function getData( id ) {
             
             return $.ajax({
-                url: `<?php echo base_url('/api/permintaan/show') ?>/${id}`,
+                url: `${baseUrl}/api/negosiasi/show/${id}`,
                 success: function(response) {
 
                     truthAction.val('update');
@@ -493,7 +347,7 @@
                         $('#i-' + data).val(response.data[data]);
                     }
                     
-                    $('#form-modal').modal('show');
+                    $('#estimasi-modal').modal('show');
                 }
             })
 
@@ -502,7 +356,7 @@
         function deleteData( id ) {
             return $.ajax({
                 method: 'POST',
-                url: `<?php echo base_url('/api/permintaan') ?>/${id}/delete`,
+                url: `${baseUrl}/api/negosiasi/${id}/delete`,
                 success: function(response) {
                     switch(response.code) {
                         case 200:
@@ -523,20 +377,19 @@
 
         function saveData() {
 
-            if(truthAction.val() == 'update') updateData();
-            else addData();
+            if(truthAction.val() == 'update') return updateData();
+            
+            
+            return addData();
 
         }
 
         function clearForm() {
-            $('#form')[0].reset();
+            $('#form-estimasi')[0].reset();
+            $('#form-estimasi').find('tbody').html('');
         }
 
 
-        $('#js-save').click(function(e){{
-            e.preventDefault();
-            saveData();
-        }})
 
         $(document).on('click', '#pagination-wrapper .page-item', function(e){
             e.preventDefault();
@@ -583,8 +436,6 @@
             let tbody ;
 
 
-            //btn.html(`<span class="fas fa-spin fa-spinner"></span>`);
-            console.log(action);
             switch(action) {    
                 case 'edit':
                 
@@ -632,37 +483,7 @@
 
                     break;
                 
-                case 'hasil-survey':
-
-                    let idPermintaan = $(this).data('permintaan');
-                    $('#js-add-boq').data('permintaan', idPermintaan)
-                    console.log('permintaan', idPermintaan)
-
-                    tbody = $('#form-boq').find('tbody');
-                    tbody.html('');
-
-                    loadHasilPermintaan(idPermintaan)
-                    .then(response => {
-
-                        console.log('load items hasil survey');
-
-                        let html = "";
-                        response.data.lists.map((v, i) => {
-                            console.log(v);
-    
-                            
-                            html += createRowBoq(v);
-
-                        })
-                          
-
-                        tbody.html(html);
-                        $('#modal-boq').modal('show');
-                    
-                        btn.html('BOQ');
-                    });
-
-                    break;
+        
 
                 case 'estimasi-harga':
 
@@ -759,90 +580,6 @@
                     
                     break;
                 
-                case 'loadPemasaranBoq':
-                case 'loadTeknikBoq':
-
-                    let divisi = "teknik";
-                    if(action == 'loadPemasaranBoq') 
-                    { 
-                        divisi = "pemasaran";
-                        $('#i-survey_divisi').val('pemasaran');
-                    }
-
-                    if(action == 'loadTeknikBoq') $('#i-survey_divisi').val('teknik');
-
-
-                    $('#modal-boq').modal('show');
-                   
-                    $('#i-id_survey').val(btn.data('survey'));
-                    $('#form-boq').find('tbody').html('');
-
-                    loadHasilSurvey(btn.data('survey'), divisi)
-                    .then(response => {
-
-
-                        let html = '';
-
-                        response.data.lists.map((v, i) => {
-                            let getMarin = InternalCalculation.getPersentaseMargin(v.survey_harga_pokok, v.survey_harga_jual).toFixed(2);
-                            let getMarginHTML = getMarin > 0 ? `<span class="text-success">${getMarin}%</span>` : `<span class="text-danger">${getMarin}%</span>`;
-                            html += `
-                                <tr>
-                                    <td>
-                                        <input name="items[name][${v.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukann Nama item" value="${v.survey_item_name}">
-                                    </td>
-                                    <td width="100">
-                                        <input name="items[qty][${v.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukan Qty" value="${v.survey_item_qty}">
-                                    </td>
-                                    <td width="100">
-                                        <input name="items[unit][${v.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukan Unit" value="${v.survey_item_unit}">
-                                    </td>
-                                    <td>
-                                        <input 
-                                            name="items[harga_pokok][${v.id_survey_item}]"
-                                            type="number" 
-                                            class="form-control form-control-sm" 
-                                            placeholder="Masukan Harga Pokok" 
-                                            value="${v.survey_harga_pokok}"
-                                            data-toggle="get-margin"  
-                                            data-action="harga-pokok"
-                                            data-bind="#js-harga-jual-${v.id_survey_item}"
-                                            data-target="#js-margin-${v.id_survey_item}"
-                                            id="js-harga-pokok-${v.id_survey_item}">
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <input 
-                                                name="item[harga_jual][${v.id_survey_item}]" 
-                                                type="number" class="form-control form-control-sm" 
-                                                placeholder="Masukan Harga Jual" 
-                                                value="${v.survey_harga_jual}"
-                                                data-toggle="get-margin" 
-                                                data-action="harga-jual"
-                                                data-bind="#js-harga-pokok-${v.id_survey_item}"
-                                                data-target="#js-margin-${v.id_survey_item}"
-                                                id="js-harga-jual-${v.id_survey_item}">
-                                                                                        
-                                        </div>
-                                    </td>
-                                    <td>${v.survey_item_qty * v.survey_harga_jual}</td>
-                                    <td id="js-margin-${v.id_survey_item}">${getMarginHTML}</td>
-                                    <td>
-                                        <a href="javascript:void(0)" data-item="${v.id_survey_item}" class="btn btn-danger js-remove-item"><span class="fas fa-minus"></span></a>
-                                        <a href="javascript:void(0)" data-item="${v.id_survey_item}" class="btn btn-warning js-update-item"><span class="fas fa-pen"></span></a>
-                                    </td>
-                                </tr>
-                            `;
-
-                            
-                        })
-
-                        $('#form-boq').find('tbody').html(html);
-
-                        btn.html((action == 'loadPemasaranBoq') ? "Pemasaran" : "Teknik")
-
-                    })
-                    break;
 
     
         
@@ -950,115 +687,7 @@
             updateHasilSurvey(data);
         });
 
-        function addHasilSurvey() {
-            
-            let id_survey   = $('#i-id_survey').val();
-            let item        = $('#i-survey_item_name').val();
-            let qty         = $('#i-survey_item_qty').val();
-            let unit        = $('#i-survey_item_unit').val();
-            let harga_pokok = $('#i-survey_harga_pokok').val();
-            let harga_jual  = $('#i-survey_harga_jual').val();
-            let survey_divisi = $('#i-survey_divisi').val();
-
-            let data =  {
-                id_survey: id_survey,
-                survey_item_name: item,
-                survey_item_qty: qty,
-                survey_item_unit: unit,
-                survey_harga_pokok: harga_pokok,
-                survey_harga_jual: harga_jual,
-                survey_divisi: survey_divisi,                            
-            }
-
-            return $.ajax({
-                method: 'POST',
-                url: "<?php echo base_url('/api/survey/item/add') ?>",
-                data: data, 
-                success: function(response) {
-
-                    console.log('success response add', response);
-                    
-                    switch(response.code) {
-
-                        case 200: 
-
-                            Toast('success', 'Berhasil menambahkan data');
-                            let getMarin = InternalCalculation.getPersentaseMargin(response.data.item.survey_harga_pokok, response.data.item.survey_harga_jual).toFixed(2);
-                            let getMarginHTML =  getMarin > 0 ? `<span class="text-success">${getMarin}%</span>` : `<span class="text-danger">${getMarin}%</span>`;
-                            html = `
-                                <tr>
-                                    <th>
-                                        <input name="items[name][${response.data.item.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukann Nama item" value="${response.data.item.survey_item_name}">
-                                    </th>
-                                    <th width="100">
-                                        <input name="items[qty][${response.data.item.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukan Qty" value="${response.data.item.survey_item_qty}">
-                                    </th>
-                                    <th width="100">
-                                        <input name="items[unit][${response.data.item.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukan Unit" value="${response.data.item.survey_item_unit}">
-                                    </th>
-                                    <th>
-                                        <input 
-                                            name="items[harga_pokok][${response.data.item.id_survey_item}]"
-                                            type="number" 
-                                            class="form-control form-control-sm" 
-                                            placeholder="Masukan Harga Pokok" 
-                                            value="${response.data.item.survey_harga_pokok}"
-                                            data-toggle="get-margin"  
-                                            data-action="harga-pokok"
-                                            data-bind="#js-harga-jual-${response.data.item.id_survey_item}"
-                                            data-target="#js-margin-${response.data.item.id_survey_item}"
-                                            id="js-harga-pokok-${response.data.item.id_survey_item}">
-                                    </th>
-                                    <th>
-                                        <div class="d-flex align-items-center">
-                                            <input 
-                                                name="item[harga_jual][${response.data.item.id_survey_item}]" 
-                                                type="number" 
-                                                class="form-control form-control-sm" 
-                                                placeholder="Masukan Harga Jual" 
-                                                value="${response.data.item.survey_harga_jual}"
-                                                data-toggle="get-margin" 
-                                                data-action="harga-jual"
-                                                data-bind="#js-harga-pokok-${response.data.item.id_survey_item}"
-                                                data-target="#js-margin-${response.data.item.id_survey_item}"
-                                                id="js-harga-jual-${response.data.item.id_survey_item}">
-                                                                                    
-                                        </div>
-                                    </th>
-                                    <td>${response.data.item.survey_item_qty * response.data.item.survey_harga_jual}</td>
-                                    <td id="js-margin-${response.data.item.id_survey_item}">${getMarginHTML}</td>
-                                    <th>
-                                        <a href="javascript:void(0)" data-item="${response.data.item.id_survey_item}" class="btn btn-danger js-remove-item"><span class="fas fa-minus"></span></a>
-                                        <a href="javascript:void(0)" data-item="${response.data.item.id_survey_item}" class="btn btn-warning js-update-item"><span class="fas fa-pen"></span></a>
-                                    </th>
-                                </tr>
-                            `;
-
-                            $('#form-boq')
-                                .find('tbody')
-                                .append(html);
-
-                            $('#i-id_survey').val('');
-                            $('#i-survey_item_name').val('');
-                            $('#i-survey_item_qty').val('');
-                            $('#i-survey_item_unit').val('');
-                            $('#i-survey_harga_pokok').val('');
-                            $('#i-survey_harga_jual').val('');
-                            break;
-
-                        case 400:
-                            Toast('error', response.message);
-                            break;
-                    }
-                    
-                }, 
-                error: function(response) {
-                    Toast('error', 'Something Wrong!!!');
-                }
-            })
-
-
-        }
+      
 
         function updateHasilSurvey(data) {
             
@@ -1161,25 +790,22 @@
 
             target.html(Rp(qty * value));
 
-
-            
-            let marginHarga = InternalCalculation.getPersentaseMargin(hargaPokok, value).toFixed(2)
-            let selisihHarga = selisihHasil(hargaPokok, value);
-
-            let marginHTML = `
-            
-            <div class="d-flex justify-content-between">
-                <span>${Rp(selisihHarga).toString()}</span>
-                <span>${marginHarga.toString()}%</span>
-            </div>
-
-            `
-
-            $('#margin-' + id).html( marginHTML );
-
-
+            $('#js-total-harga-nego').html(Rp(bindTotalNego()));
 
         })
+
+        function bindTotalNego() {
+            let currentTotal = $('#js-total-harga-nego').val();
+            let inputs = $('.js-bind-harga-jual');
+
+            let grandTotalNego = 0;
+            inputs.map((i, v) => {
+                let qty = $(v).data('qty');
+                grandTotalNego += parseInt($(v).val() * qty);
+            })
+
+            return grandTotalNego;
+        }
 
 
         function updateItem(data) {
@@ -1189,29 +815,30 @@
             return $.ajax({
                 method: 'POST',
                 data: data,
-                url: "<?php echo base_url("/api/permintaan-item/update-estimasi") ?>"
+                url: `${baseUrl}/api/negosiasi/harga`
             })
         }
 
         $('#js-save-estimasi').click(function(e){
             e.preventDefault();
 
+            saveData();
+
             console.log('serialize', $('#form-estimasi').find('.js-bind-harga-jual'));
 
-            let inputs = $('#form-estimasi').find('.js-bind-harga-pokok');
+            let formEstimasi = $('#form-estimasi');
+            let inputs = formEstimasi.find('.js-bind-harga-jual');
 
             let progress = 0;
             
             inputs.map((i, el) => {
                 console.log(el);
                 let id = $(el).data('id');
-                let item_hp = $(el).val();
-                let item_hj = $('#js-bind-harga-jual-' + id ).val()
+                let item_hj = $(el).val()
 
                 updateItem({
                     id_item: id,
-                    item_hp: item_hp,
-                    item_hj: item_hj
+                    item_hj_nego: item_hj
                 })
                 .then((response) => {
                     console.log(response)
@@ -1231,161 +858,90 @@
 
         })
 
-        function addBoq(data) {
-            return $.ajax({
-                method: 'POST',
-                data: data, 
-                url: `${baseUrl}/api/permintaan-item/add`
-            })
-        }
-
-        function updateBoq(data) {
-            return $.ajax({
-                method: 'POST',
-                data: data, 
-                url: `${baseUrl}/api/permintaan-item/update-boq`
-            })
-        }
-
-        function deleteBoq(id) {
-            return $.ajax({
-                method: 'POST',
-                url: `${baseUrl}/api/permintaan-item/${id}/delete`,
-            })
-        }
 
 
-        $('#js-add-boq').click(function(e){
+        $('#i-id_permintaan').change(function(e){
             e.preventDefault();
 
-            
-
-            let idPermintaan = $(this).data('permintaan');
-            let itemName    = $('#boq-item_name').val();
-            let itemQty     = $('#boq-item_qty').val();
-            let itemUnit    = $('#boq-item_unit').val();
-
-            let data = {
-                id_permintaan: idPermintaan, 
-                item_name: itemName,
-                item_qty: itemQty,
-                item_unit: itemUnit
-            };
-
-            console.log('js add boq', data);
-
-            if(!idPermintaan  || !itemName || !itemQty || !itemUnit) {
-                
-                Toast('warning', 'Nama, Qty, Satuan harus di isi');
-                
-                return false;
-            }
-
-            
-
-            addBoq(data)
+            loadHasilPermintaan($(this).val())
             .then(response => {
 
+                console.log('load items');
+                let tbody = $('#modal-estimasi').find('tbody');
+                let html = "";
+                let no = 0;
+
                 
-
-                $('#form-boq').find('tbody').append(createRowBoq(response.data));
-                Toast('success', 'Berhasil menambahkan item');
-                loadData();
-
-                $('#boq-item_name').val('');
-                $('#boq-item_qty').val('');
-                $('#boq-item_unit').val('');
-
-            }) 
-
-        })
-
-        $(document).on('click', '.js-delete-boq-item', function(e){
-            e.preventDefault();
-
-            let confirmDelete = confirm('Delete ???');
-
-            if(confirmDelete) {
-
-                deleteBoq($(this).data('id'))
-                .then((response) => {
-                    
-                    Toast('success', 'Berhasil menghapus item');
-                    loadData();
-
-                })
-            }
-        })
-
-        $(document).on('click', '.js-update-boq-item', function(e){
-            e.preventDefault();
-
-
-            let idItem      = $(this).data('id');
-            let itemName    = $('#boq-item-name-' + idItem).val();
-            let itemQty     = $('#boq-item-qty-' + idItem).val();
-            let itemUnit    = $('#boq-item-unit-' + idItem).val();
-
-            let data = {
-                id_item: idItem, 
-                item_name: itemName,
-                item_qty: itemQty,
-                item_unit: itemUnit
-            };
-
-            console.log('js add boq', data);
-
-            if(!idItem  || !itemName || !itemQty || !itemUnit) {
-                
-                Toast('warning', 'Nama, Qty, Satuan harus di isi');
-                
-                return false;
-            }
-
-                updateBoq(data)
-                .then((response) => {
-                    
-                    Toast('success', 'Berhasil memperbaharui item');
-                    loadData();
-
-                })
-           
-        })
-
-        $('#i-id_customer').change(function(e){
-
-            getPic($(this).val())
-            .then(response => {
-                let options = `<option value=''>Pilih</option>
-                `;
+                let grandtotal_harga_jual   = 0;
+                let grandtotal_harga_nego   = 0;
 
                 response.data.lists.map((v, i) => {
-                    console.log(v);
-                    options += `<option value="${v.id_pic}">${v.nama_pic} (${v.jabatan_pic}) - ${v.divisi_pic}</option>`;
+
+                    v.item_hp = parseFloat(v.item_hp);
+                    v.item_hj = parseFloat(v.item_hj);
+                    let total_harga_jual        = parseFloat(v.item_hj) * parseFloat(v.item_qty);     
+                    let total_harga_nego        = parseFloat(v.item_hj_nego) * parseFloat(v.item_qty);     
+
+                    grandtotal_harga_jual += total_harga_jual;
+                    grandtotal_harga_nego += total_harga_nego
+
+           
+
+                    let hargaNegoInput = `
+
+                        <input
+                            name="item_hj[${v.id_item}]"
+                            class="form-control js-bind-harga-jual"  
+                            id="js-bind-harga-jual-${v.id_item}"
+                            data-id="${v.id_item}"
+                            data-target="#total-harga-jual-${v.id_item}" 
+                            data-qty="${v.item_qty}" value="${v.item_hj_nego}"
+                            data-margin="margin-${v.id_item}"
+                            style="max-width: 150px">
+
+                    `;
+
+
+                    html += `
+
+                        <tr>
+                            <td class="text-center">${++no}</td>
+                            <td width="300">${v.item_name}</td>
+                            <td width="80">${v.item_qty} ${v.item_unit}</td>
+                            <td class="text-right">${Rp(v.item_hj)}</td>
+                            <td class="text-right" id="total-harga-pokok-${v.id_item}">${Rp(total_harga_jual)}</td>
+                            <td class="border-0" style="background-color: transparent;"></td>
+                            <td>${hargaNegoInput}</td>
+                            <td class="text-right" id="total-harga-jual-${v.id_item}">${Rp(total_harga_nego)}</td>
+                        </tr>
+
+                    `
 
                 })
 
-                $('#i-id_pic').html(options);
+                html += `
+
+                    <tr>
+                        <td colspan="4"></td>
+                        <td class="text-right" id="js-total-harga-jual">${Rp(grandtotal_harga_jual)}</td>
+                        <td class="border-0" style="background-color: transparent;"></td>
+                        <td></td>
+                        <td class="text-right" id="js-total-harga-nego">${Rp(grandtotal_harga_nego)}</td>
+                    </tr>
+
+                `
+
+                tbody.html(html);
+                $('#modal-estimasi').modal('show');
+        
             });
+        })
 
-        });
 
-        function getPic(idCustomer)
-        {
 
-            return $.ajax({
-                url: `${baseUrl}/api/pic`,
-                data: {
-                    filters: [
-                        {
-                            key: 'id_customer',
-                            value: idCustomer
-                        }
-                    ]
-                }
-            })
+ 
+ 
 
-        }
     })
 </script>
 

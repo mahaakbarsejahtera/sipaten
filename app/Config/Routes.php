@@ -77,6 +77,17 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 	$routes->post('permintaan/(:num)/delete', 'Permintaan::delete/$1');
 	$routes->post('permintaan/destroy', 'Permintaan::destroy');
 
+	//Nego
+	$routes->get('negosiasi', 'Negosiasi::index');
+	$routes->get('negosiasi/show/(:num)', 'Permintaan::show/$1');
+
+	$routes->post('negosiasi', 'Negosiasi::store');
+	$routes->post('negosiasi/update', 'Negosiasi::update');
+	$routes->post('negosiasi/harga', 'Negosiasi::updateNegosiasi');
+
+	$routes->post('negosiasi/(:num)/delete', 'Negosiasi::delete/$1');
+	$routes->post('negosiasi/destroy', 'Negosiasi::destroy');
+
 	// Permintaan Item
 	$routes->get('permintaan-item', 'PermintaanItem::index');
 	$routes->get('permintaan-item/show/(:num)', 'PermintaanItem::show/$1');
