@@ -337,7 +337,7 @@
                                 </td>
                                 <td>
                                     <div class="d-flex flex-column">
-                                        <a href="<?php echo base_url('/dashboard/laporan/estimasi/?id_permintaan=') ?>${v.id_permintaan}" download>${Rp(v.estimasi_harga_jual)}</a>
+                                        <a href="${baseUrl + '/dashboard/laporan/estimasi/?id_permintaan=' + v.id_permintaan}" download>${Rp(v.estimasi_harga_jual)}</a>
   
                                     </div>
                                 </td>
