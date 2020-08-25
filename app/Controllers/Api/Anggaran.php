@@ -118,9 +118,6 @@ class Anggaran extends Controller
         // Dinamis ikuti table
         $rules = [
             'id_permintaan'          => 'required',
-            'approval_teknik'        => 'required',
-            'approval_pemasaran'     => 'required',
-            'approval_keuangan'      => 'required',
         ];
 
     
@@ -143,12 +140,13 @@ class Anggaran extends Controller
             'approval_keuangan'    => $this->request->getPost('approval_keuangan')
         ];
 
-        $anggaranModel = new AnggaranModel;
-        $anggaranModel->save($insertData);
+        $anggaranModel = db_connect();
+        $anggaranModel
+            ->table('anggaran')
+            ->insert($insertData);
 
         $response['code']       = 200;
-        $response['data']       = $insertData;
-        $response['model']      = $anggaranModel->getInsertID();
+        $response['data']       = [ 'id_anggaran' => $anggaranModel->insertID() ] + $insertData;
         //$response['data'] = $insertData;
         $response['message']    = 'Insert Success';
 
@@ -171,10 +169,6 @@ class Anggaran extends Controller
 
         $rules = [
             'id_anggaran'         => 'required',
-            'id_permintaan'       => 'required',
-            'approval_teknik'     => 'required',
-            'approval_pemasaran'  => 'required',
-            'approval_keuangan'   => 'required',
         ];
 
     
@@ -201,7 +195,6 @@ class Anggaran extends Controller
 
         $response['code']       = 200;
         $response['data']       = $insertData;
-        $response['model']      = $this->request->getPost('id_role');
         //$response['data'] = $insertData;
         $response['message']    = 'Update Success';
 

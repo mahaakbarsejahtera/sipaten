@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\Api\PermintaanItem;
+use App\Models\NegosiasiModel;
 use App\Models\PermintaanItemsModel;
 use App\Models\PermintaanModel;
 use CodeIgniter\Controller;
@@ -84,6 +85,58 @@ class Laporan extends Controller
 
 
     }
+
+    public function lampiranNego() {
+
+        
+        
+        $penawaran = (new NegosiasiModel())
+            ->builder()
+            ->join('permintaan', 'negosiasi.id_permintaan = permintaan.id_permintaan', 'left')
+            ->join('customers', 'permintaan.id_customer = customers.id_customer', 'left')
+            ->where('negosiasi.id_nego', $this->request->getGet('id_nego'))
+            ->get()->getRow();
+
+        $harga = (new PermintaanItemsModel())
+            ->builder()
+            ->select("SUM(item_qty * item_hp) as estimasi_harga_pokok, SUM(item_qty * item_hj) as estimasi_harga_jual")
+            ->where('id_permintaan', $penawaran->id_permintaan)
+            ->groupBy('id_permintaan')
+            ->get()
+            ->getRow();
+
+
+            
+
+        $items = (new PermintaanItemsModel())
+        ->builder()
+        ->where('id_permintaan', $penawaran->id_permintaan)
+        ->get()
+        ->getResult();
+
+    
+         
+
+        $negoHtml = view('laporan/lampiran-nego', [
+            'penawaran' => $penawaran,
+            'items'     => $items,
+            //'terbilang' => ucwords((new Total)->terbilang($harga->estimasi_harga_jual))
+        ]);
+
+        //return $negoHtml;
+        
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($negoHtml);
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream($penawaran->id_nego . "-" . date('his'));
+                    
+        return $negoHtml;
+    }
+
 
     public function hasilEstimasi() {
 

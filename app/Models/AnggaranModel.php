@@ -10,7 +10,8 @@ class AnggaranModel extends Model
     protected $primaryKey = "id_anggaran";
     
     protected $allowedFields = [
-        'id_permintaan', 'approval_teknik', 'approval_pemasaran','approval_keuangan'
+        'id_permintaan', 'approval_teknik', 'approval_pemasaran','approval_keuangan',
+        'anggaran_status'
     ];
 
     protected $orderby = [
@@ -19,11 +20,12 @@ class AnggaranModel extends Model
     ];
 
     protected $filterby = [
-        'id_anggaran' => 'anggaran.id_anggaran',
-        'id_permintaan' => 'anggaran.id_permintaan',
-        'approval_teknik' => 'anggaran.approval_teknik',
-        'approval_pemasaran' => 'anggaran.approval_pemasaran',
-        'approval_keuangan' => 'anggaran.approval_keuangan'
+        'id_anggaran'           => 'anggaran.id_anggaran',
+        'id_permintaan'         => 'anggaran.id_permintaan',
+        'approval_teknik'       => 'anggaran.approval_teknik',
+        'approval_pemasaran'    => 'anggaran.approval_pemasaran',
+        'approval_keuangan'     => 'anggaran.approval_keuangan',
+        'anggaran_status'       => 'anggaran.anggaran_status'
     ];
 
 

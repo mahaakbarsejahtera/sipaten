@@ -11,17 +11,18 @@ class NegosiasiModel extends Model
     protected $allowedFields = [
 
         'id_permintaan', 'id_permintaan', 'nego_term', 
-        'nego_pic_nama', 'nego_pic_jabatan', 'date_created'
+        'nego_pic_nama', 'nego_pic_jabatan', 'date_created',
+        'nego_no', 'nego_tgl_surat', 'nego_lokasi'
 
     ];
 
     protected $orderby = [
-        'id_permintaan', 'id_permintaan'
+        'id_permintaan', 'id_nego'
     ];
 
     protected $filterby = [
         'id_nego'       => 'negosiasi.id_customer',
-        'id_permintaan' => 'permintaan.id_permintaan',
+        'id_permintaan' => 'negosiasi.id_permintaan',
     ];
 
 

@@ -79,7 +79,7 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 
 	//Nego
 	$routes->get('negosiasi', 'Negosiasi::index');
-	$routes->get('negosiasi/show/(:num)', 'Permintaan::show/$1');
+	$routes->get('negosiasi/show/(:num)', 'Negosiasi::show/$1');
 
 	$routes->post('negosiasi', 'Negosiasi::store');
 	$routes->post('negosiasi/update', 'Negosiasi::update');
@@ -161,6 +161,7 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 
 		$routes->get('permintaan', 'Home::teknikPermintaan');
 		$routes->get('survey', 'Home::teknikSurvey');
+		$routes->get('anggaran', 'Home::teknikAnggaran');
 
 	});
 
@@ -169,6 +170,7 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 	$routes->group('laporan', function($routes) {
 		$routes->get('estimasi', 'Laporan::hasilEstimasi');
 		$routes->get('lampiran-penawaran', 'Laporan::lampiranPenawaran');
+		$routes->get('nego', 'Laporan::lampiranNego');
 	});
 
 	 

@@ -22,27 +22,28 @@ class Negosiasi extends Controller
             'errors'        => []
         ];
 
+
         $find = (new NegosiasiModel)
         ->builder()
         ->select("
 
-            negosiasi.id_permintaan, negosiasi.id_nego, negosiasi.nego_term, negosiasi.nego_pic_nama, negosiasi.nego_pic_jabatan, 
+        permintaan.id_permintaan, permintaan.nama_pekerjaan, permintaan.permintaan_status,
+        permintaan.permintaan_sales, permintaan.permintaan_lokasi_survey, permintaan.permintaan_jadwal_survey, permintaan.date_create,
+        permintaan.keterangan_pekerjaan, permintaan.permintaan_supervisi, permintaan.permintaan_supervisi_status,
+        permintaan.permintaan_hasil_survey_status, permintaan.id_pic,
 
-            
-            penawaran.penawaran_no, penawaran.penawaran_due_date, penawaran.penawaran_validasi_date, penawaran.penawaran_term,
+        sales.id_user, sales.user_fullname, sales.user_name, sales.user_status,
 
-            permintaan.nama_pekerjaan, permintaan.permintaan_status,
-            permintaan.permintaan_sales, permintaan.permintaan_lokasi_survey, permintaan.permintaan_jadwal_survey, permintaan.date_create,
-            permintaan.keterangan_pekerjaan, permintaan.permintaan_supervisi, permintaan.permintaan_supervisi_status,
-            permintaan.permintaan_hasil_survey_status,
+        survey.id_survey, 
+        customers.id_customer, customers.nama_customer, customers.pic_nama_customer, customers.pic_no_customer,
+        pic.nama_pic, pic.divisi_pic, pic.kontak_pic, pic.jabatan_pic, 
 
-            sales.id_user, sales.user_fullname, sales.user_name, sales.user_status, sales.user_code as sales_code,
+        supervisi.user_fullname as nama_supervisi,
 
-            survey.id_survey, 
-            customers.id_customer, customers.nama_customer, customers.pic_nama_customer, customers.pic_no_customer, customers.kode_customer,
-            pic.id_pic, pic.nama_pic, pic.divisi_pic, pic.kontak_pic, pic.jabatan_pic, 
+        penawaran.penawaran_no, penawaran.penawaran_due_date, penawaran.penawaran_validasi_date, penawaran.penawaran_term,
+        negosiasi.id_nego, negosiasi.nego_term, negosiasi.nego_pic_nama, negosiasi.nego_pic_jabatan, negosiasi.nego_no, 
+        negosiasi.nego_tgl_surat, negosiasi.nego_lokasi
 
-            supervisi.user_fullname as nama_supervisi, supervisi.user_code as supervisi_code
 
         ")
         ->join('permintaan', 'negosiasi.id_permintaan=permintaan.id_permintaan', 'left')
@@ -54,6 +55,7 @@ class Negosiasi extends Controller
         ->join('pic', 'permintaan.id_pic=pic.id_pic', 'left')
         ->find( $id );
 
+    
         
 
         if($find) {
@@ -120,7 +122,8 @@ class Negosiasi extends Controller
             supervisi.user_fullname as nama_supervisi,
 
             penawaran.penawaran_no, penawaran.penawaran_due_date, penawaran.penawaran_validasi_date, penawaran.penawaran_term,
-            negosiasi.id_nego, negosiasi.nego_term, negosiasi.nego_pic_nama, negosiasi.nego_pic_jabatan
+            negosiasi.id_nego, negosiasi.nego_term, negosiasi.nego_pic_nama, negosiasi.nego_pic_jabatan, negosiasi.nego_no, 
+            negosiasi.nego_tgl_surat, negosiasi.nego_lokasi
 
         ")
         ->join('permintaan', 'negosiasi.id_permintaan=permintaan.id_permintaan', 'left')
@@ -234,10 +237,13 @@ class Negosiasi extends Controller
         }
 
         $insertData = [
-            'id_permintaan'             => $this->request->getPost('id_permintaan'),
-            'nego_term'                 => $this->request->getPost('nego_term'),
-            'nego_pic_nama'             => $this->request->getPost('nego_pic_nama'),
-            'nego_pic_jabatan'          => $this->request->getPost('nego_pic_jabatan'),
+            'id_permintaan'             => (int)$this->request->getPost('id_permintaan'),
+            'nego_no'                   => (string)$this->request->getPost('nego_no'),
+            'nego_term'                 => (string)$this->request->getPost('nego_term'),
+            'nego_pic_nama'             => (string)$this->request->getPost('nego_pic_nama'),
+            'nego_pic_jabatan'          => (string)$this->request->getPost('nego_pic_jabatan'),
+            'nego_tgl_surat'            => (string)$this->request->getPost('nego_tgl_surat'),
+            'nego_lokasi'               => (string)$this->request->getPost('nego_lokasi')
         ];
 
         $permintaanModel = new NegosiasiModel();
@@ -282,14 +288,17 @@ class Negosiasi extends Controller
         }
 
         $insertData = [
-            'id_nego'                   => $this->request->getPost('id_nego'),
-            'id_permintaan'             => $this->request->getPost('id_permintaan'),
-            'nego_term'                 => $this->request->getPost('nego_term'),
-            'nego_pic_nama'             => $this->request->getPost('nego_pic_nama'),
-            'nego_pic_jabatan'          => $this->request->getPost('nego_pic_jabatan'),
+            'id_nego'                   => (int)$this->request->getPost('id_nego'),
+            'id_permintaan'             => (int)$this->request->getPost('id_permintaan'),
+            'nego_no'                   => (string)$this->request->getPost('nego_no'),
+            'nego_term'                 => (string)$this->request->getPost('nego_term'),
+            'nego_pic_nama'             => (string)$this->request->getPost('nego_pic_nama'),
+            'nego_pic_jabatan'          => (string)$this->request->getPost('nego_pic_jabatan'),
+            'nego_tgl_surat'            => (string)$this->request->getPost('nego_tgl_surat'),
+            'nego_lokasi'               => (string)$this->request->getPost('nego_lokasi')
         ];
 
-        $permintaanModel = new PermintaanModel;
+        $permintaanModel = new NegosiasiModel();
         $permintaanModel->save($insertData);
 
         $response['code']       = 200;

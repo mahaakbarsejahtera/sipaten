@@ -38,7 +38,9 @@ class Permintaan extends Controller
             customers.id_customer, customers.nama_customer, customers.pic_nama_customer, customers.pic_no_customer, customers.kode_customer,
             pic.id_pic, pic.nama_pic, pic.divisi_pic, pic.kontak_pic, pic.jabatan_pic, 
 
-            supervisi.user_fullname as nama_supervisi, supervisi.user_code as supervisi_code
+            supervisi.user_fullname as nama_supervisi, supervisi.user_code as supervisi_code,
+
+            anggaran.id_anggaran
 
         ")
         ->join('users as sales', 'permintaan.permintaan_sales=sales.id_user', 'left')
@@ -46,6 +48,7 @@ class Permintaan extends Controller
         ->join('users as supervisi', 'permintaan.permintaan_supervisi=supervisi.id_user', 'left')
         ->join('customers', 'permintaan.id_customer=customers.id_customer', 'left')
         ->join('pic', 'permintaan.id_pic=pic.id_pic', 'left')
+        ->join('anggaran', 'permintaan.id_permintaan=anggaran.id_permintaan', 'left')
         ->find( $id );
 
         

@@ -354,4 +354,54 @@ class Home extends Controller
         ]);
     }
 
+    public function teknikAnggaran() {
+       
+        $breadcrumb = (new BreadCrumb)->set([
+            [
+                'name' => 'Dashboard',
+                'url' => base_url('dashboard'),
+            ],
+            [
+                'name' => 'Anggaran',
+                'active' => true
+            ],
+        ])->render();
+
+        return view('admin/teknik/anggaran', [
+            'title' => 'Anggaran',
+            'breadcrumb' => $breadcrumb,
+            'table'         => (new Table())->setColumns([
+                [
+                    'field' => 'nama_pekerjaan',
+                    'name' => 'Nama Pekerjaan',
+                    'sort' => true,
+                ],
+                [
+                    'name' => 'Customer',
+                ],
+                  
+                [
+                    'name' => 'Lokasi'
+                ],
+                [
+                    'name' => 'Jadwal'
+                ],
+                [
+                    'name' => 'Keterangan'
+                ],
+                [
+                    'field' => 'permintaan_sales',
+                    'name' => 'Sales',
+                    'sort' => true,
+                ],  
+                [
+                    'name' => 'Anggaran',
+                ]
+
+            ])
+            ->render("table-data")
+        ]);
+
+    }
+
 }

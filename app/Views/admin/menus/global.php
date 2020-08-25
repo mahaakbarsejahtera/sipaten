@@ -63,6 +63,13 @@
                 <p>Survey</p>
             </a>
         </li>
+
+        <li class="nav-item">
+            <a href="<?php echo base_url('dashboard/teknik/anggaran') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Anggaran</p>
+            </a>
+        </li>
     </ul>
 </li>
 

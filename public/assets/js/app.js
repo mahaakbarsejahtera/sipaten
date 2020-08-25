@@ -94,7 +94,7 @@ let InternalCalculation = {
 // esc value
 function escStr(value) { 
 
-    if (value === null || value === '') return '';
+    if (value === null || value === '' || value === undefined) return '';
 
     return value;
 }

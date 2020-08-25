@@ -38,7 +38,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-md-3">
-                    <a href="javascript:void(0)" data-toggle="modal" data-target="#modal-estimasi" class="btn btn-primary mb-3">Tambah Data</a>
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#modal-estimasi" class="btn btn-primary mb-3" id="js-trigger-modal-estimasi">Tambah Data</a>
                 </div>
                 <div class="col-12 col-md-9">
                     <form class="w-100" id="filter-form">
@@ -87,22 +87,50 @@
                         <input type="hidden" name="_method" value="POST">
                         
                         <div class="form-row">
-                            <div class="form-group col-12 col-md-4" >
-                                <label for="i-id_permintaan">Permintaan</label>
-                                <select name="id_permintaan" id="i-id_permintaan" class="form-control">
-                                    <option value="">Pilih</option>
-                                </select>
+                            <div class="col-12 col-md-4">
+                                <div class="form-group">
+                                    <label for="i-id_permintaan">Permintaan</label>
+                                    <select name="id_permintaan" id="i-id_permintaan" class="form-control">
+                                        <option value="">Pilih</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="i-nego_no">No Surat</label>
+                                    <input type="text" name="nego_no" id="i-nego_no" class="form-control">
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 col-md-4">
+                                <div class="form-group">
+                                    <label for="i-nego_pic_nama">Negosiator</label>
+                                    <input type="text" name="nego_pic_nama" id="i-nego_pic_nama" class="form-control">
+                                    <small id="passwordHelpBlock" class="form-text text-muted">
+                                        Format: "Bambang:Project Manager, Imam:Purchasing"
+                                    </small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="i-nego_lokasi">Lokasi</label>
+                                    <input type="text" name="nego_lokasi" id="i-nego_lokasi" class="form-control">
+
+                                </div>
+
+                                
                             </div>
 
-                            <div class="form-group col-12 col-md-4">
-                                <label for="i-nego_pic_nama">Negosiator</label>
-                                <input type="text" name="nego_pic_nama" id="i-nego_pic_nama" class="form-control">
+                            <div class="col-12 col-md-4">
+
+                                <div class="form-group">
+                                    <label for="i-nego_tgl_surat">Tanggal Surat</label>
+                                    <input type="date" name="nego_tgl_surat" id="i-nego_tgl_surat" class="form-control">
+                                </div>
                             </div>
 
-                            <div class="form-group col-12 col-md-4">
-                                <label for="i-nego_pic_jabatan">Jabatan</label>
+                            <!-- <div class="form-group col-12 col-md-4">
+                                <label for="i-nego_pic_jabatan">Jabatan</label>   
                                 <input type="text" name="nego_pic_jabatan" id="i-nego_pic_jabatan" class="form-control">
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="table table-responsive">
@@ -161,6 +189,11 @@
         let tableData = $('#table-data');
         let form = $('#form');
 
+        $('#js-trigger-modal-estimasi').click(function(e){
+            e.preventDefault();
+            clearForm();
+        })
+
         tinymce.init({
             selector: '#i-nego_term',
             menubar: false,
@@ -191,9 +224,9 @@
                             <tr>
                                 <td>
                                     <ul>
-                                        <li><a href="${baseUrl}/dashboard/laporan/lampiran-penawaran?id_penawaran=${v.id_penawaran}" target="_blank">${v.penawaran_no}</a></li>
-                                        <li>Harga Jual: <a href="${baseUrl}/dashboard/laporan/estimasi/?id_permintaan=${v.id_permintaan}" target="_blank">${Rp(v.estimasi_harga_jual)}</a></li>
-                                        <li>Harga Nego: <a href="${baseUrl}/dashboard/laporan/nego/?id_permintaan=${v.id_permintaan}" target="_blank">${Rp(v.estimasi_harga_nego)}</a></li>
+                                        <li><a href="${baseUrl}/dashboard/laporan/lampiran-penawaran?id_nego=${v.id_nego}" target="_blank">${v.nego_no}</a></li>
+                                        <li>Harga Jual: <a href="${baseUrl}/dashboard/laporan/estimasi/?id_nego=${v.id_nego}" target="_blank">${Rp(v.estimasi_harga_jual)}</a></li>
+                                        <li>Harga Nego: <a href="${baseUrl}/dashboard/laporan/nego/?id_nego=${v.id_nego}" target="_blank">${Rp(v.estimasi_harga_nego)}</a></li>
                                     </ul>
                                 </td>
                                 <td>
@@ -218,8 +251,6 @@
                                     <a href="javascript:void(0)" class="btn btn-danger mb-2" title="Hapus Negosiasi" data-toggle="table-action"  data-action="delete" data-id="${v.id_nego}">
                                         <span class="fas fa-trash"></span>
                                     </a>
-
-                                
                                 </td>
                             </tr>
                         
@@ -236,7 +267,7 @@
     
         getPermintaan()
         .then(response => {
-            console.log('getCustomers');
+            console.log('getPermintaan');
             let html = '<option value="">Pilih</option>';
 
             response.data.lists.map((v, i) => {
@@ -273,7 +304,9 @@
                 id_permintaan: $('#i-id_permintaan').val(),
                 nego_term: tinyMCE.activeEditor.getContent(),
                 nego_pic_nama: $('#i-nego_pic_nama').val(),
-                nego_pic_jabatan: $('#i-nego_pic_jabatan').val()
+                nego_pic_jabatan: $('#i-nego_pic_jabatan').val(),
+                nego_tgl_surat: $('#i-nego_tgl_surat').val(),
+                nego_lokasi: $('#i-nego_lokasi').val()
             }
 
             return $.ajax({
@@ -306,7 +339,17 @@
 
         function updateData() {
             
-            let data = form.serialize();
+            let formEstimasi = $('#form-estimasi');
+            let data = {
+                id_nego: $('#i-id_nego').val(),
+                id_permintaan: $('#i-id_permintaan').val(),
+                nego_term: tinyMCE.activeEditor.getContent(),
+                nego_pic_nama: $('#i-nego_pic_nama').val(),
+                nego_pic_jabatan: $('#i-nego_pic_jabatan').val(),
+                nego_no: $('#i-nego_no').val(),
+                nego_tgl_surat: $('#i-nego_tgl_surat').val(),
+                nego_lokasi: $('#i-nego_lokasi').val(),
+            }
 
             return $.ajax({
                 method: 'POST',
@@ -336,15 +379,22 @@
         }
         
         function getData( id ) {
-            
             return $.ajax({
                 url: `${baseUrl}/api/negosiasi/show/${id}`,
                 success: function(response) {
-
                     truthAction.val('update');
 
                     for(data in response.data) {
-                        $('#i-' + data).val(response.data[data]);
+                        
+                        if(data == 'nego_term') {
+                            tinymce.activeEditor.setContent(response.data[data]);
+                        }else {
+                            $('#i-' + data).val(response.data[data]);
+                        }
+                        
+                        
+
+
                     }
                     
                     $('#estimasi-modal').modal('show');
@@ -441,31 +491,92 @@
                 
                     getData(btn.data('id'))
                     .then((response) => {
-                    
+                        console.log('edit data');
                         btn.html(`<span class="fas fa-edit"></span>`)
                         return response;
 
                     })
                     .then((data) => {
-                        
-                        console.log('get data pic', data);
 
-                        getPic(data.data.id_customer)
+                        console.log(data);
+
+                        $('#i-id_permintaan').val(data.data.id_permintaan);
+                        $('#i-id_permintaan').attr('disabled', true);
+
+                        loadHasilPermintaan(data.data.id_permintaan)
                         .then(response => {
-                            console.log(data.id_customer);
-                            
-                            console.log('get pic', response);
 
-                            let options = `<option value=''>Pilih</option>`;
+                            console.log('load items');
+                            let tbody = $('#modal-estimasi').find('tbody');
+                            let html = "";
+                            let no = 0;
+
+                            
+                            let grandtotal_harga_jual   = 0;
+                            let grandtotal_harga_nego   = 0;
 
                             response.data.lists.map((v, i) => {
-                                console.log(v);
-                                options += `<option value="${v.id_pic}" ${data.data.id_pic == v.id_pic ? "selected" : ""}>${v.nama_pic} (${v.jabatan_pic}) - ${v.divisi_pic}</option>`;
+
+                                v.item_hp = parseFloat(v.item_hp);
+                                v.item_hj = parseFloat(v.item_hj);
+                                let total_harga_jual        = parseFloat(v.item_hj) * parseFloat(v.item_qty);     
+                                let total_harga_nego        = parseFloat(v.item_hj_nego) * parseFloat(v.item_qty);     
+
+                                grandtotal_harga_jual += total_harga_jual;
+                                grandtotal_harga_nego += total_harga_nego
+
+                    
+
+                                let hargaNegoInput = `
+
+                                    <input
+                                        name="item_hj[${v.id_item}]"
+                                        class="form-control js-bind-harga-jual"  
+                                        id="js-bind-harga-jual-${v.id_item}"
+                                        data-id="${v.id_item}"
+                                        data-target="#total-harga-jual-${v.id_item}" 
+                                        data-qty="${v.item_qty}" value="${v.item_hj_nego}"
+                                        data-margin="margin-${v.id_item}"
+                                        style="max-width: 150px">
+
+                                `;
+
+
+                                html += `
+
+                                    <tr>
+                                        <td class="text-center">${++no}</td>
+                                        <td width="300">${v.item_name}</td>
+                                        <td width="80">${v.item_qty} ${v.item_unit}</td>
+                                        <td class="text-right">${Rp(v.item_hj)}</td>
+                                        <td class="text-right" id="total-harga-pokok-${v.id_item}">${Rp(total_harga_jual)}</td>
+                                        <td class="border-0" style="background-color: transparent;"></td>
+                                        <td>${hargaNegoInput}</td>
+                                        <td class="text-right" id="total-harga-jual-${v.id_item}">${Rp(total_harga_nego)}</td>
+                                    </tr>
+
+                                `
 
                             })
 
-                            $('#i-id_pic').html(options);
+                            html += `
+
+                                <tr>
+                                    <td colspan="4"></td>
+                                    <td class="text-right" id="js-total-harga-jual">${Rp(grandtotal_harga_jual)}</td>
+                                    <td class="border-0" style="background-color: transparent;"></td>
+                                    <td></td>
+                                    <td class="text-right" id="js-total-harga-nego">${Rp(grandtotal_harga_nego)}</td>
+                                </tr>
+
+                            `
+
+                            tbody.html(html);
+                            $('#modal-estimasi').modal('show');
+                    
                         });
+
+                        
                     });
 
                     break;
