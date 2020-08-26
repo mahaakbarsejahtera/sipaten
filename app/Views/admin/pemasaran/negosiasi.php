@@ -123,7 +123,7 @@
 
                                 <div class="form-group">
                                     <label for="i-nego_tgl_surat">Tanggal Surat</label>
-                                    <input type="date" name="nego_tgl_surat" id="i-nego_tgl_surat" class="form-control">
+                                    <input type="date" name="nego_tgl_surat" id="i-nego_tgl_surat" class="form-control" value="<?php echo date('Y-m-d') ?>">
                                 </div>
                             </div>
 
@@ -306,7 +306,8 @@
                 nego_pic_nama: $('#i-nego_pic_nama').val(),
                 nego_pic_jabatan: $('#i-nego_pic_jabatan').val(),
                 nego_tgl_surat: $('#i-nego_tgl_surat').val(),
-                nego_lokasi: $('#i-nego_lokasi').val()
+                nego_lokasi: $('#i-nego_lokasi').val(),
+                nego_no: $('#i-nego_no').val()
             }
 
             return $.ajax({
@@ -437,6 +438,9 @@
         function clearForm() {
             $('#form-estimasi')[0].reset();
             $('#form-estimasi').find('tbody').html('');
+            $('#i-id_permintaan').attr('disabled', false);
+            $('#i-id_nego').val('');
+            $('#i-truth_action').val('');
         }
 
 
@@ -969,83 +973,105 @@
 
         })
 
-
+        function hasPermintaan(id_permintaan) {
+            return $.ajax({
+                method: 'GET',
+                url: `${baseUrl}/api/negosiasi`,
+                data: {
+                    filters: [
+                        { key: 'id_permintaan', value: id_permintaan }
+                    ]
+                }
+            })
+        }
 
         $('#i-id_permintaan').change(function(e){
             e.preventDefault();
+            hasPermintaan($(this).val())
+            .then((result) => {
+                console.log('result', result);
+                console.log(result.data.lists.length == 0);
+                if(result.data.lists.length == 0) {
 
-            loadHasilPermintaan($(this).val())
-            .then(response => {
+                    loadHasilPermintaan($(this).val())
+                    .then(response => {
 
-                console.log('load items');
-                let tbody = $('#modal-estimasi').find('tbody');
-                let html = "";
-                let no = 0;
+                        console.log('load items');
+                        let tbody = $('#modal-estimasi').find('tbody');
+                        let html = "";
+                        let no = 0;
+
+                        
+                        let grandtotal_harga_jual   = 0;
+                        let grandtotal_harga_nego   = 0;
+
+                        response.data.lists.map((v, i) => {
+
+                            v.item_hp = parseFloat(v.item_hp);
+                            v.item_hj = parseFloat(v.item_hj);
+                            let total_harga_jual        = parseFloat(v.item_hj) * parseFloat(v.item_qty);     
+                            let total_harga_nego        = parseFloat(v.item_hj_nego) * parseFloat(v.item_qty);     
+
+                            grandtotal_harga_jual += total_harga_jual;
+                            grandtotal_harga_nego += total_harga_nego
 
                 
-                let grandtotal_harga_jual   = 0;
-                let grandtotal_harga_nego   = 0;
 
-                response.data.lists.map((v, i) => {
+                            let hargaNegoInput = `
 
-                    v.item_hp = parseFloat(v.item_hp);
-                    v.item_hj = parseFloat(v.item_hj);
-                    let total_harga_jual        = parseFloat(v.item_hj) * parseFloat(v.item_qty);     
-                    let total_harga_nego        = parseFloat(v.item_hj_nego) * parseFloat(v.item_qty);     
+                                <input
+                                    name="item_hj[${v.id_item}]"
+                                    class="form-control js-bind-harga-jual"  
+                                    id="js-bind-harga-jual-${v.id_item}"
+                                    data-id="${v.id_item}"
+                                    data-target="#total-harga-jual-${v.id_item}" 
+                                    data-qty="${v.item_qty}" value="${v.item_hj_nego}"
+                                    data-margin="margin-${v.id_item}"
+                                    style="max-width: 150px">
 
-                    grandtotal_harga_jual += total_harga_jual;
-                    grandtotal_harga_nego += total_harga_nego
-
-           
-
-                    let hargaNegoInput = `
-
-                        <input
-                            name="item_hj[${v.id_item}]"
-                            class="form-control js-bind-harga-jual"  
-                            id="js-bind-harga-jual-${v.id_item}"
-                            data-id="${v.id_item}"
-                            data-target="#total-harga-jual-${v.id_item}" 
-                            data-qty="${v.item_qty}" value="${v.item_hj_nego}"
-                            data-margin="margin-${v.id_item}"
-                            style="max-width: 150px">
-
-                    `;
+                            `;
 
 
-                    html += `
+                            html += `
 
-                        <tr>
-                            <td class="text-center">${++no}</td>
-                            <td width="300">${v.item_name}</td>
-                            <td width="80">${v.item_qty} ${v.item_unit}</td>
-                            <td class="text-right">${Rp(v.item_hj)}</td>
-                            <td class="text-right" id="total-harga-pokok-${v.id_item}">${Rp(total_harga_jual)}</td>
-                            <td class="border-0" style="background-color: transparent;"></td>
-                            <td>${hargaNegoInput}</td>
-                            <td class="text-right" id="total-harga-jual-${v.id_item}">${Rp(total_harga_nego)}</td>
-                        </tr>
+                                <tr>
+                                    <td class="text-center">${++no}</td>
+                                    <td width="300">${v.item_name}</td>
+                                    <td width="80">${v.item_qty} ${v.item_unit}</td>
+                                    <td class="text-right">${Rp(v.item_hj)}</td>
+                                    <td class="text-right" id="total-harga-pokok-${v.id_item}">${Rp(total_harga_jual)}</td>
+                                    <td class="border-0" style="background-color: transparent;"></td>
+                                    <td>${hargaNegoInput}</td>
+                                    <td class="text-right" id="total-harga-jual-${v.id_item}">${Rp(total_harga_nego)}</td>
+                                </tr>
 
-                    `
+                            `
 
-                })
+                        })
 
-                html += `
+                        html += `
 
-                    <tr>
-                        <td colspan="4"></td>
-                        <td class="text-right" id="js-total-harga-jual">${Rp(grandtotal_harga_jual)}</td>
-                        <td class="border-0" style="background-color: transparent;"></td>
-                        <td></td>
-                        <td class="text-right" id="js-total-harga-nego">${Rp(grandtotal_harga_nego)}</td>
-                    </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                                <td class="text-right" id="js-total-harga-jual">${Rp(grandtotal_harga_jual)}</td>
+                                <td class="border-0" style="background-color: transparent;"></td>
+                                <td></td>
+                                <td class="text-right" id="js-total-harga-nego">${Rp(grandtotal_harga_nego)}</td>
+                            </tr>
 
-                `
+                        `
 
-                tbody.html(html);
-                $('#modal-estimasi').modal('show');
-        
-            });
+                        tbody.html(html);
+                        $('#modal-estimasi').modal('show');
+                
+                    });
+
+                } else {
+                    alert('Negosiasi permintaan ini suda ada');
+                    clearForm();
+                }
+            })
+            
         })
 
 

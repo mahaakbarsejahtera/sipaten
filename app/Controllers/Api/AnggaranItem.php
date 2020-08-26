@@ -2,10 +2,10 @@
 
 namespace App\Controllers\Api;
 
-use App\Models\AnggaranModel;
+use App\Models\AnggaranItemModel;
 use CodeIgniter\Controller;
 
-class Anggaran extends Controller
+class AnggaranItem extends Controller
 {
 
     public function show( $id ) 
@@ -18,7 +18,7 @@ class Anggaran extends Controller
             'errors'        => []
         ];
 
-        $find = (new AnggaranModel)->find( $id );
+        $find = (new AnggaranItemModel)->find( $id );
 
         if($find) {
             $response['data']       = $find;
@@ -43,23 +43,7 @@ class Anggaran extends Controller
 
 
         
-        $anggaranModel = new AnggaranModel();
-
-        $anggaranModel->builder()
-        ->select("
-
-
-            anggaran.id_anggaran, anggaran.id_permintaan, anggaran.approval_teknik, anggaran.approval_pemasaran, anggaran.approval_keuangan,
-
-            permintaan.no_permintaan, permintaan.nama_pekerjaan, permintaan.no_survey, permintaan.no_kontrak,
-            permintaan.permintaan_status, permintaan.permintaan_user, permintaan.permintaan_lokasi_survey,
-            permintaan.permintaan_jadwal_survey, permintaan.date_create, permintaan.permintaan_approval,
-            permintaan.approve_by
-        
-        
-        ")
-        ->join('permintaan', 'anggaran.id_permintaan=permintaan.id_permintaan', 'left');
-        
+        $pengajuanItemModel = new AnggaranItemModel();
 
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
@@ -69,14 +53,14 @@ class Anggaran extends Controller
                 switch($filter['key']) {
                     
                     case 'search':
-                        
-                        $anggaranModel->like('permintaan.nama_pekerjaan', $filter['value']);
+                       
+                        $pengajuanItemModel->like('anggaran_item.anggaran_item', $filter['value']);
 
                     break;
 
                     default:
                     
-                    if(in_array($filter['key'], array_keys($anggaranModel->filterby))) {
+                    if(in_array($filter['key'], array_keys($pengajuanItemModel->filterby))) {
                         $response['filters'][] = $filter['key'];
                     }
 
@@ -90,13 +74,13 @@ class Anggaran extends Controller
         if(!empty($this->request->getGet('orders'))) {
             foreach($this->request->getGet('orders') as $order) {
                 $response['orders'][] = $order['orderby'];
-                $anggaranModel->orderBy($order['orderby'], $order['order']);
+                $pengajuanItemModel->orderBy($order['orderby'], $order['order']);
             }
         }
 
 
-        $lists = $anggaranModel->paginate(10, 'group1');
-        $pager = $anggaranModel->pager;
+        $lists = $pengajuanItemModel->paginate(10, 'group1');
+        $pager = $pengajuanItemModel->pager;
 
         $response['data']['lists'] = $lists;
         $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
@@ -117,7 +101,8 @@ class Anggaran extends Controller
 
         // Dinamis ikuti table
         $rules = [
-            'id_permintaan'          => 'required',
+            'id_anggaran'      => 'required',
+
         ];
 
     
@@ -134,19 +119,22 @@ class Anggaran extends Controller
 
         // Dinamis ikuti table
         $insertData = [
-            'id_permintaan'        => (int)$this->request->getPost('id_permintaan'),
-            'approval_teknik'      => (string)$this->request->getPost('approval_teknik'),
-            'approval_pemasaran'   => (string)$this->request->getPost('approval_pemasaran'),
-            'approval_keuangan'    => (string)$this->request->getPost('approval_keuangan')
+            'id_anggaran'          => (int)$this->request->getPost('id_anggaran'),   
+            'jenis_anggaran'       => (string)$this->request->getPost('jenis_anggaran'),
+            'anggaran_item'        => (string)$this->request->getPost('anggaran_item'),
+            'anggaran_qty'         => (double)$this->request->getPost('anggaran_qty'),
+            'anggaran_unit'        => (string)$this->request->getPost('anggaran_unit'),
+            'anggaran_price'       => (double)$this->request->getPost('anggaran_price')     
         ];
 
-        $anggaranModel = db_connect();
-        $anggaranModel
-            ->table('anggaran')
+
+        $anggaranItemModel = db_connect();
+        $anggaranItemModel
+            ->table('anggaran_item')
             ->insert($insertData);
 
         $response['code']       = 200;
-        $response['data']       = [ 'id_anggaran' => $anggaranModel->insertID() ] + $insertData;
+        $response['data']       = [ 'id_anggaran_item' => $anggaranItemModel->insertID() ] + $insertData;
         //$response['data'] = $insertData;
         $response['message']    = 'Insert Success';
 
@@ -168,7 +156,7 @@ class Anggaran extends Controller
 
 
         $rules = [
-            'id_anggaran'         => 'required',
+            'id_anggaran_item'     => 'required',
         ];
 
     
@@ -183,18 +171,21 @@ class Anggaran extends Controller
         }
 
         $insertData = [
-            'id_anggaran'          => (int)$this->request->getPost('id_anggaran'),
-            'id_permintaan'        => (int)$this->request->getPost('id_permintaan'),
-            'approval_teknik'      => (string)$this->request->getPost('approval_teknik'),
-            'approval_pemasaran'   => (string)$this->request->getPost('approval_pemasaran'),
-            'approval_keuangan'    => (string)$this->request->getPost('approval_keuangan')
+            'id_anggaran_item'     => $this->request->getPost('id_anggaran_item'),
+            'id_anggaran'          => $this->request->getPost('id_anggaran'),
+            'jenis_anggaran'       => $this->request->getPost('jenis_anggaran'),
+            'anggaran_item'        => $this->request->getPost('anggaran_item'),
+            'anggaran_qty'         => $this->request->getPost('anggaran_qty'),
+            'anggaran_unit'        => $this->request->getPost('anggaran_unit'),
+            'anggaran_price'       => $this->request->getPost('anggaran_price'),
         ];
 
-        $anggaranModel = new AnggaranModel;
-        $anggaranModel->save($insertData);
+        $anggaranItemModel = new AnggaranItemModel;
+        $anggaranItemModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
+        $response['model']      = $this->request->getPost('id_role');
         //$response['data'] = $insertData;
         $response['message']    = 'Update Success';
 
@@ -210,10 +201,10 @@ class Anggaran extends Controller
             'errors'        => []
         ];
 
-        $find = (new AnggaranModel)->find( $id );
+        $find = (new AnggaranItemModel)->find( $id );
         if($find) {
 
-            (new AnggaranModel)->delete($id);
+            (new AnggaranItemModel)->delete($id);
 
             $response = [
                 'code'      => 200,

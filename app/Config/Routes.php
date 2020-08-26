@@ -96,6 +96,24 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 	$routes->post('permintaan-item/update-estimasi', 'PermintaanItem::updateEstimasi');
 	$routes->post('permintaan-item/update-boq', 'PermintaanItem::updateBoq');
 	$routes->post('permintaan-item/(:num)/delete', 'PermintaanItem::delete/$1');
+
+	
+	//Anggaran
+	$routes->get('anggaran', 'Anggaran::index');
+	$routes->get('anggaran/show/(:num)', 'Anggaran::show/$1');
+
+	$routes->post('anggaran', 'Anggaran::store');
+	$routes->post('anggaran/update', 'Anggaran::update');
+
+	$routes->post('anggaran/(:num)/delete', 'Anggaran::delete/$1');
+
+
+	// Permintaan Item
+	$routes->get('anggaran-item', 'AnggaranItem::index');
+	$routes->get('anggaran-item/show/(:num)', 'AnggaranItem::show/$1');
+	$routes->post('anggaran-item/add', 'AnggaranItem::store');
+	$routes->post('anggaran-item/update', 'AnggaranItem::update');
+	$routes->post('anggaran-item/(:num)/delete', 'AnggaranItem::delete/$1');
 	
 	// Penawaran
 	$routes->get('penawaran', 'Penawaran::index');
@@ -171,6 +189,7 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 		$routes->get('estimasi', 'Laporan::hasilEstimasi');
 		$routes->get('lampiran-penawaran', 'Laporan::lampiranPenawaran');
 		$routes->get('nego', 'Laporan::lampiranNego');
+		$routes->get('anggaran', 'Laporan::lampiranAnggaran');
 	});
 
 	 

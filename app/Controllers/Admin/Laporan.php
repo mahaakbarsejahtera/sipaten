@@ -177,5 +177,65 @@ class Laporan extends Controller
     }
 
 
+    public function lampiranAnggaran() {
+        
+        
+
+        $items = [];
+
+        $subs = [
+            'boq' => 'BOQ',
+            'teknik' => 'TEKNIK',
+            'pemasaran' => 'PEMASARAN',
+            'keuangan' => 'KEUANGAN',
+            'proyek' => 'PROYEK',
+        ];
+
+        $anggaran = (new \App\Models\AnggaranModel)
+            ->builder()
+            ->join('permintaan', 'anggaran.id_permintaan=permintaan.id_permintaan', 'left')
+            ->where('anggaran.id_anggaran', $this->request->getGet('id_anggaran'))
+            ->get()
+            ->getRow();
+
+        
+
+        if($anggaran) 
+        {
+
+            
+
+            foreach($subs as $key => $value) {
+                $items[$key] = (new \App\Models\AnggaranItemModel())
+                ->where('id_anggaran', $this->request->getGet('id_anggaran'))
+                ->where('jenis_anggaran', $key)
+                ->get()
+                ->getResult(); 
+            }
+
+        }
+
+        $html = view('laporan/lampiran-anggaran', [
+            'anggaran' => $anggaran,
+            'items' => $items,
+            'subs' => $subs
+            //'terbilang' => ucwords((new Total)->terbilang($harga->estimasi_harga_jual))
+        ]);
+
+        //return $html;
+        
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream($anggaran->nama_pekerjaan . "-" . date('his'));
+                    
+        return $html;
+    }
+
+
 
 }

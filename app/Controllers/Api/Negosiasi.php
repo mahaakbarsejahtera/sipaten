@@ -105,7 +105,7 @@ class Negosiasi extends Controller
 
         
         $negosiasiModel = new NegosiasiModel();
-        $negosiasiModel->builder()
+        $negoQuery = $negosiasiModel->builder()
         ->select("
 
             permintaan.id_permintaan, permintaan.nama_pekerjaan, permintaan.permintaan_status,
@@ -143,7 +143,7 @@ class Negosiasi extends Controller
                     
                     case 'search':
                         
-                        $negosiasiModel->like('permintaan.nama_pekerjaan', $filter['value'])
+                        $negoQuery->like('permintaan.nama_pekerjaan', $filter['value'])
                             ->orLike('negosiasi.nego_pic_nama', $filter['value']);
 
                     break;
@@ -151,7 +151,8 @@ class Negosiasi extends Controller
                     default:
                     
                     if(in_array($filter['key'], array_keys($negosiasiModel->filterby))) {
-                        $negosiasiModel->where($filter['key'], $filter['value']);
+                        $negoQuery->where($negosiasiModel->filterby[$filter['key']], $filter['value']);
+                        //echo $filter['key'] . ' ' . $filter['value'];
                     }
 
                     break;
@@ -164,7 +165,7 @@ class Negosiasi extends Controller
         if(!empty($this->request->getGet('orders'))) {
             foreach($this->request->getGet('orders') as $order) {
                 $response['orders'][] = $order['orderby'];
-                $negosiasiModel->orderBy($order['orderby'], $order['order']);
+                $negoQuery->orderBy($order['orderby'], $order['order']);
             }
         }
 
@@ -172,8 +173,8 @@ class Negosiasi extends Controller
         
 
 
-        $lists = $negosiasiModel->paginate(10, 'group1');
-        $pager = $negosiasiModel->pager;
+        $lists = $negoQuery->paginate(10, 'group1');
+        $pager = $negoQuery->pager;
 
         $data = [];
         foreach($lists as $list) 

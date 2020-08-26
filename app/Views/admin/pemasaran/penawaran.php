@@ -109,12 +109,12 @@
                     
                         <div class="form-group">
                             <label for="i-penawaran_validasi_date">Tanggal Penawaran</label>
-                            <input type="date" name="penawaran_validasi_date" class="form-control" id="i-penawaran_validasi_date">
+                            <input type="date" name="penawaran_validasi_date" class="form-control" id="i-penawaran_validasi_date" value="<?php echo date('Y-m-d') ?>">
                         </div>
 
                         <div class="form-group">
                             <label for="i-penawaran_due_date">Due Date Penawaran</label>
-                            <input type="date" name="penawaran_due_date" class="form-control" id="i-penawaran_due_date">
+                            <input type="date" name="penawaran_due_date" class="form-control" id="i-penawaran_due_date" value="<?php echo date('Y-m-d', strtotime(date('Y-m-d') . ' + 14 day')); ?>">
                         </div>
 
                         <div class="form-group">

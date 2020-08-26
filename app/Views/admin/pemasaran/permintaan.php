@@ -137,6 +137,24 @@
                             <textarea name="keterangan_pekerjaan" id="i-keterangan_pekerjaan" rows="5" class="form-control"></textarea>
                         </div>
 
+                        <div class="form-row">
+                            <div class="form-group col-12 col-md-6">
+                                <label for="i-permintaan_nego">Negosiasi</label>
+                                <select name="permintaan_nego" id="i-permintaan_nego" class="form-control">
+                                    <option value="Y">Y</option>
+                                    <option value="N">N</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-12 col-md-6">
+                                <label for="i-permintaan_kontrak">Kontrak</label>
+                                <select name="permintaan_kontrak" id="i-permintaan_kontrak" class="form-control">
+                                    <option value="Y">Y</option>
+                                    <option value="N">N</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <button class="btn btn-primary" id="js-save">Simpan Permintaan</button>
 
                     </form>
@@ -329,6 +347,10 @@
                             <tr>
                                 <td>
                                     <div>${v.nama_pekerjaan}</div>
+                                    <ul style="padding: 0; margin: 0; list-style: none;">
+                                        <li>Negosiasi <span class="badge badge-${(v.permintaan_nego == 'Y') ? 'success' : 'dark'}">${v.permintaan_nego}</span></li>
+                                        <li>Kontrak <span class="badge badge-${(v.permintaan_kontrak == 'Y') ? 'success' : 'dark'}">${v.permintaan_kontrak}</span></li>
+                                    </ul>
                                 </td>
                                 <td>${v.nama_customer}</td>
                                 <td>${v.permintaan_lokasi_survey}</td>
@@ -573,7 +595,17 @@
 
         }
 
-        
+        function hasNegosiasi(id_permintaan) {
+            return $.ajax({
+                method: 'GET',
+                url: `${baseUrl}/api/negosiasi`,
+                data: {
+                    filters: [
+                        { key: 'id_permintaan', value: id_permintaan }
+                    ]
+                }
+            })
+        }
 
         $(document).on('click', '[data-toggle=table-action]', function(e){
             e.preventDefault();
@@ -636,31 +668,46 @@
 
                     let idPermintaan = $(this).data('permintaan');
                     $('#js-add-boq').data('permintaan', idPermintaan)
-                    console.log('permintaan', idPermintaan)
-
                     tbody = $('#form-boq').find('tbody');
                     tbody.html('');
 
-                    loadHasilPermintaan(idPermintaan)
-                    .then(response => {
+                    hasNegosiasi(idPermintaan)
+                    .then((result) => {
 
-                        console.log('load items hasil survey');
-
-                        let html = "";
-                        response.data.lists.map((v, i) => {
-                            console.log(v);
-    
+                        loadHasilPermintaan(idPermintaan)
+                        .then(response => {
                             
-                            html += createRowBoq(v);
+                            
 
-                        })
-                          
+                            let html = "";
+                            response.data.lists.map((v, i) => {
+                                console.log(v);
+        
+                                
+                                html += createRowBoq(v);
 
-                        tbody.html(html);
-                        $('#modal-boq').modal('show');
+                            })
+                            
+
+                            tbody.html(html);
+                            $('#modal-boq').modal('show');
+
+                            if(result.data.lists.length > 0) {
+                                console.log('load items hasil survey');
+                                $('#form-boq').find('thead th:last-child').css({ display: 'none' })
+                                $('#form-boq').find('tbody tr td:last-child').css({ display: 'none' })
+                                $('#form-boq').find('tfoot th:last-child').css({ display: 'none' })
+                            } else {
+                                $('#form-boq').find('thead th:last-child').attr('style', '');
+                                $('#form-boq').find('tbody tr td:last-child').attr('style', '');
+                                $('#form-boq').find('tfoot th:last-child').attr('style', '');
+                            }
+                        
+                            btn.html('BOQ');
+                        });
+                    })
+
                     
-                        btn.html('BOQ');
-                    });
 
                     break;
 
