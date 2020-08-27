@@ -25,6 +25,7 @@ class Users extends Controller
         $find = (new usersModel)
             ->builder()
             ->join('roles', 'users.user_role=roles.id_role', 'left')
+            ->join('divisi', 'users.user_divisi=divisi.id_divisi', 'left')
             ->find( $id );
 
         if($find) {
@@ -71,7 +72,7 @@ class Users extends Controller
                     default:
                     
                     if(in_array($filter['key'], array_keys($usersModel->filterby))) {
-                        $usersModel->where($filter['key'], $filter['value']);
+                        $usersModel->where($usersModel->filterby[$filter['key']], $filter['value']);
                     }
 
                     break;
@@ -91,8 +92,15 @@ class Users extends Controller
 
         $lists = $usersModel->paginate(10, 'group1');
         $pager = $usersModel->pager;
+        
+        $data = [];
+        
+        foreach($lists as $list) 
+        {
+            $data[] = $list; 
+        }
 
-        $response['data']['lists'] = $lists;
+        $response['data']['lists'] = $data;
         $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
         
 
@@ -116,6 +124,7 @@ class Users extends Controller
             'user_email'        => 'required',
             'user_email'        => 'required',
             'user_role'         => 'required',
+            //'user_divisi'         => 'required',
         ];
 
     
@@ -136,7 +145,8 @@ class Users extends Controller
             'user_email'        => $this->request->getPost('user_email'),
             'user_status'       => $this->request->getPost('user_status'),
             'user_pass'         => md5('ymdhis'),
-            'user_code'         => $this->request->getPost('user_code')
+            'user_code'         => $this->request->getPost('user_code'),
+            //'user_divisi'         => $this->request->getPost('user_divisi')
         ];
 
         $user_image = $this->request->getFile('user_image');
@@ -178,6 +188,7 @@ class Users extends Controller
             'user_email'        => 'required',
             'user_email'        => 'required',
             'user_role'         => 'required',
+            //'user_divisi'       => 'required',
         ];
 
     
@@ -199,7 +210,8 @@ class Users extends Controller
             'user_email'        => $this->request->getPost('user_email'),
             'user_status'       => $this->request->getPost('user_status'),
             'user_pass'         => md5('ymdhis'),
-            'user_code'         => $this->request->getPost('user_code')
+            'user_code'         => $this->request->getPost('user_code'),
+            //'user_divisi'       => $this->request->getPost('user_divisi'),
         ];
 
         $user_image = $this->request->getFile('user_image');

@@ -103,6 +103,13 @@
                             </select>
                         </div>
 
+                        <!-- <div class="form-group">
+                            <label for="i-user_divisi">Divisi</label>
+                            <select name="user_divisi" id="i-user_divisi" class="form-control">
+                                <option value="">Pilih</option>
+                            </select>
+                        </div> -->
+
                         <div class="form-group">
                             <label for="i-user_status">Status</label>
                             <select name="user_status" id="i-user_status" class="form-control">

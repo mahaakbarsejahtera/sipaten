@@ -165,6 +165,7 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 	$routes->get('roles', 'Roles::index');
 	$routes->get('permintaan', 'Permintaan::index');
 	$routes->get('survey', 'Survey::index');
+	$routes->get('jenis-pengajuan', 'Home::dashboardJenisPengajuan');
 
 	$routes->group('pemasaran', function($routes) {
 
@@ -180,6 +181,11 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 		$routes->get('permintaan', 'Home::teknikPermintaan');
 		$routes->get('survey', 'Home::teknikSurvey');
 		$routes->get('anggaran', 'Home::teknikAnggaran');
+
+		$routes->group('pengajuan', function($routes) {
+			 $routes->get('operasional', function(){
+			});
+		});
 
 	});
 

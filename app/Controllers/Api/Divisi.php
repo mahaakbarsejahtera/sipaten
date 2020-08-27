@@ -2,11 +2,15 @@
 
 namespace App\Controllers\Api;
 
-use App\Models\JenisPengajuanModel;
+use App\Models\DivisiModel;
 use CodeIgniter\Controller;
 
-class JenisPengajuan extends Controller
+class Divisi extends Controller
 {
+
+    public function __construct() {
+        
+    }
 
     public function show( $id ) 
     {
@@ -18,7 +22,7 @@ class JenisPengajuan extends Controller
             'errors'        => []
         ];
 
-        $find = (new JenisPengajuanModel)->find( $id );
+        $find = (new DivisiModel)->find( $id );
 
         if($find) {
             $response['data']       = $find;
@@ -43,17 +47,8 @@ class JenisPengajuan extends Controller
 
 
         
-        $jenisPengajuanModel = new JenisPengajuanModel();
-        $jenisPengajuanModel->builder()
-        ->select("
+        $divisiModel = new DivisiModel();
 
-
-            jenis_pengajuan.id_jenis_pengajuan, 
-            jenis_pengajuan.nama_jenis_pengajuan,
-            jenis_pengajuan.jenis_pengajuan_term
-           
-        ");
-       
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
 
@@ -63,14 +58,15 @@ class JenisPengajuan extends Controller
                     
                     case 'search':
                         
-                        $jenisPengajuanModel->like('jenis_pengajuan.nama_jenis_pengajuan', $filter['value']);
+                        $divisiModel->like('roles.role_name', $filter['value']);
 
                     break;
 
                     default:
                     
-                    if(in_array($filter['key'], array_keys($jenisPengajuanModel->filterby))) {
+                    if(in_array($filter['key'], array_keys($divisiModel->filterby))) {
                         $response['filters'][] = $filter['key'];
+                        $divisiModel->where($divisiModel->filterby[$filter['key']], $filter['value']);
                     }
 
                     break;
@@ -83,13 +79,13 @@ class JenisPengajuan extends Controller
         if(!empty($this->request->getGet('orders'))) {
             foreach($this->request->getGet('orders') as $order) {
                 $response['orders'][] = $order['orderby'];
-                $jenisPengajuanModel->orderBy($order['orderby'], $order['order']);
+                $divisiModel->orderBy($order['orderby'], $order['order']);
             }
         }
 
 
-        $lists = $jenisPengajuanModel->paginate(10, 'group1');
-        $pager = $jenisPengajuanModel->pager;
+        $lists = $divisiModel->paginate(10, 'group1');
+        $pager = $divisiModel->pager;
 
         $response['data']['lists'] = $lists;
         $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
@@ -108,10 +104,9 @@ class JenisPengajuan extends Controller
             'message'   => '' 
         ];
 
-        // Dinamis ikuti table
-        $rules = [
-            'nama_jenis_pengajuan'     => 'required'
 
+        $rules = [
+            'nama_divisi'     => 'required',
         ];
 
     
@@ -125,22 +120,23 @@ class JenisPengajuan extends Controller
 
         }
 
-
-        // Dinamis ikuti table
         $insertData = [
-            'nama_jenis_pengajuan'     => $this->request->getPost('nama_jenis_pengajuan'),
-            'jenis_pengajuan_term'     => $this->request->getPost('jenis_pengajuan_term')
+            'id_divisi'     => $this->request->getPost('id_divisi'),
+            'nama_divisi'   => $this->request->getPost('nama_divisi'),
         ];
 
-        $db                  = db_connect();
-        $jenisPengajuanModel = $db->table('jenis_pengajuan');
-        $jenisPengajuanModel->insert($insertData);
+        $db = db_connect();
+        $divisiModel = $db->table('divisi');
+        $divisiModel->insert($insertData);
 
         $response['code']       = 200;
-        $response['data']       = [ 'id_pengajuan' => $db->insertID() ] + $insertData;
+        $response['data']       = [ 'id_divisi' => $db->insertID() ] + $insertData;
+        //$response['data'] = $insertData;
         $response['message']    = 'Insert Success';
 
         return $this->response->setJson($response);
+
+
 
     }
 
@@ -156,8 +152,7 @@ class JenisPengajuan extends Controller
 
 
         $rules = [
-            'id_jenis_pengajuan'       => 'required',
-            'nama_jenis_pengajuan'     => 'required'
+            'id_divisi'       => 'required',
         ];
 
     
@@ -172,17 +167,15 @@ class JenisPengajuan extends Controller
         }
 
         $insertData = [
-            'id_jenis_pengajuan'     => $this->request->getPost('id_jenis_pengajuan'),
-            'nama_jenis_pengajuan'   => $this->request->getPost('nama_jenis_pengajuan'),
-            'jenis_pengajuan_term'   => $this->request->getPost('jenis_pengajuan_term'),
+            'id_divisi'       => $this->request->getPost('id_divisi'),
+            'nama_divisi'     => $this->request->getPost('nama_divisi'),
         ];
 
-        $jenisPengajuanModel = new JenisPengajuanModel;
-        $jenisPengajuanModel->save($insertData);
+        $divisiModel = new DivisiModel;
+        $divisiModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
-        $response['model']      = $this->request->getPost('id_role');
         //$response['data'] = $insertData;
         $response['message']    = 'Update Success';
 
@@ -198,10 +191,10 @@ class JenisPengajuan extends Controller
             'errors'        => []
         ];
 
-        $find = (new JenisPengajuanModel)->find( $id );
+        $find = (new DivisiModel)->find( $id );
         if($find) {
 
-            (new JenisPengajuanModel)->delete($id);
+            (new DivisiModel)->delete($id);
 
             $response = [
                 'code'      => 200,
@@ -215,4 +208,5 @@ class JenisPengajuan extends Controller
         return $this->response->setJson($response);
     }
 
+   
 }

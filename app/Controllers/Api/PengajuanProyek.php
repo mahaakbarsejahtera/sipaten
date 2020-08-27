@@ -2,12 +2,13 @@
 
 namespace App\Controllers\Api;
 
-use App\Models\PengajuanModel;
+use App\Models\PengajuanProyekModel;
+use App\Models\PengajuanInternalModel;
 use CodeIgniter\Controller;
 
-class Pengajuan extends Controller
+class PengajuanProyek extends Controller
 {
-
+    
     public function show( $id ) 
     {
 
@@ -18,7 +19,9 @@ class Pengajuan extends Controller
             'errors'        => []
         ];
 
-        $find = (new PengajuanModel)->find( $id );
+
+
+        $find = (new PengajuanProyekModel)->find( $id );
 
         if($find) {
             $response['data']       = $find;
@@ -43,19 +46,18 @@ class Pengajuan extends Controller
 
 
         
-        $pengajuanModel = new PengajuanModel();
+        $pengajuanModel = new PengajuanProyekModel();
         $pengajuanModel->builder()
         ->select("
 
 
             pengajuan.id_pengajuan, pengajuan.id_anggaran, pengajuan.id_jenis_pengajuan, 
-
             anggaran.id_permintaan, anggaran.approval_teknik, anggaran.approval_pemasaran, anggaran.approval_keuangan,
             jenis_pengajuan.nama_jenis_pengajuan
            
         ")
-        ->join('anggaran', 'pengajuan.id_anggaran=anggaran.id_anggaran', 'left',)
-              ('jenis_pengajuan', 'pengajuan.id_jenis_pengajuan=jenis_anggran.id_jenis_anggaran','left');
+        ->join('anggaran', 'pengajuan.id_anggaran=anggaran.id_anggaran', 'left')
+        ->join('jenis_pengajuan', 'pengajuan.id_jenis_pengajuan=jenis_anggran.id_jenis_anggaran','left');
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
 
@@ -73,6 +75,7 @@ class Pengajuan extends Controller
                     
                     if(in_array($filter['key'], array_keys($pengajuanModel->filterby))) {
                         $response['filters'][] = $filter['key'];
+                        $pengajuanModel->where($pengajuanModel->filterby[$filter['key']], $filter['value']);
                     }
 
                     break;
@@ -133,23 +136,19 @@ class Pengajuan extends Controller
         $insertData = [
             'id_anggaran'            => $this->request->getPost('id_anggaran'),
             'id_jenis_pengajuan'     => $this->request->getPost('id_jenis_pengajuan')
-            
         ];
 
 
-        $pengajuanModel = new PengajuanModel;
+        $pengajuanModel = new PengajuanProyekModel;
         $pengajuanModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
-        $response['model']      = $pengajuanModel->getInsertID();
         //$response['data'] = $insertData;
         $response['message']    = 'Insert Success';
 
         return $this->response->setJson($response);
-
-
-
+        
     }
 
     public function update()
@@ -181,12 +180,12 @@ class Pengajuan extends Controller
         }
 
         $insertData = [
-            'id_pengajuan'          => $this->request->getPost('id_pengajuan'),
-            'id_anggaran'           => $this->request->getPost('id_anggaran'),
-            'id_jenis_pengajuan'    => $this->request->getPost('id_jenis_pengajuan')
+            'id_pengajuan_proyek'          => $this->request->getPost('id_pengajuan_proyek'),
+            'id_anggaran'            => $this->request->getPost('id_anggaran'),
+            'id_jenis_pengajuan'     => $this->request->getPost('id_jenis_pengajuan')
         ];
 
-        $pengajuanModel = new PengajuanModel;
+        $pengajuanModel = new PengajuanProyekModel;
         $pengajuanModel->save($insertData);
 
         $response['code']       = 200;
@@ -207,10 +206,10 @@ class Pengajuan extends Controller
             'errors'        => []
         ];
 
-        $find = (new PengajuanModel)->find( $id );
+        $find = (new PengajuanProyekModel)->find( $id );
         if($find) {
 
-            (new PengajuanModel)->delete($id);
+            (new PengajuanProyekModel)->delete($id);
 
             $response = [
                 'code'      => 200,
@@ -222,16 +221,6 @@ class Pengajuan extends Controller
         }
 
         return $this->response->setJson($response);
-    }
-
-    public function destroy()
-    {
-
-    }
-
-    public function changePassword() 
-    {
-
     }
 
 }
