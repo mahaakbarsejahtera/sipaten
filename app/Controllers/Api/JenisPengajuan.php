@@ -91,7 +91,24 @@ class JenisPengajuan extends Controller
         $lists = $jenisPengajuanModel->paginate(10, 'group1');
         $pager = $jenisPengajuanModel->pager;
 
-        $response['data']['lists'] = $lists;
+        $data = [];
+
+        foreach($lists as $list)
+        {
+
+
+            $data[] = $list + [
+                'penanggung_jawab' => (new \App\Models\PenanggungJawabModel())
+                                        ->where('id_jenis_pengajuan', $list['id_jenis_pengajuan'])
+                                        ->join('users', 'penanggung_jawab.penanggung_jawab_user = users.id_user', 'left')
+                                        ->join('roles', 'users.user_role = roles.id_role', 'left')
+                                        ->get()
+                                        ->getResult()
+            ];
+
+        }
+
+        $response['data']['lists'] = $data;
         $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
         
 
@@ -137,7 +154,7 @@ class JenisPengajuan extends Controller
         $jenisPengajuanModel->insert($insertData);
 
         $response['code']       = 200;
-        $response['data']       = [ 'id_pengajuan' => $db->insertID() ] + $insertData;
+        $response['data']       = [ 'id_jenis_pengajuan' => $db->insertID() ] + $insertData;
         $response['message']    = 'Insert Success';
 
         return $this->response->setJson($response);
@@ -214,5 +231,6 @@ class JenisPengajuan extends Controller
 
         return $this->response->setJson($response);
     }
+
 
 }

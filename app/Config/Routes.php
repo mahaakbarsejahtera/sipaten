@@ -156,6 +156,27 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 	$routes->post('pic/(:num)/delete', 'Pic::delete/$1');
 	$routes->post('pic/destroy', 'Pic::destroy');
 
+	//Jenis Pengajuan
+	$routes->get('jenis-pengajuan', 'JenisPengajuan::index');
+	$routes->get('jenis-pengajuan/show/(:num)', 'JenisPengajuan::show/$1');
+
+	$routes->post('jenis-pengajuan', 'JenisPengajuan::store');
+	$routes->post('jenis-pengajuan/update', 'JenisPengajuan::update');
+
+	$routes->post('jenis-pengajuan/(:num)/delete', 'JenisPengajuan::delete/$1');
+	$routes->post('jenis-pengajuan/destroy', 'JenisPengajuan::destroy');
+
+	//Penanggung Jawab
+	$routes->get('penanggung-jawab', 'PenanggungJawab::index');
+	$routes->get('penanggung-jawab/show/(:num)', 'PenanggungJawab::show/$1');
+
+	$routes->post('penanggung-jawab', 'PenanggungJawab::store');
+	$routes->post('penanggung-jawab/update', 'PenanggungJawab::update');
+
+	$routes->post('penanggung-jawab/(:num)/delete', 'PenanggungJawab::delete/$1');
+	$routes->post('penanggung-jawab/destroy', 'PenanggungJawab::destroy');
+	
+
 });
 
 
@@ -184,6 +205,7 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 
 		$routes->group('pengajuan', function($routes) {
 			 $routes->get('operasional', function(){
+				 
 			});
 		});
 

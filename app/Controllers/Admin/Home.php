@@ -412,40 +412,28 @@ class Home extends Controller
                 'url' => base_url('dashboard'),
             ],
             [
-                'name' => 'Anggaran',
+                'name' => 'Jenis Pengajuan',
                 'active' => true
             ],
         ])->render();
 
         return view('admin/jenis-pengajuan', [
-            'title' => 'Pengajuan',
+            'title' => 'Jenis Pengajuan',
             'breadcrumb' => $breadcrumb,
             'table'         => (new Table())->setColumns([
                 [
-                    'field' => 'nama_pekerjaan',
-                    'name' => 'Nama Pekerjaan',
+                    'field' => 'nama_jenis_pengajuan',
+                    'name' => 'Nama Pengajuan',
                     'sort' => true,
                 ],
                 [
-                    'name' => 'Customer',
-                ],
-                  
-                [
-                    'name' => 'Lokasi'
+                    'name' => 'Ketentuan',
                 ],
                 [
-                    'name' => 'Jadwal'
-                ],
+                    'name' => 'Penanggung Jawab'
+                ], 
                 [
-                    'name' => 'Keterangan'
-                ],
-                [
-                    'field' => 'permintaan_sales',
-                    'name' => 'Sales',
-                    'sort' => true,
-                ],  
-                [
-                    'name' => 'Anggaran',
+                    'name' => 'Aksi'
                 ]
 
             ])
