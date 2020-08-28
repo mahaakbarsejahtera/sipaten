@@ -62,6 +62,7 @@ class PengajuanProyekItem extends Controller
                     
                     if(in_array($filter['key'], array_keys($pengajuanItemModel->filterby))) {
                         $response['filters'][] = $filter['key'];
+                        $pengajuanItemModel->where($pengajuanItemModel->filterby[$filter['key']], $filter['value']);
                     }
 
                     break;

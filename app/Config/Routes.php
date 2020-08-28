@@ -247,6 +247,7 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 		$routes->get('lampiran-penawaran', 'Laporan::lampiranPenawaran');
 		$routes->get('nego', 'Laporan::lampiranNego');
 		$routes->get('anggaran', 'Laporan::lampiranAnggaran');
+		$routes->get('pengajuan', 'Laporan::lampiranPengajuan');
 	});
 
 	 

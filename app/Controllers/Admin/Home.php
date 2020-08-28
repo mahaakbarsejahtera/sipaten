@@ -448,13 +448,13 @@ class Home extends Controller
                 'url' => base_url('dashboard'),
             ],
             [
-                'name' => 'Pengajuan Operasional',
+                'name' => 'Pengajuan',
                 'active' => true
             ],
         ])->render();
 
         return view('admin/pengajuan/pemasaran/operasional', [
-            'title' => 'Pengajuan Operasional',
+            'title' => 'Pengajuan',
             'breadcrumb' => $breadcrumb,
             'table'         => (new Table())->setColumns([
                 [

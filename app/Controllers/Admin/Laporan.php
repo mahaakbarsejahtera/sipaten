@@ -236,6 +236,77 @@ class Laporan extends Controller
         return $html;
     }
 
+    public function lampiranPengajuan() 
+    {
 
+        $dataToView = [
+            'pengajuan'         => [],
+            'penanggung_jawab'  => [],
+            'items'             => [],
+            'pengaju'           => []
+        ];
+
+
+        $id_pengajuan = $this->request->getGet('id_pengajuan');
+
+        $pengajuan = (new \App\Models\PengajuanProyekModel())
+            ->builder()
+            ->join('jenis_pengajuan', 'pengajuan_proyek.id_jenis_pengajuan=jenis_pengajuan.id_jenis_pengajuan')
+            ->find($id_pengajuan);
+
+        $dataToView['pengajuan'] = $pengajuan;
+
+        //var_dump($pengajuan);
+
+
+        if($pengajuan) 
+        {
+            
+            $penanggung_jawab = (new \App\Models\PenanggungJawabModel())
+            ->builder()
+            ->join('users', 'penanggung_jawab.penanggung_jawab_user=users.id_user', 'left')
+            ->join('roles', 'users.user_role=roles.id_role', 'left')
+            ->where('id_jenis_pengajuan', $pengajuan['id_jenis_pengajuan'])
+            ->get()
+            ->getResult();
+
+
+            $items = (new \App\Models\PengajuanProyekItemModel())
+                ->builder()
+                ->where('id_pengajuan_proyek', $pengajuan['id_pengajuan_proyek'])
+                ->get()
+                ->getResult();
+
+
+
+            $pengaju = (new \App\Models\UsersModel())->find($pengajuan['id_pengaju']);
+
+            // /var_dump($penanggung_jawab);
+
+            $dataToView['items']            = $items;
+            $dataToView['penanggung_jawab'] = $penanggung_jawab;
+            $dataToView['pengaju']          = $pengaju;
+
+        }
+        
+
+
+
+        $html = view('laporan/lampiran-pengajuan', $dataToView);
+
+        //return $html;
+        
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream("{$pengajuan['perihal_pengajuan_proyek']} - {$pengajuan['nama_jenis_pengajuan']}" . date('his'));
+                    
+        return $html;
+
+    }
 
 }

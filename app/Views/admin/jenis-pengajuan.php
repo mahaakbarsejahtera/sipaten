@@ -168,6 +168,7 @@
 <?php $this->section('footerScript') ?>
 
 <script src="<?php echo base_url('/assets/plugins/jquery-ui/jquery-ui.min.js') ?>"></script>
+<script src="<?php echo base_url('/assets/plugins/tinymce/js/tinymce/tinymce.min.js') ?>"></script>
 
 <script>
 
@@ -176,6 +177,13 @@
         let truthAction = $('#i-truth_action');
         let tableData = $('#table-data');
         let form = $('#form');
+
+        tinymce.init({
+            selector: '#i-jenis_pengajuan_term',
+            menubar: false,
+            plugins: "lists",
+            toolbar: "numlist bullist",
+        });
 
         $('#js-add-tambah-data').click(function(e){
             e.preventDefault();
@@ -261,7 +269,13 @@
 
         function addData() {
 
-            let data = form.serialize();
+            //let data = form.serialize();
+            let data = {
+                nama_jenis_pengajuan: $('#i-nama_jenis_pengajuan').val(),
+                kode_jenis_pengajuan: $('#kode_jenis_pengajuan').val(),
+                jenis_pengajuan_term: tinyMCE.activeEditor.getContent()
+            };
+
 
             return $.ajax({
                 method: 'POST',
@@ -293,7 +307,13 @@
 
         function updateData() {
             
-            let data = form.serialize();
+            //let data = form.serialize();
+            let data = {
+                id_jenis_pengajuan: $('#i-id_jenis_pengajuan').val(),
+                nama_jenis_pengajuan: $('#i-nama_jenis_pengajuan').val(),
+                kode_jenis_pengajuan: $('#kode_jenis_pengajuan').val(),
+                jenis_pengajuan_term: tinyMCE.activeEditor.getContent()
+            };
 
             return $.ajax({
                 method: 'POST',
@@ -330,7 +350,13 @@
                     truthAction.val('update');
 
                     for(data in response.data) {
-                        $('#i-' + data).val(response.data[data]);
+
+                        if(data == "jenis_pengajuan_term") {
+                            tinyMCE.activeEditor.setContent(response.data["jenis_pengajuan_term"])
+                        }else {
+
+                            $('#i-' + data).val(response.data[data]);
+                        }
                     }
                     
                     $('#js-penanggung-jawab-tbody').html('');

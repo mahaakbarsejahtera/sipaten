@@ -125,22 +125,24 @@ class PengajuanProyek extends Controller
         {
 
             $data[] = $list + [
-                'nilai_pengajuan'   => (new \App\Models\PengajuanProyekItemModel)->builder()
+                'nilai_pengajuan'       => (new \App\Models\PengajuanProyekItemModel)->builder()
                                         ->select('SUM(pengajuan_proyek_price * pengajuan_proyek_qty) as total')
                                         ->where('id_pengajuan_proyek', $list['id_pengajuan_proyek'])
                                         ->get()
                 ->getRow()->total,
-                'total_anggaran'    => (new \App\Models\AnggaranItemModel())->builder()
+                'total_anggaran'        => (new \App\Models\AnggaranItemModel())->builder()
                                         ->select('SUM(anggaran_price * anggaran_qty) as total')
                                         ->where('id_anggaran', $list['id_anggaran'])
                                         ->get()
                                         ->getRow()->total,
 
-                'pengaju'           => (new \App\Models\UsersModel())->find($list['id_pengaju']),
+                'pengaju'               => (new \App\Models\UsersModel())->find($list['id_pengaju']),
                 'total_nilai_pengajuan' => (new \App\Models\PengajuanProyekItemModel)->builder()
                                             ->select('SUM(pengajuan_proyek_price * pengajuan_proyek_qty) as total')
-                                            ->where('id_pengajuan_proyek', $list['id_pengajuan_proyek'])
+                                            ->join('pengajuan_proyek', 'pengajuan_proyek_item.id_pengajuan_proyek = pengajuan_proyek.id_pengajuan_proyek', 'left')
+                                            ->where('id_anggaran', $list['id_anggaran'])
                                             ->get()
+                                            ->getRow()->total
                 //'penanggung_jawab'  => (new \App\Models\PenanggungJawabModel())->where('id_jenis_pengajuan', $list['id_jenis_pengajuan'])->findAll()
             ];
 

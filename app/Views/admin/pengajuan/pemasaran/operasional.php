@@ -236,6 +236,8 @@
         $('#js-trigger-modal-pengajuan').click(function(e){
             e.preventDefault();
             clearForm();
+            $('#js-operasional-item').find('tbody').html('');
+            $('#js-operasional-item').collapse('hide');
         })
 
         tinymce.init({
@@ -267,17 +269,20 @@
                         
                             <tr>
                                 <td>
-                                    ${v.perihal_pengajuan_proyek}
+                                    <div>${v.perihal_pengajuan_proyek}</div>
+                                    <div><a href="${baseUrl}/dashboard/laporan/pengajuan/?id_pengajuan=${v.id_pengajuan_proyek}" target="_blank">Download</a></div>
                                 </td>
                                 <td>${v.tanggal_pengajuan_proyek}</td>
                                 <td>${v.due_date_pengajuan_proyek}</td>
                                 <td>${Rp(v.nilai_pengajuan)}</td>
-                                
+                                  
                                 <td>
                                     <div>${v.pengaju.user_fullname}</div>
                                 </td>
                                 <td>${v.nama_pekerjaan}</td>
-                                <td>${Rp(v.total_anggaran)}</td>
+                                <td>
+                                    <span class="${parseFloat(v.total_nilai_pengajuan) > parseFloat(v.total_anggaran) ? 'text-danger' : 'text-success'} ">${Rp(v.total_nilai_pengajuan)}</span> / ${Rp(v.total_anggaran)}
+                                </td>
                                 <td>
 
                                     <a href="javascript:void(0)" class="btn btn-warning mb-2" title="Edit Pengajuan" data-toggle="table-action" data-action="edit" data-id="${v.id_pengajuan_proyek}" data-permintaan="${v.id_permintaan}">
@@ -486,7 +491,7 @@
 
                     loadPengajuanProyekItem({
                         filters: [
-                            { key: 'id_pengajuan_proyek', value: response.data['id_pengajuan_proyek'] }
+                            { key: 'id_pengajuan_proyek', value: response.data.id_pengajuan_proyek }
                         ]
                     })
                     .then(results => {
