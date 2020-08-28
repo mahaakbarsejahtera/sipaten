@@ -52,7 +52,7 @@ class Anggaran extends Controller
             anggaran.id_anggaran, anggaran.id_permintaan, anggaran.approval_teknik, anggaran.approval_pemasaran, anggaran.approval_keuangan,
 
             permintaan.no_permintaan, permintaan.nama_pekerjaan, permintaan.no_survey, permintaan.no_kontrak,
-            permintaan.permintaan_status, permintaan.permintaan_user, permintaan.permintaan_lokasi_survey,
+            permintaan.permintaan_status, permintaan.permintaan_sales, permintaan.permintaan_lokasi_survey,
             permintaan.permintaan_jadwal_survey, permintaan.date_create, permintaan.permintaan_approval,
             permintaan.approve_by
         

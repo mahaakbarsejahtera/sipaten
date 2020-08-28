@@ -86,6 +86,11 @@
                             <input type="text" name="nama_jenis_pengajuan" class="form-control" id="i-nama_jenis_pengajuan">
                         </div>
 
+
+                        <div class="form-group">
+                            <label for="i-kode_jenis_pengajuan">Kode</label>
+                            <input type="text" name="kode_jenis_pengajuan" class="form-control" id="i-kode_jenis_pengajuan">
+                        </div>
           
 
                         <div class="form-group">
@@ -598,6 +603,8 @@
                     })
 
                 })
+
+                loadData();
 
                
             })

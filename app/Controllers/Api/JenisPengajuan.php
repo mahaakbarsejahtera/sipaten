@@ -49,8 +49,9 @@ class JenisPengajuan extends Controller
 
 
             jenis_pengajuan.id_jenis_pengajuan, 
+            jenis_pengajuan.kode_jenis_pengajuan,
             jenis_pengajuan.nama_jenis_pengajuan,
-            jenis_pengajuan.jenis_pengajuan_term
+            jenis_pengajuan.jenis_pengajuan_term,
            
         ");
        
@@ -146,6 +147,7 @@ class JenisPengajuan extends Controller
         // Dinamis ikuti table
         $insertData = [
             'nama_jenis_pengajuan'     => $this->request->getPost('nama_jenis_pengajuan'),
+            'kode_jenis_pengajuan'     => $this->request->getPost('kode_jenis_pengajuan'),
             'jenis_pengajuan_term'     => $this->request->getPost('jenis_pengajuan_term')
         ];
 
@@ -190,6 +192,7 @@ class JenisPengajuan extends Controller
 
         $insertData = [
             'id_jenis_pengajuan'     => $this->request->getPost('id_jenis_pengajuan'),
+            'kode_jenis_pengajuan'     => $this->request->getPost('kode_jenis_pengajuan'),
             'nama_jenis_pengajuan'   => $this->request->getPost('nama_jenis_pengajuan'),
             'jenis_pengajuan_term'   => $this->request->getPost('jenis_pengajuan_term'),
         ];

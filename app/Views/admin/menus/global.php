@@ -73,7 +73,7 @@
     </ul>
 </li>
 
-<li class="nav-header">Pengajuan</li>
+<li class="nav-header">Pengajuan anggaran</li>
 
 <li class="nav-item has-treeview">
     <a href="#" class="nav-link">
@@ -87,18 +87,34 @@
     <ul class="nav nav-treeview">
         
         <li class="nav-item">
-            <a href="<?php echo base_url('dashboard/teknik/pengajuan/operasional') ?>" class="nav-link">
+            <a href="<?php echo base_url('dashboard/pemasaran/pengajuan/operasional') ?>" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Operasional</p>
             </a>
         </li>
 
         <li class="nav-item">
-            <a href="<?php echo base_url('dashboard/teknik/pengajuan/promosi') ?>" class="nav-link">
+            <a href="<?php echo base_url('dashboard/pemasaran/pengajuan/promosi') ?>" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Promosi</p>
             </a>
         </li>
+
+    </ul>
+</li>
+
+<li class="nav-header">Pengajuan Non anggaran</li>
+
+<li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+        <i class="nav-icon fas fa-copy"></i>
+        <p>
+        Pemasaran
+        <i class="fas fa-angle-left right"></i>
+        <!-- <span class="badge badge-info right">6</span> -->
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
 
         <li class="nav-item">
             <a href="<?php echo base_url('dashboard/teknik/pengajuan/anggaran') ?>" class="nav-link">

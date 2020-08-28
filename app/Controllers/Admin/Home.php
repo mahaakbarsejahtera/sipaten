@@ -441,4 +441,53 @@ class Home extends Controller
         ]);
     }
 
+    public function pemasaranPengajuanOperasional() {
+        $breadcrumb = (new BreadCrumb)->set([
+            [
+                'name' => 'Dashboard',
+                'url' => base_url('dashboard'),
+            ],
+            [
+                'name' => 'Pengajuan Operasional',
+                'active' => true
+            ],
+        ])->render();
+
+        return view('admin/pengajuan/pemasaran/operasional', [
+            'title' => 'Pengajuan Operasional',
+            'breadcrumb' => $breadcrumb,
+            'table'         => (new Table())->setColumns([
+                [
+                    'field' => 'perihal_pengajuan_proyek',
+                    'name' => 'Perihal',
+                    'sort' => true,
+                ],
+                [
+                    'name' => 'Tanggal Pengajuan'
+                ],
+                [
+                    'name' => 'Due Date Pengajuan'
+                ],
+                [
+                    'name' => ' Nilai Pengajuan'
+                ],
+                [
+                    'name' => 'Pengaju'
+                ],
+                [
+                    'name' => 'Nama Pekerjaan',
+                ],
+                //['name' => 'Penanggung Jawab'], 
+                [
+                    'name' => 'Anggaran'
+                ],
+                [
+                    'name' => 'Aksi'
+                ]
+
+            ])
+            ->render("table-data")
+        ]);
+    }
+
 }

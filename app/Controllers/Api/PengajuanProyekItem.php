@@ -2,10 +2,10 @@
 
 namespace App\Controllers\Api;
 
-use App\Models\PengajuanItemModel;
+use App\Models\PengajuanProyekItemModel;
 use CodeIgniter\Controller;
 
-class PengajuanItem extends Controller
+class PengajuanProyekItem extends Controller
 {
 
     public function show( $id ) 
@@ -18,7 +18,7 @@ class PengajuanItem extends Controller
             'errors'        => []
         ];
 
-        $find = (new PengajuanItemModel)->find( $id );
+        $find = (new PengajuanProyekItemModel)->find( $id );
 
         if($find) {
             $response['data']       = $find;
@@ -43,7 +43,7 @@ class PengajuanItem extends Controller
 
 
         
-        $pengajuanItemModel = new PengajuanItemModel();
+        $pengajuanItemModel = new PengajuanProyekItemModel();
 
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
@@ -101,11 +101,7 @@ class PengajuanItem extends Controller
 
         // Dinamis ikuti table
         $rules = [
-            'id_pengajuan'      => 'required',
-            'pengajuan_item_name'    => 'required',
-            'pengajuan_qty'     => 'required',
-            'pengajuan_unit'    => 'required',
-            'pengajuan_price'   => 'required',
+            'id_pengajuan_proyek'   => 'required',
 
         ];
 
@@ -123,22 +119,23 @@ class PengajuanItem extends Controller
 
         // Dinamis ikuti table
         $insertData = [
-            'id_pengajuan'       => $this->request->getPost('id_pengajuan'),
-            'pengajuan_item_name'     => $this->request->getPost('pengajuan_item_name'),
-            'pengajuan_qty'      => $this->request->getPost('pengajuan_qty'),
-            'pengajuan_unit'     => $this->request->getPost('pengajuan_unit'),
-            'pengajuan_price'    => $this->request->getPost('pengajuan_price'),
+            'id_pengajuan_proyek'           => $this->request->getPost('id_pengajuan_proyek'),
+            'pengajuan_proyek_name'         => (string)$this->request->getPost('pengajuan_proyek_name'),
+            'pengajuan_proyek_desc'         => (string)$this->request->getPost('pengajuan_proyek_desc'),
+            'pengajuan_proyek_qty'          => (double)$this->request->getPost('pengajuan_proyek_qty'),
+            'pengajuan_proyek_unit'         => (string)$this->request->getPost('pengajuan_proyek_unit'),
+            'pengajuan_proyek_price'        => (double)$this->request->getPost('pengajuan_proyek_price'),
+            'pengajuan_proyek_keterangan'   => (string)$this->request->getPost('pengajuan_proyek_keterangan'),
             
         ];
 
-
-        $pengajuanItemModel = new PengajuanItemModel;
-        $pengajuanItemModel->save($insertData);
+        $db                 = db_connect();
+        $pengajuanItemModel = $db
+                                ->table('pengajuan_proyek_item')
+                                ->insert($insertData);
 
         $response['code']       = 200;
-        $response['data']       = $insertData;
-        $response['model']      = $pengajuanItemModel->getInsertID();
-        //$response['data'] = $insertData;
+        $response['data']       = [ 'id_pengajuan_proyek_item' => $db->insertID() ] +  $insertData;
         $response['message']    = 'Insert Success';
 
         return $this->response->setJson($response);
@@ -159,12 +156,7 @@ class PengajuanItem extends Controller
 
 
         $rules = [
-            'id_pengajuan_item'     => 'required',
-            'id_pengajuan'          => 'required',
-            'pengajuan_item_name'        => 'required',
-            'pengajuan_qty'         => 'required',
-            'pengajuan_unit'        => 'required',
-            'pengajuan_price'       => 'required',
+            'id_pengajuan_proyek_item'     => 'required',
         ];
 
     
@@ -179,20 +171,22 @@ class PengajuanItem extends Controller
         }
 
         $insertData = [
-            'id_pengajuan_item'     => $this->request->getPost('id_pengajuan_item'),
-            'id_pengajuan'          => $this->request->getPost('id_pengajuan'),
-            'pengajuan_item_name'        => $this->request->getPost('pengajuan_item_name'),
-            'pengajuan_qty'         => $this->request->getPost('pengajuan_qty'),
-            'pengajuan_unit'        => $this->request->getPost('pengajuan_unit'),
-            'pengajuan_price'       => $this->request->getPost('pengajuan_price'),
+            'id_pengajuan_proyek_item'      => (int)$this->request->getPost('id_pengajuan_proyek_item'),
+            'id_pengajuan_proyek'           => (int)$this->request->getPost('id_pengajuan_proyek'),
+            'pengajuan_proyek_name'         => (string)$this->request->getPost('pengajuan_proyek_name'),
+            'pengajuan_proyek_desc'         => (string)$this->request->getPost('pengajuan_proyek_desc'),
+            'pengajuan_proyek_qty'          => (double)$this->request->getPost('pengajuan_proyek_qty'),
+            'pengajuan_proyek_unit'         => (string)$this->request->getPost('pengajuan_proyek_unit'),
+            'pengajuan_proyek_price'        => (double)$this->request->getPost('pengajuan_proyek_price'),
+            'pengajuan_proyek_keterangan'   => (string)$this->request->getPost('pengajuan_proyek_keterangan'),
+            
         ];
 
-        $pengajuanItemModel = new PengajuanItemModel;
+        $pengajuanItemModel = new PengajuanProyekItemModel;
         $pengajuanItemModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
-        $response['model']      = $this->request->getPost('id_role');
         //$response['data'] = $insertData;
         $response['message']    = 'Update Success';
 
@@ -208,10 +202,10 @@ class PengajuanItem extends Controller
             'errors'        => []
         ];
 
-        $find = (new PengajuanItemModel)->find( $id );
+        $find = (new PengajuanProyekItemModel)->find( $id );
         if($find) {
 
-            (new PengajuanItemModel)->delete($id);
+            (new PengajuanProyekItemModel)->delete($id);
 
             $response = [
                 'code'      => 200,
@@ -225,14 +219,5 @@ class PengajuanItem extends Controller
         return $this->response->setJson($response);
     }
 
-    public function destroy()
-    {
-
-    }
-
-    public function changePassword() 
-    {
-
-    }
 
 }

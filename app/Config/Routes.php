@@ -175,6 +175,29 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 
 	$routes->post('penanggung-jawab/(:num)/delete', 'PenanggungJawab::delete/$1');
 	$routes->post('penanggung-jawab/destroy', 'PenanggungJawab::destroy');
+
+	//Pengajuan Proyek
+	$routes->get('pengajuan-proyek', 'PengajuanProyek::index');
+	$routes->get('pengajuan-proyek/show/(:num)', 'PengajuanProyek::show/$1');
+
+	$routes->post('pengajuan-proyek', 'PengajuanProyek::store');
+	$routes->post('pengajuan-proyek/update', 'PengajuanProyek::update');
+
+	$routes->post('pengajuan-proyek/(:num)/delete', 'PengajuanProyek::delete/$1');
+	$routes->post('pengajuan-proyek/destroy', 'PengajuanProyek::destroy');
+
+	// Pengajuan Proyek Item
+	$routes->get('pengajuan-proyek-item', 'PengajuanProyekItem::index');
+	$routes->get('pengajuan-proyek-item/show/(:num)', 'PengajuanProyekItem::show/$1');
+
+	$routes->post('pengajuan-proyek-item', 'PengajuanProyekItem::store');
+	$routes->post('pengajuan-proyek-item/update', 'PengajuanProyekItem::update');
+
+	$routes->post('pengajuan-proyek-item/(:num)/delete', 'PengajuanProyekItem::delete/$1');
+	$routes->post('pengajuan-proyek-item/destroy', 'PengajuanProyekItem::destroy');
+
+
+	
 	
 
 });
@@ -195,6 +218,12 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 		$routes->get('penawaran', 'Home::pemasaranPenawaran');
 		$routes->get('negosiasi', 'Home::pemasaranNegoisasi');
 
+		$routes->group('pengajuan', function($routes) { 
+
+			$routes->get('operasional', 'Home::pemasaranPengajuanOperasional');
+
+		});
+
 	});
 
 	$routes->group('teknik', function($routes) {
@@ -204,8 +233,8 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 		$routes->get('anggaran', 'Home::teknikAnggaran');
 
 		$routes->group('pengajuan', function($routes) {
-			 $routes->get('operasional', function(){
-				 
+			$routes->get('operasional', function(){
+
 			});
 		});
 
