@@ -242,6 +242,7 @@
                         
                             <tr>
                                 <td width="300">${v.nama_jenis_pengajuan}</td>
+                                <td width="300">${v.kode_jenis_pengajuan}</td>
                                 <td>${v.jenis_pengajuan_term}</td>
                                 <td width="300">${penanggungJawabHTML}</td>
                                 <td width="200">
@@ -272,7 +273,7 @@
             //let data = form.serialize();
             let data = {
                 nama_jenis_pengajuan: $('#i-nama_jenis_pengajuan').val(),
-                kode_jenis_pengajuan: $('#kode_jenis_pengajuan').val(),
+                kode_jenis_pengajuan: $('#i-kode_jenis_pengajuan').val(),
                 jenis_pengajuan_term: tinyMCE.activeEditor.getContent()
             };
 
@@ -289,6 +290,7 @@
                             $('#i-id_jenis_pengajuan').val(response.data.id_jenis_pengajuan)
                             //clearForm();
                             $('#js-penanggung-jawab').collapse('show')
+                            truthAction.val('update');
                             loadData();
                         break;
 
@@ -311,7 +313,7 @@
             let data = {
                 id_jenis_pengajuan: $('#i-id_jenis_pengajuan').val(),
                 nama_jenis_pengajuan: $('#i-nama_jenis_pengajuan').val(),
-                kode_jenis_pengajuan: $('#kode_jenis_pengajuan').val(),
+                kode_jenis_pengajuan: $('#i-kode_jenis_pengajuan').val(),
                 jenis_pengajuan_term: tinyMCE.activeEditor.getContent()
             };
 

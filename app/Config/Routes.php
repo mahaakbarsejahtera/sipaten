@@ -196,6 +196,25 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 	$routes->post('pengajuan-proyek-item/(:num)/delete', 'PengajuanProyekItem::delete/$1');
 	$routes->post('pengajuan-proyek-item/destroy', 'PengajuanProyekItem::destroy');
 
+	//Pengajuan Internal
+	$routes->get('pengajuan-internal', 'PengajuanInternal::index');
+	$routes->get('pengajuan-internal/show/(:num)', 'PengajuanInternal::show/$1');
+
+	$routes->post('pengajuan-internal', 'PengajuanInternal::store');
+	$routes->post('pengajuan-internal/update', 'PengajuanInternal::update');
+
+	$routes->post('pengajuan-internal/(:num)/delete', 'PengajuanInternal::delete/$1');
+	$routes->post('pengajuan-internal/destroy', 'PengajuanInternal::destroy');
+
+	// Pengajuan Internal Item
+	$routes->get('pengajuan-internal-item', 'PengajuanInternalItem::index');
+	$routes->get('pengajuan-internal-item/show/(:num)', 'PengajuanInternalItem::show/$1');
+
+	$routes->post('pengajuan-internal-item', 'PengajuanInternalItem::store');
+	$routes->post('pengajuan-internal-item/update', 'PengajuanInternalItem::update');
+
+	$routes->post('pengajuan-internal-item/(:num)/delete', 'PengajuanInternalItem::delete/$1');
+	$routes->post('pengajuan-internal-item/destroy', 'PengajuanInternalItem::destroy');
 
 	
 	
@@ -210,6 +229,9 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 	$routes->get('permintaan', 'Permintaan::index');
 	$routes->get('survey', 'Survey::index');
 	$routes->get('jenis-pengajuan', 'Home::dashboardJenisPengajuan');
+	
+	$routes->get('pengajuan-proyek', 'Home::pengajuanAnggaran');
+	$routes->get('pengajuan-internal', 'Home::pengajuanNonAnggaran');
 
 	$routes->group('pemasaran', function($routes) {
 
@@ -223,6 +245,8 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 			$routes->get('operasional', 'Home::pemasaranPengajuanOperasional');
 
 		});
+
+		
 
 	});
 
@@ -248,6 +272,7 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 		$routes->get('nego', 'Laporan::lampiranNego');
 		$routes->get('anggaran', 'Laporan::lampiranAnggaran');
 		$routes->get('pengajuan', 'Laporan::lampiranPengajuan');
+		$routes->get('pengajuan-internal', 'Laporan::lampiranPengajuanInternal');
 	});
 
 	 

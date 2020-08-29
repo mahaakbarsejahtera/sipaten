@@ -100,6 +100,71 @@
             </a>
         </li>
 
+
+    </ul>
+</li>
+
+<li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+        <i class="nav-icon fas fa-copy"></i>
+        <p>
+        Teknik
+        <i class="fas fa-angle-left right"></i>
+        <!-- <span class="badge badge-info right">6</span> -->
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        
+        <li class="nav-item">
+            <a href="<?php echo base_url('dashboard/teknik/pengajuan/operasional') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Operasional</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="<?php echo base_url('dashboard/teknik/pengajuan/material-jasa') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Material/Jasa</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="<?php echo base_url('dashboard/teknik/pengajuan/perlengkapan-proyek') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Perlengkapan/Peralatan Proyek</p>
+            </a>
+        </li>
+
+
+    </ul>
+</li>
+
+<li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+        <i class="nav-icon fas fa-copy"></i>
+        <p>
+        Keuangan
+        <i class="fas fa-angle-left right"></i>
+        <!-- <span class="badge badge-info right">6</span> -->
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        
+        <li class="nav-item">
+            <a href="<?php echo base_url('dashboard/keuangan/pengajuan/pembayaran-pajak') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Pembayaran Pajak</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="<?php echo base_url('dashboard/keuangan/pengajuan/operasional') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Operasional</p>
+            </a>
+        </li>
+
     </ul>
 </li>
 
@@ -116,21 +181,51 @@
     </a>
     <ul class="nav nav-treeview">
 
+        
         <li class="nav-item">
-            <a href="<?php echo base_url('dashboard/teknik/pengajuan/anggaran') ?>" class="nav-link">
+            <a href="<?php echo base_url('dashboard/pemasaran/pengajuan/anggaran-bulan') ?>" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Anggaran Bulanan</p>
             </a>
         </li>
 
         <li class="nav-item">
-            <a href="<?php echo base_url('dashboard/teknik/pengajuan/komisi-sales') ?>" class="nav-link">
+            <a href="<?php echo base_url('dashboard/pemasaran/pengajuan/komisi-sales') ?>" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Komisi Sales</p>
             </a>
         </li>
     </ul>
 </li>
+
+<li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+        <i class="nav-icon fas fa-copy"></i>
+        <p>
+        Keuangan
+        <i class="fas fa-angle-left right"></i>
+        <!-- <span class="badge badge-info right">6</span> -->
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+
+        
+        <li class="nav-item">
+            <a href="<?php echo base_url('dashboard/keuangan/pengajuan/anggaran-bulanan') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Anggaran Bulanan</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="<?php echo base_url('dashboard/keuangan/pengajuan/perlengkapan-kantor') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Komisi Sales</p>
+            </a>
+        </li>
+    </ul>
+</li>
+
 
 
 <li class="nav-header">Global</li>
@@ -161,3 +256,19 @@
         <p>Jenis Pengajuaan</p>
     </a>
 </li>
+
+<li class="nav-item">
+    <a href="<?php echo base_url('/dashboard/pengajuan-proyek') ?>" class="nav-link">
+        <i class="nav-icon far fa-star"></i>
+        <p>Pengajuan Proyek</p>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a href="<?php echo base_url('/dashboard/pengajuan-internal') ?>" class="nav-link">
+        <i class="nav-icon far fa-star"></i>
+        <p>Pengajuan Internal</p>
+    </a>
+</li>
+
+

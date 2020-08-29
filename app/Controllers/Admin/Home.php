@@ -427,6 +427,9 @@ class Home extends Controller
                     'sort' => true,
                 ],
                 [
+                    'name' => 'Kode'
+                ],
+                [
                     'name' => 'Ketentuan',
                 ],
                 [
@@ -481,6 +484,101 @@ class Home extends Controller
                 [
                     'name' => 'Anggaran'
                 ],
+                [
+                    'name' => 'Aksi'
+                ]
+
+            ])
+            ->render("table-data")
+        ]);
+    }
+
+    public function pengajuanAnggaran() {
+        $breadcrumb = (new BreadCrumb)->set([
+            [
+                'name' => 'Dashboard',
+                'url' => base_url('dashboard'),
+            ],
+            [
+                'name' => 'Pengajuan Proyek',
+                'active' => true
+            ],
+        ])->render();
+
+        return view('admin/pengajuan/pemasaran/operasional', [
+        'title' => 'Pengajuan Proyek',
+            'breadcrumb' => $breadcrumb,
+            'table'         => (new Table())->setColumns([
+                [
+                    'field' => 'perihal_pengajuan_proyek',
+                    'name' => 'Perihal',
+                    'sort' => true,
+                ],
+                [
+                    'name' => 'Tanggal Pengajuan'
+                ],
+                [
+                    'name' => 'Due Date Pengajuan'
+                ],
+                [
+                    'name' => ' Nilai Pengajuan'
+                ],
+                [
+                    'name' => 'Pengaju'
+                ],
+                [
+                    'name' => 'Nama Pekerjaan',
+                ],
+                //['name' => 'Penanggung Jawab'], 
+                [
+                    'name' => 'Anggaran'
+                ],
+                [
+                    'name' => 'Aksi'
+                ]
+
+            ])
+            ->render("table-data")
+        ]);
+    }
+
+    public function pengajuanNonAnggaran() {
+        $breadcrumb = (new BreadCrumb)->set([
+            [
+                'name' => 'Dashboard',
+                'url' => base_url('dashboard'),
+            ],
+            [
+                'name' => 'Pengajuan Internal',
+                'active' => true
+            ],
+        ])->render();
+
+        return view('admin/pengajuan-internal', [
+            'title' => 'Pengajuan Internal',
+            'breadcrumb' => $breadcrumb,
+            'table'         => (new Table())->setColumns([
+                [
+                    'field' => 'perihal_pengajuan_internal',
+                    'name' => 'Perihal',
+                    'sort' => true,
+                ],
+                [
+                    'name' => 'Tanggal Pengajuan'
+                ],
+                [
+                    'name' => 'Due Date Pengajuan'
+                ],
+                [
+                    'name' => ' Nilai Pengajuan'
+                ],
+                [
+                    'name' => 'Pengaju'
+                ],
+                // [
+                //     'name' => 'Nama Pekerjaan',
+                // ],
+                //['name' => 'Penanggung Jawab'], 
                 [
                     'name' => 'Aksi'
                 ]
