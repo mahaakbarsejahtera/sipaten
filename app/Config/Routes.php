@@ -242,7 +242,10 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 
 		$routes->group('pengajuan', function($routes) { 
 
-			$routes->get('operasional', 'Home::pemasaranPengajuanOperasional');
+			$routes->get('operasional', 'Pengajuan::pemasaranOperasionalProyek');
+			$routes->get('promosi', 'Pengajuan::pemasaranOperasionalProyek');
+			$routes->get('anggaran-bulanan', 'Pengajuan::pemasaranOperasionalProyek');
+			$routes->get('komisi-sales', 'Pengajuan::pemasaranOperasionalProyek');
 
 		});
 

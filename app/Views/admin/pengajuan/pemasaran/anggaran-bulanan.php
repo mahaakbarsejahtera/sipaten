@@ -83,11 +83,18 @@
                     
                     <form action="" id="form-pengajuan">
                         <input type="hidden" name="truth_action" id="i-truth_action" value="">
-                        <input type="hidden" name="id_pengajuan_proyek" id="i-id_pengajuan_proyek">
+                        <input type="hidden" name="id_pengajuan_internal" id="i-id_pengajuan_internal">
+                        <input type="hidden" name="id_jenis_pengajuan" id="i-id_jenis_pengajuan" value="25">
+
                         <input type="hidden" name="_method" value="POST">
                      
                         <div class="row">
                             <div class="col-12 col-md-8">
+
+                                <div class="form-group">
+                                    <label>Jenis Pengajuan</label>
+                                    <input type="text" value="Anggaran Bulanan Pemasaran" disabled>
+                                </div>
                                 
                                 <div class="form-group">
                                     <label for="i-id_pengaju">Pengaju</label>
@@ -95,44 +102,45 @@
                                         <option value="">Pilih</option>
                                     </select>
                                 </div>
+                                
 
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label for="i-id_jenis_pengajuan">Jenis Pengajuan</label>
-                                    <select name="id_jenis_pengajuan" id="i-id_jenis_pengajuan" class="form-control" disabled>
+                                    <select name="id_jenis_pengajuan" id="i-id_jenis_pengajuan" class="form-control">
                                         <option value="">Pilih</option>
                                     </select>
-                                </div>
+                                </div> -->
 
                                 <div class="form-group">
-                                    <label for="i-no_surat_pengajuan_proyek">No Surat</label>
-                                    <input type="text" name="no_surat_pengajuan_proyek" id="i-no_surat_pengajuan_proyek" class="form-control" disabled>
+                                    <label for="i-no_surat_pengajuan_internal">No Surat</label>
+                                    <input type="text" name="no_surat_pengajuan_internal" id="i-no_surat_pengajuan_internal" class="form-control" disabled>
                                 </div>
                                 
 
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label for="i-id_anggaran">Pekerjaan</label>
                                     <select name="id_anggaran" id="i-id_anggaran" class="form-control">
                                         <option value="">Pilih</option>
                                     </select>
-                                </div>
+                                </div> -->
 
                                 <div class="form-group">
-                                    <label for="i-perihal_pengajuan_proyek">Perihal</label>
-                                    <input type="text" name="perihal_pengajuan_proyek" id="i-perihal_pengajuan_proyek" value="" class="form-control">
+                                    <label for="i-perihal_pengajuan_internal">Perihal</label>
+                                    <input type="text" name="perihal_pengajuan_internal" id="i-perihal_pengajuan_internal" value="" class="form-control">
                                 </div>
                             </div>  
 
                             <?php $current_date = date('Y-m-d'); ?>
                             <div class="col-12 col-md-4">
                                 <div class="form-group">
-                                    <label for="i-tanggal_pengajuan_proyek">Tanggal Pengajuan</label>
-                                    <input type="date" name="tanggal_pengajuan_proyek" id="i-tanggal_pengajuan_proyek" value="<?php echo $current_date ?>" class="form-control">
+                                    <label for="i-tanggal_pengajuan_internal">Tanggal Pengajuan</label>
+                                    <input type="date" name="tanggal_pengajuan_internal" id="i-tanggal_pengajuan_internal" value="<?php echo $current_date ?>" class="form-control">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="i-due_date_pengajuan_proyek">Due Date Pengajuan</label>
+                                    <label for="i-due_date_pengajuan_internal">Due Date Pengajuan</label>
 
-                                    <input type="date" name="due_date_pengajuan_proyek" id="i-due_date_pengajuan_proyek" value="<?php echo date('Y-m-d', strtotime("{$current_date} + 14 days")) ?>" class="form-control">
+                                    <input type="date" name="due_date_pengajuan_internal" id="i-due_date_pengajuan_internal" value="<?php echo date('Y-m-d', strtotime("{$current_date} + 14 days")) ?>" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -145,18 +153,18 @@
                     
                     <div id="js-operasional-item" class="collapse">
                         <form action="" id="form-operasional-item">
-                            <input type="hidden" name="id_pengajuan_proyek_item" id="i-id_pengajuan_proyek_item">
+                            <input type="hidden" name="id_pengajuan_internal_item" id="i-id_pengajuan_internal_item">
                             <div class="row">
                                 <div class="col-12 col-md-8">
 
                                     <div class="form-group">
-                                        <label for="i-pengajuan_proyek_name">Nama</label>
-                                        <input type="text" name="pengajuan_proyek_name" class="form-control" id="i-pengajuan_proyek_name">
+                                        <label for="i-pengajuan_internal_name">Nama</label>
+                                        <input type="text" name="pengajuan_internal_name" class="form-control" id="i-pengajuan_internal_name">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="i-pengajuan_proyek_desc">Deskripsi</label>
-                                        <textarea name="pengajuan_proyek_desc" class="form-control" rows="5" id="i-pengajuan_proyek_desc"></textarea>
+                                        <label for="i-pengajuan_internal_desc">Deskripsi</label>
+                                        <textarea name="pengajuan_internal_desc" class="form-control" rows="5" id="i-pengajuan_internal_desc"></textarea>
                                     </div>
 
 
@@ -165,19 +173,19 @@
 
                                     <div class="form-row">
                                         <div class="form-group col-6">
-                                            <label for="i-pengajuan_proyek_qty">Qty</label>
-                                            <input type="text" name="pengajuan_proyek_qty" class="form-control" id="i-pengajuan_proyek_qty">
+                                            <label for="i-pengajuan_internal_qty">Qty</label>
+                                            <input type="text" name="pengajuan_internal_qty" class="form-control" id="i-pengajuan_internal_qty">
                                         </div>
 
                                         <div class="form-group col-6">
-                                            <label for="i-pengajuan_proyek_unit">Satuan</label>
-                                            <input type="text" name="pengajuan_proyek_unit" class="form-control" id="i-pengajuan_proyek_unit">
+                                            <label for="i-pengajuan_internal_unit">Satuan</label>
+                                            <input type="text" name="pengajuan_internal_unit" class="form-control" id="i-pengajuan_internal_unit">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="i-pengajuan_proyek_price">Harga</label>
-                                        <input type="text" name="pengajuan_proyek_price" class="form-control" id="i-pengajuan_proyek_price">
+                                        <label for="i-pengajuan_internal_price">Harga</label>
+                                        <input type="text" name="pengajuan_internal_price" class="form-control" id="i-pengajuan_internal_price">
                                     </div>
 
                                     <button class="btn btn-primary" id="js-add-pengajuan-item">Simpan Item</button>
@@ -187,8 +195,8 @@
                             </div>
                             
                             <div class="form-group">
-                                <label for="i-pengajuan_proyek_keterangan">Keterangan</label>
-                                <textarea name="pengajuan_proyek_keterangan" class="form-control" rows="5" id="i-pengajuan_proyek_keterangan"></textarea>
+                                <label for="i-pengajuan_internal_keterangan">Keterangan</label>
+                                <textarea name="pengajuan_internal_keterangan" class="form-control" rows="5" id="i-pengajuan_internal_keterangan"></textarea>
                             </div>
                         </form>
 
@@ -247,11 +255,7 @@
             toolbar: "numlist bullist",
         });
 
-        loadData({
-            filters: [
-                { key: 'id_jenis_pengajuan', value: '23' }
-            ]
-        });
+        loadData();
         function loadData(data = {}) {
             
             tableData.find('tbody').html(`
@@ -261,7 +265,7 @@
             `);
 
             $.ajax({
-                url: "<?php echo base_url('/api/pengajuan-proyek') ?>",
+                url: "<?php echo base_url('/api/pengajuan-internal') ?>",
                 data: data,
                 success: function(response) {
                     console.log('load data', response);
@@ -273,27 +277,23 @@
                         
                             <tr>
                                 <td>
-                                    <div>${v.perihal_pengajuan_proyek}</div>
-                                    <div><a href="${baseUrl}/dashboard/laporan/pengajuan/?id_pengajuan=${v.id_pengajuan_proyek}" target="_blank">Download</a></div>
+                                    <div>${v.perihal_pengajuan_internal}</div>
+                                    <div><a href="${baseUrl}/dashboard/laporan/pengajuan-internal/?id_pengajuan=${v.id_pengajuan_internal}" target="_blank">Download</a></div>
                                 </td>
-                                <td>${v.tanggal_pengajuan_proyek}</td>
-                                <td>${v.due_date_pengajuan_proyek}</td>
+                                <td>${v.tanggal_pengajuan_internal}</td>
+                                <td>${v.due_date_pengajuan_internal}</td>
                                 <td>${Rp(v.nilai_pengajuan)}</td>
                                   
                                 <td>
                                     <div>${v.pengaju.user_fullname}</div>
                                 </td>
-                                <td>${v.nama_pekerjaan}</td>
-                                <td>
-                                    <span class="${parseFloat(v.total_nilai_pengajuan) > parseFloat(v.total_anggaran) ? 'text-danger' : 'text-success'} ">${Rp(v.total_nilai_pengajuan)}</span> / ${Rp(v.total_anggaran)}
-                                </td>
                                 <td>
 
-                                    <a href="javascript:void(0)" class="btn btn-warning mb-2" title="Edit Pengajuan" data-toggle="table-action" data-action="edit" data-id="${v.id_pengajuan_proyek}" data-permintaan="${v.id_permintaan}">
+                                    <a href="javascript:void(0)" class="btn btn-warning mb-2" title="Edit Pengajuan" data-toggle="table-action" data-action="edit" data-id="${v.id_pengajuan_internal}" data-permintaan="${v.id_permintaan}">
                                         <span class="fas fa-edit"></span>
                                     </a>
                                     
-                                    <a href="javascript:void(0)" class="btn btn-danger mb-2" title="Hapus Pengajuan" data-toggle="table-action"  data-action="delete" data-id="${v.id_pengajuan_proyek}">
+                                    <a href="javascript:void(0)" class="btn btn-danger mb-2" title="Hapus Pengajuan" data-toggle="table-action"  data-action="delete" data-id="${v.id_pengajuan_internal}">
                                         <span class="fas fa-trash"></span>
                                     </a>
                                 </td>
@@ -313,20 +313,20 @@
         }
 
     
-        getAnggaran()
-        .then(response => {
-            console.log('getPermintaan');
-            let html = '<option value="">Pilih</option>';
+        // getAnggaran()
+        // .then(response => {
+        //     console.log('getPermintaan');
+        //     let html = '<option value="">Pilih</option>';
 
-            response.data.lists.map((v, i) => {
-                html += `<option value="${v.id_anggaran}">${v.nama_pekerjaan}</option>`;
-            })
+        //     response.data.lists.map((v, i) => {
+        //         html += `<option value="${v.id_anggaran}">${v.nama_pekerjaan}</option>`;
+        //     })
 
-            $('#i-id_anggaran').html(html);
+        //     $('#i-id_anggaran').html(html);
 
-        }).catch(err => {
-            console.log(err);
-        });
+        // }).catch(err => {
+        //     console.log(err);
+        // });
 
         getJenisPengajuan()
         .then(response => {
@@ -334,7 +334,7 @@
             let html = '<option value="">Pilih</option>';
 
             response.data.lists.map((v, i) => {
-                html += `<option value="${v.id_jenis_pengajuan}" ${v.id_jenis_pengajuan == "23" ? "selected" : ""}>${v.kode_jenis_pengajuan} - ${v.nama_jenis_pengajuan}</option>`;
+                html += `<option value="${v.id_jenis_pengajuan}">${v.kode_jenis_pengajuan} - ${v.nama_jenis_pengajuan}</option>`;
             })
 
             $('#i-id_jenis_pengajuan').html(html);
@@ -371,12 +371,7 @@
 
         function getJenisPengajuan() {
             return $.ajax({
-                url: `${baseUrl}/api/jenis-pengajuan?page_group1=-1`,
-                data: {
-                    filters: [
-                        { key: 'id_jenis_pengajuan', value: 23 }
-                    ]
-                }
+                url: `${baseUrl}/api/jenis-pengajuan?page_group1=-1`
             })
         }
 
@@ -385,7 +380,7 @@
             return $.ajax({
                 url: `${baseUrl}/api/users?page_group1=-1`,
                 data: data
-            })
+        })
 
         }
 
@@ -411,7 +406,7 @@
 
             return $.ajax({
                 method: 'POST',
-                url: `${baseUrl}/api/pengajuan-proyek`,
+                url: `${baseUrl}/api/pengajuan-internal`,
                 data: data, 
                 success: function(response) {
                     console.log('success response add', response);
@@ -456,7 +451,7 @@
 
             return $.ajax({
                 method: 'POST',
-                url: "<?php echo base_url('/api/pengajuan-proyek/update') ?>",
+                url: "<?php echo base_url('/api/pengajuan-internal/update') ?>",
                 data: data, 
                 success: function(response) {
                     console.log('success response add', response);
@@ -483,7 +478,7 @@
         
         function getData( id ) {
             return $.ajax({
-                url: `${baseUrl}/api/pengajuan-proyek/show/${id}`,
+                url: `${baseUrl}/api/pengajuan-internal/show/${id}`,
                 success: function(response) {
                     truthAction.val('update');
 
@@ -498,9 +493,9 @@
 
                     }
 
-                    loadPengajuanProyekItem({
+                    loadPengajuanInternalItem({
                         filters: [
-                            { key: 'id_pengajuan_proyek', value: response.data.id_pengajuan_proyek }
+                            { key: 'id_pengajuan_internal', value: response.data.id_pengajuan_internal }
                         ]
                     })
                     .then(results => {
@@ -525,7 +520,7 @@
         function deleteData( id ) {
             return $.ajax({
                 method: 'POST',
-                url: `${baseUrl}/api/pengajuan-proyek/${id}/delete`,
+                url: `${baseUrl}/api/pengajuan-internal/${id}/delete`,
                 success: function(response) {
                     switch(response.code) {
                         case 200:
@@ -688,8 +683,8 @@
             saveData()
             .then(afterSave => {
                 console.log('afterSave', afterSave);
-                $('#i-id_pengajuan_proyek').val(afterSave.data.id_pengajuan_proyek);
-                $('#i-no_surat_pengajuan_proyek').val(afterSave.data.no_surat_pengajuan_proyek);
+                $('#i-id_pengajuan_internal').val(afterSave.data.id_pengajuan_internal);
+                $('#i-no_surat_pengajuan_internal').val(afterSave.data.no_surat_pengajuan_internal);
                 $('#js-operasional-item').collapse('show');
 
             })
@@ -703,24 +698,24 @@
 
             html = `<tr>
                 <td class="text-left align-middle">
-                    <div class="font-weight-bold">${data.pengajuan_proyek_name}</div>
-                    <div>${data.pengajuan_proyek_desc}</div>
+                    <div class="font-weight-bold">${data.pengajuan_internal_name}</div>
+                    <div>${data.pengajuan_internal_desc}</div>
                 </td>
-                <td class="text-center align-middle">${data.pengajuan_proyek_qty} ${data.pengajuan_proyek_unit}</td>
-                <td class="text-right align-middle">${Rp(data.pengajuan_proyek_price)}</td>
-                <td colspan="2" class="text-right align-middle">${Rp(data.pengajuan_proyek_qty * data.pengajuan_proyek_price)}</td>
-                <td colspan="2" class="text-left align-middle">${data.pengajuan_proyek_keterangan}</td>
+                <td class="text-center align-middle">${data.pengajuan_internal_qty} ${data.pengajuan_internal_unit}</td>
+                <td class="text-right align-middle">${Rp(data.pengajuan_internal_price)}</td>
+                <td colspan="2" class="text-right align-middle">${Rp(data.pengajuan_internal_qty * data.pengajuan_internal_price)}</td>
+                <td colspan="2" class="text-left align-middle">${data.pengajuan_internal_keterangan}</td>
                 <td width="150">
                     <a href="javascript:void(0)" 
-                        class="btn btn-warning js-proyek-item-edit" 
-                        data-id="${data.id_pengajuan_proyek}"
+                        class="btn btn-warning js-internal-item-edit" 
+                        data-id="${data.id_pengajuan_internal}"
                         data-item='${JSON.stringify(data)}'>
                         <span class="fas fa-edit"></span>
                     </a>
                     <a 
                         href="javascript:void(0)" 
-                        class="btn btn-danger js-proyek-item-delete" 
-                        data-id="${data.id_pengajuan_proyek}"
+                        class="btn btn-danger js-internal-item-delete" 
+                        data-id="${data.id_pengajuan_internal}"
                         data-item="">
                         <span class="fas fa-trash"></span>
                     </a>
@@ -731,27 +726,27 @@
 
         $('#js-add-pengajuan-item').click(function(e){
             e.preventDefault();
-            let idPengajuanProyekItem   = $('#i-id_pengajuan_proyek_item').val();
-            let idPengajuanProyek       =  $('#i-id_pengajuan_proyek').val();
+            let idPengajuanInternalItem   = $('#i-id_pengajuan_internal_item').val();
+            let idPengajuanInternal       =  $('#i-id_pengajuan_internal').val();
             let data = $('#form-operasional-item').serialize();
-            data += "&id_pengajuan_proyek=" + idPengajuanProyek;
+            data += "&id_pengajuan_internal=" + idPengajuanInternal;
 
             
             let tbody = $('#js-operasional-item').find('tbody');
 
-            if(idPengajuanProyekItem) 
+            if(idPengajuanInternalItem) 
             {
                 
-                data += "&id_pengajuan_proyek_item=" + idPengajuanProyekItem;
+                data += "&id_pengajuan_internal_item=" + idPengajuanInternalItem;
                 
-                updatePengajuanProyekItem(data)
+                updatePengajuanInternalItem(data)
                 .then(response => {
     
                     Toast('success', 'Item berhasil di tambahkan');
 
-                    loadPengajuanProyekItem({
+                    loadPengajuanInternalItem({
                         filters: [
-                            { key: 'id_pengajuan_proyek', value: response.data['id_pengajuan_proyek'] }
+                            { key: 'id_pengajuan_internal', value: response.data['id_pengajuan_internal'] }
                         ]
                     })
                     .then(results => {
@@ -763,32 +758,32 @@
                         })
                     })
 
-                    $('#i-id_pengajuan_proyek_item').val('');
-                    $('#i-pengajuan_proyek_name').val('');
-                    $('#i-pengajuan_proyek_desc').val('');
-                    $('#i-pengajuan_proyek_qty').val('');
-                    $('#i-pengajuan_proyek_unit').val('');
-                    $('#i-pengajuan_proyek_price').val('');
-                    $('#i-pengajuan_proyek_keterangan').val('');
+                    $('#i-id_pengajuan_internal_item').val('');
+                    $('#i-pengajuan_internal_name').val('');
+                    $('#i-pengajuan_internal_desc').val('');
+                    $('#i-pengajuan_internal_qty').val('');
+                    $('#i-pengajuan_internal_unit').val('');
+                    $('#i-pengajuan_internal_price').val('');
+                    $('#i-pengajuan_internal_keterangan').val('');
 
                     loadData();
 
                 });
             } else {
-                addPengajuanProyekItem(data)
+                addPengajuanInternalItem(data)
                 .then(response => {
 
                     tbody.append(createRowPengajuanItem(response.data));
                     
                     Toast('success', 'Item berhasil di tambahkan');
 
-                    $('#i-id_pengajuan_proyek_item').val('');
-                    $('#i-pengajuan_proyek_name').val('');
-                    $('#i-pengajuan_proyek_desc').val('');
-                    $('#i-pengajuan_proyek_qty').val('');
-                    $('#i-pengajuan_proyek_unit').val('');
-                    $('#i-pengajuan_proyek_price').val('');
-                    $('#i-pengajuan_proyek_keterangan').val('');
+                    $('#i-id_pengajuan_internal_item').val('');
+                    $('#i-pengajuan_internal_name').val('');
+                    $('#i-pengajuan_internal_desc').val('');
+                    $('#i-pengajuan_internal_qty').val('');
+                    $('#i-pengajuan_internal_unit').val('');
+                    $('#i-pengajuan_internal_price').val('');
+                    $('#i-pengajuan_internal_keterangan').val('');
 
                     loadData();
 
@@ -798,48 +793,48 @@
             
         })
 
-        $(document).on('click', '.js-proyek-item-edit', function(e){
+        $(document).on('click', '.js-internal-item-edit', function(e){
             e.preventDefault();
             let btn = $(this);
             let item = btn.data('item');
 
             console.log('edit item', item);
 
-            $('#i-id_pengajuan_proyek_item').val(item.id_pengajuan_proyek_item);
-            $('#i-pengajuan_proyek_name').val(item.pengajuan_proyek_name)
-            $('#i-pengajuan_proyek_desc').val(item.pengajuan_proyek_desc);
-            $('#i-pengajuan_proyek_qty').val(item.pengajuan_proyek_qty);
-            $('#i-pengajuan_proyek_unit').val(item.pengajuan_proyek_unit);
-            $('#i-pengajuan_proyek_price').val(item.pengajuan_proyek_price);
-            $('#i-pengajuan_proyek_keterangan').val(item.pengajuan_proyek_keterangan);
+            $('#i-id_pengajuan_internal_item').val(item.id_pengajuan_internal_item);
+            $('#i-pengajuan_internal_name').val(item.pengajuan_internal_name)
+            $('#i-pengajuan_internal_desc').val(item.pengajuan_internal_desc);
+            $('#i-pengajuan_internal_qty').val(item.pengajuan_internal_qty);
+            $('#i-pengajuan_internal_unit').val(item.pengajuan_internal_unit);
+            $('#i-pengajuan_internal_price').val(item.pengajuan_internal_price);
+            $('#i-pengajuan_internal_keterangan').val(item.pengajuan_internal_keterangan);
 
         })
 
         $('#js-clear-pengajuan-item').click(function(e){
             e.preventDefault();
             $('#form-operasional-item')[0].reset();
-            $('#i-id_pengajuan_proyek_item').val('');
+            $('#i-id_pengajuan_internal_item').val('');
         })
 
-        function loadPengajuanProyekItem(data) {
+        function loadPengajuanInternalItem(data) {
             return $.ajax({
-                url: `${baseUrl}/api/pengajuan-proyek-item`,
+                url: `${baseUrl}/api/pengajuan-internal-item`,
                 data: data
             })
         }
 
-        function addPengajuanProyekItem(data) {
+        function addPengajuanInternalItem(data) {
             return $.ajax({
                 method: 'POST',
-                url: `${baseUrl}/api/pengajuan-proyek-item`,
+                url: `${baseUrl}/api/pengajuan-internal-item`,
                 data: data, 
             })
         }
 
-        function updatePengajuanProyekItem(data) {
+        function updatePengajuanInternalItem(data) {
             return $.ajax({
                 method: 'POST',
-                url: `${baseUrl}/api/pengajuan-proyek-item/update`,
+                url: `${baseUrl}/api/pengajuan-internal-item/update`,
                 data: data, 
             })
         }
@@ -847,7 +842,7 @@
         function deletePengajuanItem(id) {
             return $.ajax({
                 method: 'POST',
-                url: `${baseUrl}/api/pengajuan-proyek-item/${id}/delete`,
+                url: `${baseUrl}/api/pengajuan-internal-item/${id}/delete`,
             })
         }
     })

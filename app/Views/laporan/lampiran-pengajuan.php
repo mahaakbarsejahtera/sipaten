@@ -120,13 +120,13 @@
 
                     ?>
                     <tr>
-                        <td class="text-center" width="50"><?php echo ++$no; ?></td>
-                        <td>
+                        <td class="text-center" width="30"><?php echo ++$no; ?></td>
+                        <td width="150">
                             <div><?php echo $item->pengajuan_proyek_name ?></div>
                             <small><?php echo $item->pengajuan_proyek_desc ?></small>
                     
                         </td>
-                        <td class="text-center" width="50"><?php echo $item->pengajuan_proyek_qty ?> <?php echo $item->pengajuan_proyek_unit ?></td>
+                        <td class="text-center" width="30"><?php echo $item->pengajuan_proyek_qty ?> <?php echo $item->pengajuan_proyek_unit ?></td>
                         <td class="text-right"><?php echo number_format($item->pengajuan_proyek_price) ?></td>
                         <td class="text-right"><?php echo number_format($subtotal) ?></td>
                         <td><?php echo $item->pengajuan_proyek_keterangan ?></td>
@@ -137,12 +137,14 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th colspan="4" class="text-center">Grand Total</th>
-                    <th class="text-right"><?php echo number_format($total) ?></th>
-                    <th></th>
+                    <th colspan="2" class="">Grand Total</th>
+                    <th class="text-right" colspan="4"><?php echo number_format($total) ?></th>
                 </tr>
                 <tr>
-                    <th colspan="6"><?php //echo $terbilang; ?></th>
+                    <th colspan="2">Terbilang</th>
+                    <th colspan="4" class="text-right">
+                        <b style="font-size: 11px;"><?php echo ucwords((new \Template\Total)->terbilang($total)); ?></b>
+                    </th>
                 </tr>
             </tfoot>
         </table>

@@ -72,6 +72,7 @@ class JenisPengajuan extends Controller
                     
                     if(in_array($filter['key'], array_keys($jenisPengajuanModel->filterby))) {
                         $response['filters'][] = $filter['key'];
+                        $jenisPengajuanModel->where($jenisPengajuanModel->filterby[$filter['key']], $filter['value']);
                     }
 
                     break;

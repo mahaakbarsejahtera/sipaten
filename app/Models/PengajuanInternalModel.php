@@ -23,8 +23,9 @@ class PengajuanInternalModel extends Model
     ];
 
     protected $filterby = [
-        'id_pengajuan_internal'   => 'pengajuan_internal.id_pengajuan_internal',
+        'id_pengajuan_internal' => 'pengajuan_internal.id_pengajuan_internal',
         'id_pengaju'            => 'pengajuan_internal.id_pengaju',
+        'id_jenis_pengajuan'    => 'pengajuan_internal.id_jenis_pengajuan',
     ];
 
 
