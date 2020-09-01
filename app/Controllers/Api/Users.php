@@ -122,8 +122,8 @@ class Users extends Controller
             'user_name'         => 'required',
             'user_fullname'     => 'required',
             'user_email'        => 'required',
-            'user_email'        => 'required',
             'user_role'         => 'required',
+            //'user_code'         => 'required',
             //'user_divisi'         => 'required',
         ];
 
@@ -139,22 +139,25 @@ class Users extends Controller
         }
 
         $insertData = [
-            'user_name'         => $this->request->getPost('user_name'),
-            'user_role'         => $this->request->getPost('user_role'),
-            'user_fullname'     => $this->request->getPost('user_fullname'),
-            'user_email'        => $this->request->getPost('user_email'),
-            'user_status'       => $this->request->getPost('user_status'),
-            'user_pass'         => md5('ymdhis'),
-            'user_code'         => $this->request->getPost('user_code'),
+            'user_name'         => (string)$this->request->getPost('user_name'),
+            'user_role'         => (int)$this->request->getPost('user_role'),
+            'user_fullname'     => (string)$this->request->getPost('user_fullname'),
+            'user_email'        => (string)$this->request->getPost('user_email'),
+            'user_status'       => (string)$this->request->getPost('user_status'),
+            'user_pass'         => (string)md5('ymdhis'),
+            'user_code'         => (string)$this->request->getPost('user_code'),
             //'user_divisi'         => $this->request->getPost('user_divisi')
         ];
 
         $user_image = $this->request->getFile('user_image');
-        if($user_image) {
+
+        if(!empty($user_image->getTempName())) {
             $name = $user_image->getRandomName();
             $uploaded_file = $user_image->move('uploads/users/', $name);
-            $insertData['user_image'] = $name;
+            $insertData['user_image'] = (string)$name;
         }
+
+        $this->response->setJSON($insertData);
 
         $usersModel = new UsersModel;
         $usersModel->save($insertData);
@@ -215,7 +218,7 @@ class Users extends Controller
         ];
 
         $user_image = $this->request->getFile('user_image');
-        if($user_image) {
+        if(!empty($user_image->getTempName())) {
             $name = $user_image->getRandomName();
             $uploaded_file = $user_image->move('uploads/users/', $name);
             $insertData['user_image'] = $name;

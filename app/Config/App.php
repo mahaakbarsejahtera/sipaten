@@ -25,7 +25,7 @@ class App extends BaseConfig
 	public $baseURL = 'http://localhost:8080/';
 	
 	
-	//public $baseURL = 'http://192.168.1.203/sipaten/public/';
+	//public $baseURL = 'http://192.168.1.107/sipaten/public/';
 
 
 	/*

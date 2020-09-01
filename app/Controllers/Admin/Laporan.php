@@ -252,6 +252,8 @@ class Laporan extends Controller
         $pengajuan = (new \App\Models\PengajuanProyekModel())
             ->builder()
             ->join('jenis_pengajuan', 'pengajuan_proyek.id_jenis_pengajuan=jenis_pengajuan.id_jenis_pengajuan')
+            ->join('anggaran', 'pengajuan_proyek.id_anggaran=anggaran.id_anggaran')
+            ->join('permintaan', 'anggaran.id_permintaan=permintaan.id_permintaan')
             ->find($id_pengajuan);
 
         $dataToView['pengajuan'] = $pengajuan;
@@ -289,9 +291,6 @@ class Laporan extends Controller
 
         }
         
-
-
-
         $html = view('laporan/lampiran-pengajuan', $dataToView);
 
         //return $html;
@@ -303,7 +302,7 @@ class Laporan extends Controller
         $dompdf->render();
 
         // Output the generated PDF to Browser
-        $dompdf->stream("{$pengajuan['perihal_pengajuan_proyek']} - {$pengajuan['nama_jenis_pengajuan']}" . date('his'));
+        $dompdf->stream("{$pengajuan['nama_pekerjaan']} - {$pengajuan['nama_jenis_pengajuan']}" . date('his'));
                     
         return $html;
 

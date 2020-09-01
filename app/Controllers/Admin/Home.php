@@ -505,12 +505,12 @@ class Home extends Controller
             ],
         ])->render();
 
-        return view('admin/pengajuan/pemasaran/operasional', [
+        return view('admin/pengajuan-proyek', [
         'title' => 'Pengajuan Proyek',
             'breadcrumb' => $breadcrumb,
             'table'         => (new Table())->setColumns([
                 [
-                    'field' => 'perihal_pengajuan_proyek',
+                    'field' => 'id_anggaran',
                     'name' => 'Perihal',
                     'sort' => true,
                 ],
@@ -526,9 +526,9 @@ class Home extends Controller
                 [
                     'name' => 'Pengaju'
                 ],
-                [
-                    'name' => 'Nama Pekerjaan',
-                ],
+                // [
+                //     'name' => 'Nama Pekerjaan',
+                // ],
                 //['name' => 'Penanggung Jawab'], 
                 [
                     'name' => 'Anggaran'

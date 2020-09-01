@@ -36,6 +36,11 @@ class Roles extends Controller
 
     public function index()
     {
+        
+        $no_limit   = $this->request->getGet('no_limit');
+        $pager      = "";
+        $lists      = [];
+        $data       = [];
 
         $response = [
             'data'      => [], 
@@ -86,7 +91,30 @@ class Roles extends Controller
         $lists = $rolesModel->paginate(10, 'group1');
         $pager = $rolesModel->pager;
 
-        $response['data']['lists'] = $lists;
+        if($no_limit) 
+        {
+
+            $lists                          = $rolesModel->findAll();
+
+        } 
+        else 
+        {
+
+            $lists                          = $rolesModel->paginate(10, 'group1');
+
+            $pager                          = $rolesModel->pager;
+            $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
+
+        }   
+
+        foreach($lists as $list)
+        {
+
+            $data[] = $list;
+
+        }
+
+        $response['data']['lists'] = $data;
         $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
         
 

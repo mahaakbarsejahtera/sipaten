@@ -66,9 +66,6 @@
     </section>
     <!-- /.content -->
 
-
-
-
     <!-- BOQ Modal -->
     <div class="modal fade" id="modal-pengajuan" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
@@ -110,16 +107,16 @@
                                 
 
                                 <div class="form-group">
-                                    <label for="i-id_anggaran">Pekerjaan</label>
+                                    <label for="i-id_anggaran">Perihal</label>
                                     <select name="id_anggaran" id="i-id_anggaran" class="form-control">
                                         <option value="">Pilih</option>
                                     </select>
                                 </div>
 
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label for="i-perihal_pengajuan_proyek">Perihal</label>
                                     <input type="text" name="perihal_pengajuan_proyek" id="i-perihal_pengajuan_proyek" value="" class="form-control">
-                                </div>
+                                </div> -->
                             </div>  
 
                             <?php $current_date = date('Y-m-d'); ?>
@@ -150,8 +147,9 @@
                                 <div class="col-12 col-md-8">
 
                                     <div class="form-group">
-                                        <label for="i-pengajuan_proyek_name">Nama</label>
-                                        <input type="text" name="pengajuan_proyek_name" class="form-control" id="i-pengajuan_proyek_name">
+                                        <label for="i-id_anggaran_item">Nama</label>
+                                        <!-- <input type="text" name="pengajuan_proyek_name" class="form-control" id="i-pengajuan_proyek_name"> -->
+                                        <select name="id_anggaran_item" id="i-id_anggaran_item" class="form-control"></select>
                                     </div>
 
                                     <div class="form-group">
@@ -164,20 +162,20 @@
                                 <div class="col-12 col-md-4">
 
                                     <div class="form-row">
-                                        <div class="form-group col-6">
+                                        <div class="form-group col-12 col-md-4">
                                             <label for="i-pengajuan_proyek_qty">Qty</label>
                                             <input type="text" name="pengajuan_proyek_qty" class="form-control" id="i-pengajuan_proyek_qty">
                                         </div>
 
-                                        <div class="form-group col-6">
+                                        <div class="form-group col-12 col-md-8">
+                                            <label for="i-pengajuan_proyek_price">Harga</label>
+                                            <input type="text" name="pengajuan_proyek_price" class="form-control" id="i-pengajuan_proyek_price">
+                                        </div>
+
+                                        <!-- <div class="form-group col-6">
                                             <label for="i-pengajuan_proyek_unit">Satuan</label>
                                             <input type="text" name="pengajuan_proyek_unit" class="form-control" id="i-pengajuan_proyek_unit">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="i-pengajuan_proyek_price">Harga</label>
-                                        <input type="text" name="pengajuan_proyek_price" class="form-control" id="i-pengajuan_proyek_price">
+                                        </div> -->
                                     </div>
 
                                     <button class="btn btn-primary" id="js-add-pengajuan-item">Simpan Item</button>
@@ -220,6 +218,13 @@
 
 <?php $this->endSection(); ?>
 
+<?php $this->section('headerScript'); ?>
+
+    <link rel="stylesheet" href="<?php echo base_url("/assets/adminlte/plugins/select2/css/select2.min.css") ?>"/>
+    <link rel="stylesheet" href="<?php echo base_url("/assets/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css") ?>"/>
+
+<?php $this->endSection(); ?>
+
 
 <?php $this->section('footerScript') ?>
 
@@ -239,6 +244,10 @@
             $('#js-operasional-item').find('tbody').html('');
             $('#js-operasional-item').collapse('hide');
         })
+
+        $('#i-id_anggaran_item').select2({
+            themes: 'bootstrap'
+        });
 
         tinymce.init({
             selector: '#i-nego_term',
@@ -269,7 +278,7 @@
                         
                             <tr>
                                 <td>
-                                    <div>${v.perihal_pengajuan_proyek}</div>
+                                    <div>${v.nama_pekerjaan}</div>
                                     <div><a href="${baseUrl}/dashboard/laporan/pengajuan/?id_pengajuan=${v.id_pengajuan_proyek}" target="_blank">Download</a></div>
                                 </td>
                                 <td>${v.tanggal_pengajuan_proyek}</td>
@@ -279,7 +288,6 @@
                                 <td>
                                     <div>${v.pengaju.user_fullname}</div>
                                 </td>
-                                <td>${v.nama_pekerjaan}</td>
                                 <td>
                                     <span class="${parseFloat(v.total_nilai_pengajuan) > parseFloat(v.total_anggaran) ? 'text-danger' : 'text-success'} ">${Rp(v.total_nilai_pengajuan)}</span> / ${Rp(v.total_anggaran)}
                                 </td>
@@ -319,10 +327,15 @@
             })
 
             $('#i-id_anggaran').html(html);
+            $('#i-id_anggaran').select2({
+                themes: 'bootstrap'
+            });
 
         }).catch(err => {
             console.log(err);
         });
+
+        
 
         getJenisPengajuan()
         .then(response => {
@@ -354,7 +367,7 @@
             console.log(err);
         });
 
-
+        
 
         function getAnggaran(data = {}) {
 
@@ -363,6 +376,13 @@
                 data: data
             })
 
+        }
+
+        function getAnggaranItem(data = {}) {
+            return $.ajax({
+                url: `${baseUrl}/api/anggaran-item`,
+                data: data,
+            }) 
         }
 
         function getJenisPengajuan() {
@@ -379,7 +399,6 @@
             })
 
         }
-
 
         function addData() {
 
@@ -502,6 +521,25 @@
                             tbody.append(createRowPengajuanItem(v));
                         })
                     })
+                    .then(() => {
+
+                        getAnggaranItem({
+                            no_limit: true,
+                            filters: [
+                                { key: 'id_anggaran', value: $('#i-id_anggaran').val() }
+                            ]
+                        })
+                        .then(anggaranItems => {
+                            console.log('anggaran items', anggaranItems);
+                            let options = "<option value=''>Pilih</option>";
+                            anggaranItems.data.lists.map((v,i) => {
+                                options += `<option value="${v.id_anggaran_item}">${v.anggaran_item} - Tersisa (${v.sisa_qty} ${v.anggaran_unit}) - Anggaran (${Rp(v.sisa_price)})</option>`;
+                            })
+                            $('#i-id_anggaran_item').html(options);
+                            $('#i-id_anggaran_item').select2();
+                        })
+
+                    })
 
 
 
@@ -543,8 +581,7 @@
 
         }
 
-
-
+      
         function clearForm() {
             $('#form-pengajuan')[0].reset();
             //$('#form-estimasi').find('tbody').html('');
@@ -581,7 +618,7 @@
 
             switch(action) {    
                 case 'edit':
-                
+                    $('#form-operasional-item')[0].reset();
                     getData(btn.data('id'))
                     .then((response) => {
                         console.log('edit data');
@@ -684,6 +721,26 @@
                 $('#js-operasional-item').collapse('show');
 
             })
+            .then(afterSave => {
+
+                let idAnggaran = $('#i-id_anggaran').val();
+                getAnggaranItem({
+                    no_limit: true,
+                    filters: [
+                        { key: 'id_anggaran', value: idAnggaran }
+                    ]
+                })
+                .then(anggaranItems => {
+
+                    let options = "<option value=''>Pilih</option>";
+                    anggaranItems.data.lists.map((v,i) => {
+                        options += `<option value="${v.id_anggaran_item}">${v.anggaran_item}</option>`;
+                    })
+                    $('#i-id_anggaran_item').html(options);
+
+                })
+
+            })
             .catch(err => console.log('afterSaveErr', err));
 
         })
@@ -694,7 +751,7 @@
 
             html = `<tr>
                 <td class="text-left align-middle">
-                    <div class="font-weight-bold">${data.pengajuan_proyek_name}</div>
+                    <div class="font-weight-bold">${data.anggaran_item}</div>
                     <div>${data.pengajuan_proyek_desc}</div>
                 </td>
                 <td class="text-center align-middle">${data.pengajuan_proyek_qty} ${data.pengajuan_proyek_unit}</td>
@@ -727,6 +784,9 @@
             let data = $('#form-operasional-item').serialize();
             data += "&id_pengajuan_proyek=" + idPengajuanProyek;
 
+            console.log('js add pengajuan item', data);
+
+            //return false;
             
             let tbody = $('#js-operasional-item').find('tbody');
 
@@ -755,7 +815,8 @@
                     })
 
                     $('#i-id_pengajuan_proyek_item').val('');
-                    $('#i-pengajuan_proyek_name').val('');
+                    $('#i-id_anggaran_item').val('');
+                    $('#i-id_anggaran_item').trigger('change');
                     $('#i-pengajuan_proyek_desc').val('');
                     $('#i-pengajuan_proyek_qty').val('');
                     $('#i-pengajuan_proyek_unit').val('');
@@ -774,7 +835,8 @@
                     Toast('success', 'Item berhasil di tambahkan');
 
                     $('#i-id_pengajuan_proyek_item').val('');
-                    $('#i-pengajuan_proyek_name').val('');
+                    $('#i-id_anggaran_item').val('');
+                    $('#i-id_anggaran_item').trigger('change');
                     $('#i-pengajuan_proyek_desc').val('');
                     $('#i-pengajuan_proyek_qty').val('');
                     $('#i-pengajuan_proyek_unit').val('');
@@ -797,7 +859,8 @@
             console.log('edit item', item);
 
             $('#i-id_pengajuan_proyek_item').val(item.id_pengajuan_proyek_item);
-            $('#i-pengajuan_proyek_name').val(item.pengajuan_proyek_name)
+            $('#i-id_anggaran_item').val(item.id_anggaran_item);
+            $('#i-id_anggaran_item').trigger('change');
             $('#i-pengajuan_proyek_desc').val(item.pengajuan_proyek_desc);
             $('#i-pengajuan_proyek_qty').val(item.pengajuan_proyek_qty);
             $('#i-pengajuan_proyek_unit').val(item.pengajuan_proyek_unit);

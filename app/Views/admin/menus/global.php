@@ -73,7 +73,7 @@
     </ul>
 </li>
 
-<li class="nav-header">Pengajuan anggaran</li>
+<!-- <li class="nav-header">Pengajuan anggaran</li>
 
 <li class="nav-item has-treeview">
     <a href="#" class="nav-link">
@@ -81,7 +81,6 @@
         <p>
         Pemasaran
         <i class="fas fa-angle-left right"></i>
-        <!-- <span class="badge badge-info right">6</span> -->
         </p>
     </a>
     <ul class="nav nav-treeview">
@@ -110,7 +109,6 @@
         <p>
         Teknik
         <i class="fas fa-angle-left right"></i>
-        <!-- <span class="badge badge-info right">6</span> -->
         </p>
     </a>
     <ul class="nav nav-treeview">
@@ -146,7 +144,6 @@
         <p>
         Keuangan
         <i class="fas fa-angle-left right"></i>
-        <!-- <span class="badge badge-info right">6</span> -->
         </p>
     </a>
     <ul class="nav nav-treeview">
@@ -176,7 +173,6 @@
         <p>
         Pemasaran
         <i class="fas fa-angle-left right"></i>
-        <!-- <span class="badge badge-info right">6</span> -->
         </p>
     </a>
     <ul class="nav nav-treeview">
@@ -204,7 +200,6 @@
         <p>
         Keuangan
         <i class="fas fa-angle-left right"></i>
-        <!-- <span class="badge badge-info right">6</span> -->
         </p>
     </a>
     <ul class="nav nav-treeview">
@@ -221,6 +216,33 @@
             <a href="<?php echo base_url('dashboard/keuangan/pengajuan/perlengkapan-kantor') ?>" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Komisi Sales</p>
+            </a>
+        </li>
+    </ul>
+</li> -->
+
+<li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+        <i class="nav-icon fas fa-copy"></i>
+        <p>
+        Pengajuan
+        <i class="fas fa-angle-left right"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+
+        
+        <li class="nav-item">
+            <a href="<?php echo base_url('dashboard/pengajuan-proyek') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Proyek</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="<?php echo base_url('dashboard/pengajuan-internal') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Internal</p>
             </a>
         </li>
     </ul>
@@ -243,6 +265,7 @@
     </a>
 </li>
 
+
 <li class="nav-item">
     <a href="<?php echo base_url('/dashboard/survey') ?>" class="nav-link">
         <i class="nav-icon far fa-star"></i>
@@ -257,7 +280,7 @@
     </a>
 </li>
 
-<li class="nav-item">
+<!-- <li class="nav-item">
     <a href="<?php echo base_url('/dashboard/pengajuan-proyek') ?>" class="nav-link">
         <i class="nav-icon far fa-star"></i>
         <p>Pengajuan Proyek</p>
@@ -269,6 +292,6 @@
         <i class="nav-icon far fa-star"></i>
         <p>Pengajuan Internal</p>
     </a>
-</li>
+</li> -->
 
 

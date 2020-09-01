@@ -78,7 +78,7 @@
                     <form action="" id="form">
 
                         <input type="hidden" name="truth_action" id="i-truth_action" value="">
-                        <input type="hidden" name="id_role" id="i-id_user">
+                        <input type="hidden" name="id_user" id="i-id_user">
                         <input type="hidden" name="_method" value="POST">
 
                         <div class="form-group">
@@ -235,6 +235,9 @@
 
             return $.ajax({
                 url: "<?php echo base_url("api/roles/?page_group1=-1") ?>",
+                data: {
+                    no_limit: true
+                }
             })
 
         }
@@ -377,7 +380,9 @@
 
         function clearForm() {
             $('#form')[0].reset();
+            $('#i-id_user').val('');
             $('#preview-user_image').html('');
+            truthAction.val('');
         }
 
 

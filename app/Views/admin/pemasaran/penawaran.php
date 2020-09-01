@@ -271,9 +271,7 @@
                 $('#i-nama_sales').val(response.data.user_fullname);
                 $('#i-nilai_penawaran').val(Rp(response.data.estimasi_harga_jual));
                 
-                
-
-
+    
             })
         });
 

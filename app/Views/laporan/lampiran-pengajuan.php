@@ -1,3 +1,10 @@
+<?php 
+            
+    $num_of_pj = count($penanggung_jawab);
+    $col       = 100/$num_of_pj;
+
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -19,6 +26,11 @@
             font-size: 14.66px !important;
             font-family: 'times new roman' !important;
         }
+
+        .column-<?php echo $col ?> {
+            width: <?php echo $col; ?>%
+        }
+
     </style>
   </head>
   <body>
@@ -66,7 +78,7 @@
                 <tr>
                     <td>Perihal</td>
                     <td>:</td>
-                    <td><?php echo $pengajuan['perihal_pengajuan_proyek'] ?></td>
+                    <td><?php echo $pengajuan['nama_pekerjaan'] ?></td>
                 </tr>
                 <tr>
                     <td>Nomor</td>
@@ -79,7 +91,7 @@
                        
             <table class="">
                 <tr>
-                    <td>Due Date,</td>
+                    <td>Due Date</td>
                     <td>:</td>
                     <td><?php echo $validasi_due_date; ?> </td>
                 </tr>
@@ -155,15 +167,10 @@
         </div>
    
         
-        <?php 
-            
-            $num_of_pj = count($penanggung_jawab);
-            $col       = 75/$num_of_pj;
         
-        ?>
 
-        <div class="mt-5 clearfix ">
-            <div class="float-left" style="width: 25%;">
+        <div class="mt-5 clearfix">
+            <div class="float-left col-3">
                 <div class="text-center"><strong>Diajukan Oleh</strong></div>
 
 
@@ -176,25 +183,23 @@
                 </div>
             </div>
 
-           
-            <div class="float-right" style="width: <?php echo $col; ?>%">
-                <?php foreach($penanggung_jawab as $pj) : //var_dump($pj); ?>
+            <?php foreach($penanggung_jawab as $pj) : ?>
 
-                    <div class="float-right" style="width: 25%">
-                        <div class="text-center"><strong><?php echo $pj->sebagai_penanggung_jawab; ?> Oleh</strong></div>
+                <?php if($pengaju['id_user'] != $pj->penanggung_jawab_user) : ?>
+                <div class="float-left col-3">
+                    <div class="text-center"><strong><?php echo $pj->sebagai_penanggung_jawab; ?> Oleh</strong></div>
 
-
-                        <div style="margin-top: 80px">
-                            <div class="text-center">
-                                <strong class="mb-0"><u><?php echo $pj->user_fullname; ?></u></strong>
-                                <div></div>
-                            </div>
+                    <div style="margin-top: 80px">
+                        <div class="text-center">
+                            <strong class="mb-0"><u><?php echo $pj->user_fullname; ?></u></strong>
+                            <div></div>
                         </div>
                     </div>
+                </div>
+                <?php endif; ?>
 
-                <?php endforeach; ?>
-            </div>
-
+            <?php endforeach; ?>
+          
         </div>
     
     </div>

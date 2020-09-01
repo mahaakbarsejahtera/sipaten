@@ -66,9 +66,6 @@
     </section>
     <!-- /.content -->
 
-
-
-
     <!-- BOQ Modal -->
     <div class="modal fade" id="modal-pengajuan" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
@@ -110,16 +107,16 @@
                                 
 
                                 <div class="form-group">
-                                    <label for="i-id_anggaran">Pekerjaan</label>
+                                    <label for="i-id_anggaran">Perihal</label>
                                     <select name="id_anggaran" id="i-id_anggaran" class="form-control">
                                         <option value="">Pilih</option>
                                     </select>
                                 </div>
 
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label for="i-perihal_pengajuan_proyek">Perihal</label>
                                     <input type="text" name="perihal_pengajuan_proyek" id="i-perihal_pengajuan_proyek" value="" class="form-control">
-                                </div>
+                                </div> -->
                             </div>  
 
                             <?php $current_date = date('Y-m-d'); ?>
@@ -220,6 +217,13 @@
 
 <?php $this->endSection(); ?>
 
+<?php $this->section('headerScript'); ?>
+
+    <link rel="stylesheet" href="<?php echo base_url("/assets/adminlte/plugins/select2/css/select2.min.css") ?>"/>
+    <link rel="stylesheet" href="<?php echo base_url("/assets/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css") ?>"/>
+
+<?php $this->endSection(); ?>
+
 
 <?php $this->section('footerScript') ?>
 
@@ -269,7 +273,7 @@
                         
                             <tr>
                                 <td>
-                                    <div>${v.perihal_pengajuan_proyek}</div>
+                                    <div>${v.nama_pekerjaan}</div>
                                     <div><a href="${baseUrl}/dashboard/laporan/pengajuan/?id_pengajuan=${v.id_pengajuan_proyek}" target="_blank">Download</a></div>
                                 </td>
                                 <td>${v.tanggal_pengajuan_proyek}</td>
@@ -279,7 +283,6 @@
                                 <td>
                                     <div>${v.pengaju.user_fullname}</div>
                                 </td>
-                                <td>${v.nama_pekerjaan}</td>
                                 <td>
                                     <span class="${parseFloat(v.total_nilai_pengajuan) > parseFloat(v.total_anggaran) ? 'text-danger' : 'text-success'} ">${Rp(v.total_nilai_pengajuan)}</span> / ${Rp(v.total_anggaran)}
                                 </td>
@@ -319,6 +322,9 @@
             })
 
             $('#i-id_anggaran').html(html);
+            $('#i-id_anggaran').select2({
+                themes: 'bootstrap'
+            });
 
         }).catch(err => {
             console.log(err);
@@ -543,8 +549,7 @@
 
         }
 
-
-
+      
         function clearForm() {
             $('#form-pengajuan')[0].reset();
             //$('#form-estimasi').find('tbody').html('');

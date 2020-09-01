@@ -13,7 +13,8 @@ class PengajuanProyekItemModel extends Model
     protected $allowedFields = [
         'id_pengajuan_proyek','	pengajuan_proyek_name', 'pengajuan_proyek_desc',
         'pengajuan_proyek_qty', 'pengajuan_proyek_unit',
-        'pengajuan_proyek_price', 'pengajuan_proyek_keterangan' 
+        'pengajuan_proyek_price', 'pengajuan_proyek_keterangan',
+        'id_anggaran_item' 
     ];
 
     protected $orderby = [
@@ -22,8 +23,9 @@ class PengajuanProyekItemModel extends Model
     ];
 
     protected $filterby = [
-        'id_pengajuan_proyek_item'   => 'pengajuan_proyek_item.id_pengajuan_proyek_item',
-        'id_pengajuan_proyek'           => 'pengajuan_proyek_item.id_pengajuan_proyek',
+        'id_pengajuan_proyek_item'  => 'pengajuan_proyek_item.id_pengajuan_proyek_item',
+        'id_pengajuan_proyek'       => 'pengajuan_proyek_item.id_pengajuan_proyek',
+        'id_anggaran_item'          => 'pengajuan_proyek_item.id_anggaran_item'
     ];
 
 

@@ -3,6 +3,8 @@
 namespace App\Controllers\Api;
 
 use App\Models\AnggaranItemModel;
+use App\Models\PengajuanProyekItemModel;
+use App\Models\PengajuanProyekModel;
 use CodeIgniter\Controller;
 
 class AnggaranItem extends Controller
@@ -33,6 +35,12 @@ class AnggaranItem extends Controller
     public function index()
     {
 
+
+        $no_limit   = $this->request->getGet('no_limit');
+        $pager      = "";
+        $lists      = [];
+        $data       = [];
+        
         $response = [
             'data'      => [], 
             'errors'    => [],
@@ -62,6 +70,7 @@ class AnggaranItem extends Controller
                     
                     if(in_array($filter['key'], array_keys($pengajuanItemModel->filterby))) {
                         $response['filters'][] = $filter['key'];
+                        $pengajuanItemModel->where($pengajuanItemModel->filterby[$filter['key']], $filter['value']);
                     }
 
                     break;
@@ -78,12 +87,53 @@ class AnggaranItem extends Controller
             }
         }
 
+        $lists = [];
 
-        $lists = $pengajuanItemModel->paginate(10, 'group1');
-        $pager = $pengajuanItemModel->pager;
+        
 
-        $response['data']['lists'] = $lists;
-        $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
+
+        if($no_limit) 
+        {
+
+            $lists                          = $pengajuanItemModel->findAll();
+
+        } 
+        else 
+        {
+
+            $lists                          = $pengajuanItemModel->paginate(10, 'group1');
+
+            $pager                          = $pengajuanItemModel->pager;
+            $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
+
+        }   
+
+        foreach($lists as $list)
+        {
+
+           
+
+            $item_dipakai = (new PengajuanProyekItemModel())
+                            ->builder()
+                            ->select("
+                                SUM(pengajuan_proyek_qty) as total_item, 
+                                SUM(pengajuan_proyek_price) as total_price
+                            ")
+                            ->where('id_anggaran_item', $list['id_anggaran_item'])
+                            ->get()
+                            ->getRow();
+            
+            $list = $list + [
+                'sisa_qty'      => (double)($list['anggaran_qty'] -  $item_dipakai->total_item),
+                'sisa_price'    => (double)($list['anggaran_price'] - $item_dipakai->total_price)
+            ];
+
+            $data[] = $list;
+
+
+        }
+
+        $response['data']['lists'] = $data;
         
 
         return $this->response->setJson($response);

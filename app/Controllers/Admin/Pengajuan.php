@@ -74,7 +74,7 @@ class Pengajuan extends Controller
             ],
         ])->render();
 
-        return view('admin/pengajuan/pemasaran/operasional', [
+        return view('admin/pengajuan-proyek', [
             'title' => 'Pengajuan Operasional Pemasaran',
             'breadcrumb' => $breadcrumb,
             'table'         => (new Table())->setColumns([

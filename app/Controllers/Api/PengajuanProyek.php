@@ -148,7 +148,7 @@ class PengajuanProyek extends Controller
 
         }
 
-        $response['data']['lists'] = $data;
+        $response['data']['lists']      = $data;
         $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
         
 

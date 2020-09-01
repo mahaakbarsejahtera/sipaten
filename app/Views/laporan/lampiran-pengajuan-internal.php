@@ -139,7 +139,6 @@
                 <tr>
                     <th colspan="2" class="">Grand Total</th>
                     <th class="text-right" colspan="4"><?php echo number_format($total) ?></th>
-                    <th></th>
                 </tr>
                 <tr>
                     <th colspan="2">Terbilang</th>
@@ -164,7 +163,7 @@
         ?>
 
         <div class="mt-5 clearfix ">
-            <div class="float-left" style="width: 25%;">
+            <div class="float-left col-3">
                 <div class="text-center"><strong>Diajukan Oleh</strong></div>
 
 
@@ -178,10 +177,10 @@
             </div>
 
            
-            <div class="float-right" style="width: <?php echo $col; ?>%">
-                <?php foreach($penanggung_jawab as $pj) : //var_dump($pj); ?>
+            <?php foreach($penanggung_jawab as $pj) : ?>
 
-                    <div class="float-right" style="width: 25%">
+                <?php if($pengaju['id_user'] != $pj->penanggung_jawab_user) : ?>
+                    <div class="float-left col-3">
                         <div class="text-center"><strong><?php echo $pj->sebagai_penanggung_jawab; ?> Oleh</strong></div>
 
 
@@ -192,9 +191,9 @@
                             </div>
                         </div>
                     </div>
+                <?php endif; ?>
 
-                <?php endforeach; ?>
-            </div>
+            <?php endforeach; ?>
 
         </div>
     

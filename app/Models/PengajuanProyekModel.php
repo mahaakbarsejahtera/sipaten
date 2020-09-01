@@ -26,7 +26,8 @@ class PengajuanProyekModel extends Model
         'id_pengajuan_proyek'   => 'pengajuan_proyek.id_pengajuan_proyek',
         'id_anggaran'           => 'pengajuan_proyek.id_anggaran',
         'id_pengaju'            => 'pengajuan_proyek.id_pengaju',
-        'id_jenis_pengajuan'    => 'pengajuan_proyek.id_jenis_pengajuan'
+        'id_jenis_pengajuan'    => 'pengajuan_proyek.id_jenis_pengajuan',
+
     ];
 
 

@@ -40,10 +40,9 @@ class PengajuanProyekItem extends Controller
             'message'   => '' 
         ];
         
-
-
-        
         $pengajuanItemModel = new PengajuanProyekItemModel();
+        $pengajuanItemModel->builder()
+        ->join('anggaran_item', 'pengajuan_proyek_item.id_anggaran_item=anggaran_item.id_anggaran_item', 'left');
 
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
@@ -61,7 +60,6 @@ class PengajuanProyekItem extends Controller
                     default:
                     
                     if(in_array($filter['key'], array_keys($pengajuanItemModel->filterby))) {
-                        $response['filters'][] = $filter['key'];
                         $pengajuanItemModel->where($pengajuanItemModel->filterby[$filter['key']], $filter['value']);
                     }
 
@@ -121,6 +119,7 @@ class PengajuanProyekItem extends Controller
         // Dinamis ikuti table
         $insertData = [
             'id_pengajuan_proyek'           => $this->request->getPost('id_pengajuan_proyek'),
+            'id_anggaran_item'              => (int)$this->request->getPost('id_anggaran_item'),
             'pengajuan_proyek_name'         => (string)$this->request->getPost('pengajuan_proyek_name'),
             'pengajuan_proyek_desc'         => (string)$this->request->getPost('pengajuan_proyek_desc'),
             'pengajuan_proyek_qty'          => (double)$this->request->getPost('pengajuan_proyek_qty'),
@@ -135,8 +134,15 @@ class PengajuanProyekItem extends Controller
                                 ->table('pengajuan_proyek_item')
                                 ->insert($insertData);
 
+        $afterInsert        = $db->table('pengajuan_proyek_item')
+                                ->join('anggaran_item', 'pengajuan_proyek_item.id_anggaran_item=anggaran_item.id_anggaran_item', 'left')
+                                ->where('pengajuan_proyek_item.id_pengajuan_proyek_item', $db->insertID())
+                                ->get()
+                                ->getRow();
+
         $response['code']       = 200;
-        $response['data']       = [ 'id_pengajuan_proyek_item' => $db->insertID() ] +  $insertData;
+        //$response['data']       = [ 'id_pengajuan_proyek_item' => $db->insertID() ] +  $insertData;
+        $response['data']       = $afterInsert;
         $response['message']    = 'Insert Success';
 
         return $this->response->setJson($response);
@@ -174,7 +180,7 @@ class PengajuanProyekItem extends Controller
         $insertData = [
             'id_pengajuan_proyek_item'      => (int)$this->request->getPost('id_pengajuan_proyek_item'),
             'id_pengajuan_proyek'           => (int)$this->request->getPost('id_pengajuan_proyek'),
-            'pengajuan_proyek_name'         => (string)$this->request->getPost('pengajuan_proyek_name'),
+            'id_anggaran_item'              => (int)$this->request->getPost('id_anggaran_item'),
             'pengajuan_proyek_desc'         => (string)$this->request->getPost('pengajuan_proyek_desc'),
             'pengajuan_proyek_qty'          => (double)$this->request->getPost('pengajuan_proyek_qty'),
             'pengajuan_proyek_unit'         => (string)$this->request->getPost('pengajuan_proyek_unit'),
