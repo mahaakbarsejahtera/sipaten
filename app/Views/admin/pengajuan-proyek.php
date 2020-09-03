@@ -605,9 +605,6 @@
         
         })
 
-        
-        
-
         $(document).on('click', '[data-toggle=table-action]', function(e){
             e.preventDefault();
             
@@ -752,9 +749,9 @@
             html = `<tr>
                 <td class="text-left align-middle">
                     <div class="font-weight-bold">${data.anggaran_item}</div>
-                    <div>${data.pengajuan_proyek_desc}</div>
+                    <div><pre class="p-0 m-0">${data.pengajuan_proyek_desc}</pre></div>
                 </td>
-                <td class="text-center align-middle">${data.pengajuan_proyek_qty} ${data.pengajuan_proyek_unit}</td>
+                <td class="text-center align-middle">${data.pengajuan_proyek_qty} ${data.anggaran_unit}</td>
                 <td class="text-right align-middle">${Rp(data.pengajuan_proyek_price)}</td>
                 <td colspan="2" class="text-right align-middle">${Rp(data.pengajuan_proyek_qty * data.pengajuan_proyek_price)}</td>
                 <td colspan="2" class="text-left align-middle">${data.pengajuan_proyek_keterangan}</td>
@@ -768,7 +765,7 @@
                     <a 
                         href="javascript:void(0)" 
                         class="btn btn-danger js-proyek-item-delete" 
-                        data-id="${data.id_pengajuan_proyek}"
+                        data-id="${data.id_pengajuan_proyek_item}"
                         data-item="">
                         <span class="fas fa-trash"></span>
                     </a>
@@ -784,7 +781,6 @@
             let data = $('#form-operasional-item').serialize();
             data += "&id_pengajuan_proyek=" + idPengajuanProyek;
 
-            console.log('js add pengajuan item', data);
 
             //return false;
             
@@ -797,54 +793,95 @@
                 
                 updatePengajuanProyekItem(data)
                 .then(response => {
-    
-                    Toast('success', 'Item berhasil di tambahkan');
+                    
+                    console.log('update pengajuan proyek item', response)
 
-                    loadPengajuanProyekItem({
-                        filters: [
-                            { key: 'id_pengajuan_proyek', value: response.data['id_pengajuan_proyek'] }
-                        ]
-                    })
-                    .then(results => {
-                        
-                        let tbody = $('#js-operasional-item').find('tbody');
-                        tbody.html('');
-                        results.data.lists.map((v, i) => {
-                            tbody.append(createRowPengajuanItem(v));
-                        })
-                    })
+                    switch(response.code) {
+                        case 200:
+                            Toast('success', 'Item berhasil di tambahkan');
 
-                    $('#i-id_pengajuan_proyek_item').val('');
-                    $('#i-id_anggaran_item').val('');
-                    $('#i-id_anggaran_item').trigger('change');
-                    $('#i-pengajuan_proyek_desc').val('');
-                    $('#i-pengajuan_proyek_qty').val('');
-                    $('#i-pengajuan_proyek_unit').val('');
-                    $('#i-pengajuan_proyek_price').val('');
-                    $('#i-pengajuan_proyek_keterangan').val('');
+                            loadPengajuanProyekItem({
+                                filters: [
+                                    { key: 'id_pengajuan_proyek', value: response.data['id_pengajuan_proyek'] }
+                                ]
+                            })
+                            .then(results => {
+                                
+                                let tbody = $('#js-operasional-item').find('tbody');
+                                tbody.html('');
+                                results.data.lists.map((v, i) => {
+                                    tbody.append(createRowPengajuanItem(v));
+                                })
+                            })
 
-                    loadData();
+                            
+                            $('#i-id_pengajuan_proyek_item').val('');
+                            $('#i-id_anggaran_item').val('');
+                            $('#i-id_anggaran_item').trigger('change');
+                            $('#i-pengajuan_proyek_desc').val('');
+                            $('#i-pengajuan_proyek_qty').val('');
+                            $('#i-pengajuan_proyek_unit').val('');
+                            $('#i-pengajuan_proyek_price').val('');
+                            $('#i-pengajuan_proyek_keterangan').val('');
+                            
+                            $('#i-id_anggaran_item').val(null).trigger('change');
+                            loadData();
+                            
+                            break;
+
+                        case 400: 
+                            
+                            for(err in response.errors) {
+                                Toast('warning', response.errors[err]);
+                            } 
+                            break;
+                    }
+                    
+
+
 
                 });
             } else {
                 addPengajuanProyekItem(data)
                 .then(response => {
-
-                    tbody.append(createRowPengajuanItem(response.data));
                     
-                    Toast('success', 'Item berhasil di tambahkan');
+                    console.log('add pengajuan proyek item', response)
+                    
+                    switch(response.code) {
 
-                    $('#i-id_pengajuan_proyek_item').val('');
-                    $('#i-id_anggaran_item').val('');
-                    $('#i-id_anggaran_item').trigger('change');
-                    $('#i-pengajuan_proyek_desc').val('');
-                    $('#i-pengajuan_proyek_qty').val('');
-                    $('#i-pengajuan_proyek_unit').val('');
-                    $('#i-pengajuan_proyek_price').val('');
-                    $('#i-pengajuan_proyek_keterangan').val('');
 
-                    loadData();
+                        case 200:
 
+                            tbody.append(createRowPengajuanItem(response.data));
+                    
+                            Toast('success', 'Item berhasil di tambahkan');
+
+                            $('#i-id_pengajuan_proyek_item').val('');
+                            $('#i-id_anggaran_item').val('');
+                            $('#i-id_anggaran_item').trigger('change');
+                            $('#i-pengajuan_proyek_desc').val('');
+                            $('#i-pengajuan_proyek_qty').val('');
+                            $('#i-pengajuan_proyek_unit').val('');
+                            $('#i-pengajuan_proyek_price').val('');
+                            $('#i-pengajuan_proyek_keterangan').val('');
+
+                            $('#i-id_anggaran_item').val(null).trigger('change');
+                            loadData();
+
+
+                            break;
+
+
+                        case 400:
+
+                            for(err in response.errors) {
+                                Toast('warning', response.errors[err]);
+                            } 
+
+                            break;
+
+                    }
+                   
                 });
             }
 
@@ -867,6 +904,29 @@
             $('#i-pengajuan_proyek_price').val(item.pengajuan_proyek_price);
             $('#i-pengajuan_proyek_keterangan').val(item.pengajuan_proyek_keterangan);
 
+        })
+
+
+        $(document).on('click', '.js-proyek-item-delete', function(e){
+            let id = $(this).data('id');
+
+            console.log('delete id', id);
+
+            let isDelete = confirm('Delete ???');
+
+            if(isDelete)
+            {
+
+                deletePengajuanItem(id)
+                .then(response => {
+                    console.log('pengajuan item', response);
+                    Toast('success', 'Item berhasil di hapus');
+                    $(this).parent().parent().remove();
+                })
+
+            }
+
+            
         })
 
         $('#js-clear-pengajuan-item').click(function(e){

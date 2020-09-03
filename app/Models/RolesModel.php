@@ -22,6 +22,16 @@ class RolesModel extends Model
         'role_desc' => 'roles.role_desc'
     ];
 
+    public function getjenisPengajuan($id_role) 
+    {
 
+
+        return $this->db->table('roles_pengajuan')
+                ->select("roles_pengajuan.id_jenis_pengajuan, jenis_pengajuan.kode_jenis_pengajuan, jenis_pengajuan.nama_jenis_pengajuan")
+                ->join('jenis_pengajuan', 'roles_pengajuan.id_jenis_pengajuan=jenis_pengajuan.id_jenis_pengajuan', 'left')
+                ->where('roles_pengajuan.id_role', $id_role)
+                ->get()->getResult();
+
+    }
 
 }   

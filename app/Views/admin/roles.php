@@ -35,7 +35,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-md-3">
-                    <a href="javascript:void(0)" data-toggle="modal" data-target="#form-modal" class="btn btn-primary mb-3">Tambah Data</a>
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#form-modal" class="btn btn-primary mb-3" id="js-trigger-form-modal">Tambah Data</a>
                 </div>
                 <div class="col-12 col-md-9">
                     <form class="w-100" id="filter-form">
@@ -96,6 +96,13 @@
                             <textarea name="role_desc" id="i-role_desc" rows="10" class="form-control"></textarea>
                         </div>
 
+                        <div class="form-group">
+                            <label for="i-id_jenis_pengajuan">Jenis Pengajuan</label>
+                            <select name="id_jenis_pengajuan[]" id="i-id_jenis_pengajuan" class="form-control" multiple="multiple">
+                                <!-- <option value="">Pilih</option> -->
+                            </select>
+                        </div>
+
                         <button class="btn btn-primary" id="js-save">Simpan Role</button>
 
                     </form>
@@ -110,274 +117,378 @@
 
 <?php $this->endSection(); ?>
 
+<?php $this->section('headerScript'); ?>
+
+    <link rel="stylesheet" href="<?php echo base_url("/assets/plugins/tail.select-master/css/bootstrap4/tail.select-default.min.css") ?>"/>
+    <link rel="stylesheet" href="<?php echo base_url("/assets/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css") ?>"/>
+
+<?php $this->endSection(); ?>
 
 <?php $this->section('footerScript') ?>
 
-<script>
-    $(function(){
+    <script src="<?php echo base_url('/assets/plugins/tail.select-master/js/tail.select.min.js') ?>"></script>
+    <script src="<?php echo base_url('/assets/plugins/tinymce/js/tinymce/tinymce.min.js') ?>"></script>
 
-        let truthAction = $('#i-truth_action');
-        let tableData = $('#table-data');
-        let form = $('#form');
+    <script>
+    
+        $(function(){
 
-        loadData();
-        function loadData(data = {}) {
-            tableData.find('tbody').html(`
-                <tr>
-                    <td colspan="4">Loading...</td>
-                </tr>
-            `);
+            let truthAction = $('#i-truth_action');
+            let tableData = $('#table-data');
+            let form = $('#form');
 
-            $.ajax({
-                url: "<?php echo base_url('/api/roles') ?>",
-                data: data,
-                success: function(response) {
-                    console.log(response);
-                    let html =  ``;
-
-                    response.data.lists.map((v, i) => {
-                        html += `
-                        
-                            <tr>
-                                <td>${v.role_name}</td>
-                                <td>${v.role_cap}</td>
-                                <td>${v.role_desc}</td>
-                                <td width="200">
-
-                                    <a href="javascript:void(0)" class="btn btn-warning" data-toggle="table-action" data-action="edit" data-id="${v.id_role}">
-                                        <span class="fas fa-edit"></span>
-                                    </a>
-                                    <a href="javascript:void(0)" class="btn btn-danger" data-toggle="table-action"  data-action="delete" data-id="${v.id_role}">
-                                        <span class="fas fa-trash"></span>
-                                    </a>
-                                
-                                </td>
-                            </tr>
-                        
-                        `
-                    })
-
-                    tableData.find('tbody').html(html);
-                    $('#pagination-wrapper').html(response.data.pagination);
-                }
-            })
-
-        }
-
-
-        function addData() {
-
-            let data = form.serialize();
-
-            return $.ajax({
-                method: 'POST',
-                url: "<?php echo base_url('/api/roles') ?>",
-                data: data, 
-                success: function(response) {
-                    console.log('success response add', response);
-                    switch(response.code) {
-                        case 200: 
-                            Toast('success', 'Berhasil menambahkan data');
-                            clearForm();
-                            loadData();
-                        break;
-
-                        case 400:
-                            Toast('error', response.message);
-                            break;
-                    }
-                    
-                }, 
-                error: function(response) {
-                    Toast('error', 'Something Wrong!!!');
-                }
-            })
-
-        }
-
-        function updateData() {
             
-            let data = form.serialize();
+            let jenisPengajuanSelect2 = tail.select('#i-id_jenis_pengajuan', {
+                multiple: true, 
+                width: '100%'
+            });
 
-            return $.ajax({
-                method: 'POST',
-                url: "<?php echo base_url('/api/roles/update') ?>",
-                data: data, 
-                success: function(response) {
-                    console.log('success response add', response);
-                    switch(response.code) {
-                        case 200: 
-                            Toast('success', 'Berhasil memperbaharui data');
-                            clearForm();
-                            loadData();
-                        break;
+            loadData();
+            function loadData(data = {}) {
 
-                        case 400:
-                            Toast('error', response.message);
-                            break;
+                tableData.find('tbody').html(`
+                    <tr>
+                        <td colspan="4">Loading...</td>
+                    </tr>
+                `);
+
+                $.ajax({
+                    url: "<?php echo base_url('/api/roles') ?>",
+                    data: data,
+                    success: function(response) {
+                        console.log(response);
+                        let html =  ``;
+
+                        response.data.lists.map((v, i) => {
+                            html += `
+                            
+                                <tr>
+                                    <td>${v.role_name}</td>
+                                    <td>${v.role_cap}</td>
+                                    <td>${v.role_desc}</td>
+                                    <td width="200">
+
+                                        <a href="javascript:void(0)" class="btn btn-warning" data-toggle="table-action" data-action="edit" data-id="${v.id_role}">
+                                            <span class="fas fa-edit"></span>
+                                        </a>
+                                        <a href="javascript:void(0)" class="btn btn-danger" data-toggle="table-action"  data-action="delete" data-id="${v.id_role}">
+                                            <span class="fas fa-trash"></span>
+                                        </a>
+                                    
+                                    </td>
+                                </tr>
+                            
+                            `
+                        })
+
+                        tableData.find('tbody').html(html);
+                        $('#pagination-wrapper').html(response.data.pagination);
                     }
-                    
-                }, 
-                error: function(response) {
-                    console.log(response)
-                    Toast('error', 'Something Wrong!!!');
-                }
-            })
-        }
-        
-        function getData( id ) {
-            
-            return $.ajax({
-                url: `<?php echo base_url('/api/roles/show') ?>/${id}`,
-                success: function(response) {
+                })
 
-                    truthAction.val('update');
-
-                    for(data in response.data) {
-                        $('#i-' + data).val(response.data[data]);
-                    }
-                    
-                    $('#form-modal').modal('show');
-                }
-            })
-
-        }
-
-        function deleteData( id ) {
-            return $.ajax({
-                method: 'POST',
-                url: `<?php echo base_url('/api/roles') ?>/${id}/delete`,
-                success: function(response) {
-                    switch(response.code) {
-                        case 200:
-                            Toast('success', 'Data berhasil dihapus');
-                            loadData();
-                            break;
-
-                        case 400:
-                            Toast('warning', response.message);
-                            break;
-                    }
-                },
-                error: function(response) {
-                    Toast('error','Something Wrong!!');
-                }
-            })
-        }
-
-        function saveData() {
-
-            if(truthAction.val() == 'update') updateData();
-            else addData();
-
-        }
-
-        function clearForm() {
-            $('#form')[0].reset();
-        }
-
-
-        $('#js-save').click(function(e){{
-            e.preventDefault();
-            saveData();
-        }})
-
-        $(document).on('click', '#pagination-wrapper .page-item', function(e){
-            e.preventDefault();
-
-            let pagination = $(this).data('ci-pagination');
-
-            console.log('ci-pagination', pagination);
-
-            loadData({
-                page_group1: pagination
-            })
-        
-        })
-
-
-        $(document).on('click', '[data-toggle=table-action]', function(e){
-            e.preventDefault();
-            
-            let btn = $(this);
-            let action = btn.data('action');
-
-
-            btn.html(`<span class="fas fa-spin fa-spinner"></span>`);
-
-            console.log(action);
-            switch(action) {    
-                case 'edit':
-
-                    getData($(this).data('id'))
-                    .then(() => btn.html(`<span class="fas fa-edit"></span>`));
-
-                    break;
-
-                case 'delete':
-
-                    let tryToDelete = confirm('DELETE ???');
-
-                    if(tryToDelete) {
-                        deleteData($(this).data('id'))
-                        .then(() => btn.html(`<span class="fas fa-trash"></span>`))
-                    }else {
-                        btn.html(`<span class="fas fa-trash"></span>`)
-                    }
-
-                    break;
-            }
-        })
-
-        function getFilters() {
-
-            let filters = [];
-
-            if(($('#filter-search').val())) {
-
-                filters.push({ key: 'search', value: $('#filter-search').val() })
             }
 
-            return filters;
-        }
 
+            function addData() {
 
-        $('[data-toggle=sort]').click(function(e){
+                let data = form.serialize();
+
+                return $.ajax({
+                    method: 'POST',
+                    url: "<?php echo base_url('/api/roles') ?>",
+                    data: data, 
+                    success: function(response) {
+                        console.log('success response add', response);
+                        switch(response.code) {
+                            case 200: 
+                                Toast('success', 'Berhasil menambahkan data');
+                                clearForm();
+                                loadData();
+                            break;
+
+                            case 400:
+                                Toast('error', response.message);
+                                break;
+                        }
+                        
+                    }, 
+                    error: function(response) {
+                        Toast('error', 'Something Wrong!!!');
+                    }
+                })
+
+            }
+
+            function updateData() {
+                
+                let data = form.serialize();
+
+                return $.ajax({
+                    method: 'POST',
+                    url: "<?php echo base_url('/api/roles/update') ?>",
+                    data: data, 
+                    success: function(response) {
+                        console.log('success response add', response);
+                        switch(response.code) {
+                            case 200: 
+                                Toast('success', 'Berhasil memperbaharui data');
+                            break;
+
+                            case 400:
+                                Toast('error', response.message);
+                                break;
+                        }
+                        
+                    }, 
+                    error: function(response) {
+                        console.log(response)
+                        Toast('error', 'Something Wrong!!!');
+                    }
+                })
+            }
             
-            e.preventDefault();
+            function getData( id ) {
+                
+                return $.ajax({
+                    url: `<?php echo base_url('/api/roles/show') ?>/${id}`,
+                    success: function(response) {
+                        console.log('get data', response);
 
-            let currentPagination = $('#pagination-wrapper .page-item.active').find('a').data('ci-pagination')
-            let order = $(this).data('sort');
-            let orderby = $(this).data('field');
-            loadData({
-                page_group1: currentPagination,
-                orders: [{
-                    orderby: orderby,
-                    order: order,
-                }],
-                filters: getFilters()
-            })
-        })
+                        truthAction.val('update');
+
+                        for(data in response.data) {
+                            console.log(data);
+                            if(data == "jenis_pengajuan") 
+                            {   
+                                let ids = [];
+                                response.data[data].map((v,i) => {
+                                    console.log(v);
+                                   ids.push(v.id_jenis_pengajuan);
+                                });
+                                $('#i-id_jenis_pengajuan').val(ids);
+                                jenisPengajuanSelect2.reload();
+                            }
+                            else {
+                                $('#i-' + data).val(response.data[data]);
+                            }
+
+                        }
+                        
+                        $('#form-modal').modal('show');
+                    }
+                })
+
+            }
+
+            function deleteData( id ) {
+                return $.ajax({
+                    method: 'POST',
+                    url: `<?php echo base_url('/api/roles') ?>/${id}/delete`,
+                    success: function(response) {
+                        switch(response.code) {
+                            case 200:
+                                Toast('success', 'Data berhasil dihapus');
+                                loadData();
+                                break;
+
+                            case 400:
+                                Toast('warning', response.message);
+                                break;
+                        }
+                    },
+                    error: function(response) {
+                        Toast('error','Something Wrong!!');
+                    }
+                })
+            }
+
+            function saveData() {
+
+                if(truthAction.val() == 'update') return updateData();
+                else return addData();
+
+            }
+
+            function clearForm() {
+                $('#i-id_role').val('');
+                $('#form')[0].reset();
+                $('#i-id_jenis_pengajuan').val('');
+                jenisPengajuanSelect2.reload();
+            }
 
 
-        $('#filter-search').keyup(function(){
+            $('#js-save').click(function(e){{
+                e.preventDefault();
+                saveData()
+                .then(afterSave => {
 
-            let dataToggleSort = $('[data-toggle=sort]');
-            let order = dataToggleSort.data('sort');
-            let orderby = dataToggleSort.data('field');
+                    let data = {
+                        id_role: afterSave.data.id_role, 
+                        id_jenis_pengajuan: $('#i-id_jenis_pengajuan').val(),
+                    }
+
+                    console.log('before save', data);
+
+                    saveJenisPengajuan(data)
+                    .then(response => {
+                    
+                        console.log('after save', response)  
+                        $('#i-id_jenis_pengajuan').val('');
+                        jenisPengajuanSelect2.reload();
+
+                        clearForm();
+                        loadData();
+
+                    });
+                    
+                });
+            }})
 
 
-            console.log()
+
+
+            $(document).on('click', '#pagination-wrapper .page-item', function(e){
+                e.preventDefault();
+
+                let pagination = $(this).data('ci-pagination');
+
+                console.log('ci-pagination', pagination);
+
+                loadData({
+                    page_group1: pagination
+                })
             
-            loadData({
-                //orders: [{ orderby: orderby, order: order }],
-                filters: [
-                    { key: 'search', value: $(this).val() }
-                ]
             })
-        })
 
-    })
-</script>
+
+            $(document).on('click', '[data-toggle=table-action]', function(e){
+                e.preventDefault();
+                
+                let btn = $(this);
+                let action = btn.data('action');
+
+
+                btn.html(`<span class="fas fa-spin fa-spinner"></span>`);
+
+                console.log(action);
+                switch(action) {    
+                    case 'edit':
+
+                        getData($(this).data('id'))
+                        .then(() => btn.html(`<span class="fas fa-edit"></span>`));
+
+                        break;
+
+                    case 'delete':
+
+                        let tryToDelete = confirm('DELETE ???');
+
+                        if(tryToDelete) {
+                            deleteData($(this).data('id'))
+                            .then(() => btn.html(`<span class="fas fa-trash"></span>`))
+                        }else {
+                            btn.html(`<span class="fas fa-trash"></span>`)
+                        }
+
+                        break;
+                }
+            })
+
+            function getFilters() {
+
+                let filters = [];
+
+                if(($('#filter-search').val())) {
+
+                    filters.push({ key: 'search', value: $('#filter-search').val() })
+                }
+
+                return filters;
+            }
+
+
+            $('[data-toggle=sort]').click(function(e){
+                
+                e.preventDefault();
+
+                let currentPagination = $('#pagination-wrapper .page-item.active').find('a').data('ci-pagination')
+                let order = $(this).data('sort');
+                let orderby = $(this).data('field');
+                loadData({
+                    page_group1: currentPagination,
+                    orders: [{
+                        orderby: orderby,
+                        order: order,
+                    }],
+                    filters: getFilters()
+                })
+            })
+
+
+            $('#filter-search').keyup(function(){
+
+                let dataToggleSort = $('[data-toggle=sort]');
+                let order = dataToggleSort.data('sort');
+                let orderby = dataToggleSort.data('field');
+
+
+                console.log()
+                
+                loadData({
+                    //orders: [{ orderby: orderby, order: order }],
+                    filters: [
+                        { key: 'search', value: $(this).val() }
+                    ]
+                })
+            })
+
+
+            function getJenisPengajuan(){
+                return $.ajax({
+                    url: `${baseUrl}/api/jenis-pengajuan`,
+                    data: {
+                        no_limit: true,
+                    }
+                })
+            }
+
+            function saveJenisPengajuan(data) {
+
+                return $.ajax({
+                    method: 'POST',
+                    url: `${baseUrl}/api/roles/jenis-pengajuan`,
+                    data: data
+                })
+
+            }
+
+            getJenisPengajuan()
+            .then(response => { 
+                let options = "";
+
+                let data = [];
+                response.data.lists.map((v, i) => {
+
+                    //data.push({ id: parseInt(v.id_jenis_pengajuan), text: v.nama_jenis_pengajuan });
+                    options += `<option value='${v.id_jenis_pengajuan}'>${v.nama_jenis_pengajuan}</option>`;
+
+                })
+                console.log('get jenis pengajuan', data);
+                $('#i-id_jenis_pengajuan').html(options);
+                jenisPengajuanSelect2.reload();
+                // $('#i-id_jenis_pengajuan').select2({
+                //     multiple: true,
+                //     data: data
+                // });
+            })
+
+
+            $('#js-trigger-form-modal').click(function(e){
+                e.preventDefault();
+                clearForm();
+            })
+
+        })
+    </script>
 
 <?php $this->endSection(); ?>

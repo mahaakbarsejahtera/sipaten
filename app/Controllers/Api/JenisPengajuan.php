@@ -33,6 +33,11 @@ class JenisPengajuan extends Controller
     public function index()
     {
 
+        $no_limit   = $this->request->getGet('no_limit');
+        $pager      = "";
+        $lists      = [];
+        $data       = [];
+
         $response = [
             'data'      => [], 
             'errors'    => [],
@@ -90,10 +95,22 @@ class JenisPengajuan extends Controller
         }
 
 
-        $lists = $jenisPengajuanModel->paginate(10, 'group1');
-        $pager = $jenisPengajuanModel->pager;
 
-        $data = [];
+
+        if($no_limit) 
+        {
+
+            $lists                          = $jenisPengajuanModel->findAll();
+
+        } 
+        else 
+        {
+
+            $lists                          = $jenisPengajuanModel->paginate(10, 'group1');
+            $pager                          = $jenisPengajuanModel->pager;
+            $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
+
+        } 
 
         foreach($lists as $list)
         {
@@ -111,7 +128,6 @@ class JenisPengajuan extends Controller
         }
 
         $response['data']['lists'] = $data;
-        $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
         
 
         return $this->response->setJson($response);

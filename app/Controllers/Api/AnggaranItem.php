@@ -102,7 +102,6 @@ class AnggaranItem extends Controller
         {
 
             $lists                          = $pengajuanItemModel->paginate(10, 'group1');
-
             $pager                          = $pengajuanItemModel->pager;
             $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
 
@@ -122,9 +121,10 @@ class AnggaranItem extends Controller
                             ->where('id_anggaran_item', $list['id_anggaran_item'])
                             ->get()
                             ->getRow();
+            $sisa_qty   =  (double)((in_array(strtolower($list['anggaran_unit']), [ 'ls', 'lot', 'lots' ])) ? 1 :  ($list['anggaran_qty'] -  $item_dipakai->total_item));
             
             $list = $list + [
-                'sisa_qty'      => (double)($list['anggaran_qty'] -  $item_dipakai->total_item),
+                'sisa_qty'      => $sisa_qty,
                 'sisa_price'    => (double)($list['anggaran_price'] - $item_dipakai->total_price)
             ];
 
@@ -176,6 +176,7 @@ class AnggaranItem extends Controller
             'anggaran_unit'        => (string)$this->request->getPost('anggaran_unit'),
             'anggaran_price'       => (double)$this->request->getPost('anggaran_price')     
         ];
+
 
 
         $anggaranItemModel = db_connect();

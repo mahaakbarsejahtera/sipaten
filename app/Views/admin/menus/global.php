@@ -248,6 +248,13 @@
     </ul>
 </li>
 
+<li class="nav-item">
+    <a href="javascript:void(0)" class="nav-link">
+        <i class="nav-icon far fa-circle"></i>
+        <p>Laporan</p>
+    </a>
+</li>
+
 
 
 <li class="nav-header">Global</li>
@@ -276,7 +283,7 @@
 <li class="nav-item">
     <a href="<?php echo base_url('/dashboard/jenis-pengajuan') ?>" class="nav-link">
         <i class="nav-icon far fa-star"></i>
-        <p>Jenis Pengajuaan</p>
+        <p>Jenis Pengajuan</p>
     </a>
 </li>
 

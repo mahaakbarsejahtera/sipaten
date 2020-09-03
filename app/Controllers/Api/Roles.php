@@ -22,7 +22,13 @@ class Roles extends Controller
             'errors'        => []
         ];
 
-        $find = (new RolesModel)->find( $id );
+        $find = (new RolesModel)
+            ->builder()
+            ->find( $id );
+
+        $find = $find + [
+            'jenis_pengajuan' =>  (new RolesModel)->getjenisPengajuan($id)
+        ];
 
         if($find) {
             $response['data']       = $find;
@@ -71,6 +77,7 @@ class Roles extends Controller
                     
                     if(in_array($filter['key'], array_keys($rolesModel->filterby))) {
                         $response['filters'][] = $filter['key'];
+                        $rolesModel->where($rolesModel->filterby[$filter['key']], $filter['value']);
                     }
 
                     break;
@@ -154,12 +161,12 @@ class Roles extends Controller
             'role_desc'     => $this->request->getPost('role_desc'),
         ];
 
-        $rolesModel = new RolesModel;
-        $rolesModel->save($insertData);
+        $db = db_connect(); 
+        $rolesModel = $db->table('roles');
+        $rolesModel->insert($insertData);
 
         $response['code']       = 200;
-        $response['data']       = $insertData;
-        $response['model']      = $rolesModel->getInsertID();
+        $response['data']       = [ 'id_role' => $db->insertID() ] + $insertData;
         //$response['data'] = $insertData;
         $response['message']    = 'Insert Success';
 
@@ -209,7 +216,6 @@ class Roles extends Controller
 
         $response['code']       = 200;
         $response['data']       = $insertData;
-        $response['model']      = $this->request->getPost('id_role');
         //$response['data'] = $insertData;
         $response['message']    = 'Update Success';
 
@@ -242,14 +248,53 @@ class Roles extends Controller
         return $this->response->setJson($response);
     }
 
-    public function destroy()
+    
+    public function saveJenisPengajuan() 
     {
+
+        $response = [
+            'code'          => 0,
+            'message'       => '',
+            'data'          => [],
+            'errors'        => []
+        ];
+
+        $rules = [
+            'id_role'               => 'required',
+            'id_jenis_pengajuan'    => 'required',
+        ];
+
+        if(!$this->validate($rules))
+        {
+
+            $response['code']       = 400;
+            $response['message']    = 'Bad Request';
+            $response['errors']     = $this->validator->getErrors();
+            return $this->response->setJson($response);
+
+        }
+
+        $id_role             = $this->request->getPost('id_role');
+        $ids_jenis_pengajuan = $this->request->getPost('id_jenis_pengajuan');
+
+        $db = db_connect();
+
+        $builder = $db->table('roles_pengajuan');
+
+        $builder->where('id_role', $id_role)->delete();
+
+        foreach($ids_jenis_pengajuan as $id_jenis_pengajuan) $builder->insert(['id_role' => $id_role, 'id_jenis_pengajuan' => $id_jenis_pengajuan]);
+
+        $response = [
+            'code'      => 200,
+            'message'   => 'Success',
+            'data'      => [],
+            'errors'    => []
+        ];
+
+        return $this->response->setJSON($response);
 
     }
 
-    public function changePassword() 
-    {
-
-    }
 
 }
