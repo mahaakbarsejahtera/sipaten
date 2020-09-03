@@ -65,8 +65,7 @@
 
     </section>
     <!-- /.content -->
-
-    
+ 
     <!-- Modal -->
     <div class="modal fade" id="form-modal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -369,6 +368,11 @@
                                         <a href="${baseUrl + '/dashboard/laporan/estimasi/?id_permintaan=' + v.id_permintaan}" download>${Rp(v.estimasi_harga_jual)}</a>
   
                                     </div>
+                                </td>
+                                
+                                <td>
+                                    <div></div>
+                                    <a href="javascript:void(0)">Tambah Dokumen</a>
                                 </td>
                                 <td>
 

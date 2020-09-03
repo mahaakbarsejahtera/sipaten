@@ -9,7 +9,8 @@ use Template\Table;
 class Home extends Controller
 {
 
-    public function estimasi() {
+    public function estimasi() 
+    {
 
         $breadcrumb = (new BreadCrumb)->set([
             [
@@ -54,7 +55,8 @@ class Home extends Controller
     // PEMASARAN
 
 
-    public function pemasaranCustomer() {
+    public function pemasaranCustomer() 
+    {
 
         $breadcrumb = (new BreadCrumb)->set([
             [
@@ -92,7 +94,8 @@ class Home extends Controller
 
     }
 
-    public function pemasaranPermintaan() {
+    public function pemasaranPermintaan() 
+    {
         $breadcrumb = (new BreadCrumb)->set([
             [
                 'name' => 'Dashboard',
@@ -149,6 +152,9 @@ class Home extends Controller
                     'name' => 'Lampiran Penawaran'
                 ],
                 [
+                    'name' => 'Kontrak/SPPK/PO'
+                ],
+                [
                     'name' => 'Aksi'
                 ],
 
@@ -157,7 +163,8 @@ class Home extends Controller
         ]);
     }
 
-    public function pemasaranPenawaran() {
+    public function pemasaranPenawaran() 
+    {
         $breadcrumb = (new BreadCrumb)->set([
             [
                 'name' => 'Dashboard',
@@ -204,7 +211,8 @@ class Home extends Controller
         ]);
     }
 
-    public function pemasaranNegoisasi() {
+    public function pemasaranNegoisasi() 
+    {
         $breadcrumb = (new BreadCrumb)->set([
             [
                 'name' => 'Dashboard',
@@ -252,7 +260,8 @@ class Home extends Controller
 
     // TEKNIK
 
-    public function teknikPermintaan() {
+    public function teknikPermintaan() 
+    {
         $breadcrumb = (new BreadCrumb)->set([
             [
                 'name' => 'Dashboard',
@@ -303,7 +312,8 @@ class Home extends Controller
         ]);
     }
 
-    public function teknikSurvey() {
+    public function teknikSurvey() 
+    {
         $breadcrumb = (new BreadCrumb)->set([
             [
                 'name' => 'Dashboard',
@@ -354,7 +364,8 @@ class Home extends Controller
         ]);
     }
 
-    public function teknikAnggaran() {
+    public function teknikAnggaran() 
+    {
        
         $breadcrumb = (new BreadCrumb)->set([
             [
@@ -405,7 +416,9 @@ class Home extends Controller
     }
 
 
-    public function dashboardJenisPengajuan() {
+    public function dashboardJenisPengajuan() 
+    {
+
         $breadcrumb = (new BreadCrumb)->set([
             [
                 'name' => 'Dashboard',
@@ -444,7 +457,9 @@ class Home extends Controller
         ]);
     }
 
-    public function pemasaranPengajuanOperasional() {
+    public function pemasaranPengajuanOperasional() 
+    {
+
         $breadcrumb = (new BreadCrumb)->set([
             [
                 'name' => 'Dashboard',
@@ -493,7 +508,9 @@ class Home extends Controller
         ]);
     }
 
-    public function pengajuanAnggaran() {
+    public function pengajuanAnggaran() 
+    {
+
         $breadcrumb = (new BreadCrumb)->set([
             [
                 'name' => 'Dashboard',
@@ -506,13 +523,16 @@ class Home extends Controller
         ])->render();
 
         return view('admin/pengajuan-proyek', [
-        'title' => 'Pengajuan Proyek',
+            'title' => 'Pengajuan Proyek',
             'breadcrumb' => $breadcrumb,
             'table'         => (new Table())->setColumns([
                 [
                     'field' => 'id_anggaran',
                     'name' => 'Perihal',
                     'sort' => true,
+                ],
+                [
+                    'name' => 'Nomor Surat',
                 ],
                 [
                     'name' => 'Tanggal Pengajuan'
@@ -526,10 +546,6 @@ class Home extends Controller
                 [
                     'name' => 'Pengaju'
                 ],
-                // [
-                //     'name' => 'Nama Pekerjaan',
-                // ],
-                //['name' => 'Penanggung Jawab'], 
                 [
                     'name' => 'Anggaran'
                 ],
@@ -542,7 +558,8 @@ class Home extends Controller
         ]);
     }
 
-    public function pengajuanNonAnggaran() {
+    public function pengajuanNonAnggaran() 
+    {
         $breadcrumb = (new BreadCrumb)->set([
             [
                 'name' => 'Dashboard',
@@ -587,5 +604,58 @@ class Home extends Controller
             ->render("table-data")
         ]);
     }
+
+
+    // Laporan
+
+    public function dashboardLaporanPengajuanProyek() 
+    {
+        $breadcrumb = (new BreadCrumb)->set([
+            [
+                'name' => 'Dashboard',
+                'url' => base_url('dashboard'),
+            ],
+            [
+                'name' => 'Laporan Pengajuan Proyek',
+                'active' => true
+            ],
+        ])->render();
+
+        return view('admin/laporan/pp', [
+            'title' => 'Laporan Pengajuan Proyek',
+            'breadcrumb' => $breadcrumb,
+            'table'         => (new Table())->setColumns([
+                [
+                    'field' => 'id_anggaran',
+                    'name' => 'Perihal',
+                    'sort' => true,
+                ],
+                [
+                    'name' => 'Nomor Surat',
+                ],
+                [
+                    'name' => 'Tanggal Pengajuan'
+                ],
+                [
+                    'name' => 'Due Date Pengajuan'
+                ],
+                [
+                    'name' => ' Nilai Pengajuan'
+                ],
+                [
+                    'name' => 'Pengaju'
+                ],
+                [
+                    'name' => 'Anggaran'
+                ],
+                [
+                    'name' => 'Aksi'
+                ]
+
+            ])
+            ->render("table-data")
+        ]);
+    }
+
 
 }

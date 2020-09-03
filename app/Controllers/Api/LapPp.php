@@ -4,9 +4,10 @@ namespace App\Controllers\Api;
 
 use App\Models\JenisPengajuanModel;
 use App\Models\PengajuanProyekModel;
+use App\Models\LapPpModel;
 use CodeIgniter\Controller;
 
-class PengajuanProyek extends Controller
+class LapPp extends Controller
 {
     
     public function show( $id ) 
@@ -21,9 +22,10 @@ class PengajuanProyek extends Controller
 
 
 
-        $find = (new PengajuanProyekModel)->builder()
+        $find = (new LapPpModel)->builder()
         ->select("
 
+            lap_pp.id_lpp,  lap_pp.status_lpp, lap_pp.id_pp, lap_pp.acc_date,
 
             pengajuan_proyek.id_pengajuan_proyek, pengajuan_proyek.id_pengaju, pengajuan_proyek.id_anggaran,
             pengajuan_proyek.id_jenis_pengajuan, pengajuan_proyek.perihal_pengajuan_proyek, pengajuan_proyek.no_surat_pengajuan_proyek,
@@ -34,6 +36,7 @@ class PengajuanProyek extends Controller
             permintaan.nama_pekerjaan
            
         ")
+        ->join('pengajuan_proyek', 'lap_pp.id_pp = pengajuan_proyek.id_pengajuan_proyek')
         ->join('anggaran', 'pengajuan_proyek.id_anggaran=anggaran.id_anggaran', 'left')
         ->join('permintaan', 'anggaran.id_permintaan = permintaan.id_permintaan', 'left')
         ->join('jenis_pengajuan', 'pengajuan_proyek.id_jenis_pengajuan=jenis_pengajuan.id_jenis_pengajuan','left')
@@ -62,10 +65,11 @@ class PengajuanProyek extends Controller
 
 
         
-        $pengajuanModel = new PengajuanProyekModel();
+        $pengajuanModel = new LapPpModel();
         $pengajuanModel->builder()
         ->select("
 
+            lap_pp.id_lpp,  lap_pp.status_lpp, lap_pp.id_pp, lap_pp.acc_date,
 
             pengajuan_proyek.id_pengajuan_proyek, pengajuan_proyek.id_pengaju, pengajuan_proyek.id_anggaran,
             pengajuan_proyek.id_jenis_pengajuan, pengajuan_proyek.perihal_pengajuan_proyek, pengajuan_proyek.no_surat_pengajuan_proyek,
@@ -73,9 +77,10 @@ class PengajuanProyek extends Controller
 
             anggaran.id_permintaan,
 
-            permintaan.nama_pekerjaan,
+            permintaan.nama_pekerjaan
            
         ")
+        ->join('pengajuan_proyek', 'lap_pp.id_pp = pengajuan_proyek.id_pengajuan_proyek')
         ->join('anggaran', 'pengajuan_proyek.id_anggaran=anggaran.id_anggaran', 'left')
         ->join('permintaan', 'anggaran.id_permintaan = permintaan.id_permintaan', 'left')
         ->join('jenis_pengajuan', 'pengajuan_proyek.id_jenis_pengajuan=jenis_pengajuan.id_jenis_pengajuan','left');
@@ -167,9 +172,8 @@ class PengajuanProyek extends Controller
 
         // Dinamis ikuti table
         $rules = [
-            'id_pengaju'           => 'required',
-            'id_anggaran'           => 'required',
-            'id_jenis_pengajuan'    => 'required'
+            'id_pp'           => 'required',
+            'status_lpp'           => 'required',
 
         ];
 
@@ -187,25 +191,18 @@ class PengajuanProyek extends Controller
 
         // Dinamis ikuti table
         $insertData = [
-            'id_pengaju'                    => (int)$this->request->getPost('id_pengaju'),
-            'id_anggaran'                   => (int)$this->request->getPost('id_anggaran'),
-            'id_jenis_pengajuan'            => (int)$this->request->getPost('id_jenis_pengajuan'),
-            'perihal_pengajuan_proyek'      => (string)$this->request->getPost('perihal_pengajuan_proyek'),
-            'no_surat_pengajuan_proyek'     => (string)$this->generateNomorSurat($this->request->getPost('id_jenis_pengajuan')),
-            'tanggal_pengajuan_proyek'      => (string)$this->request->getPost('tanggal_pengajuan_proyek'),
-            'due_date_pengajuan_proyek'     => (string)$this->request->getPost('due_date_pengajuan_proyek')
+            'id_pp'         => (int)$this->request->getPost('id_pp'),
+            'status_lpp'    => (int)$this->request->getPost('status_lpp'),
         ];
 
         
         //return $this->response->setJson($insertData);
 
         $db = db_connect();
-        $pengajuanModel = $db
-                            ->table('pengajuan_proyek')
-                            ->insert($insertData);
+        $pengajuanModel = $db->table('lap_pp')->insert($insertData);
 
         $response['code']       = 200;
-        $response['data']       = [ 'id_pengajuan_proyek' => $db->insertID() ] + $insertData;
+        $response['data']       = [ 'id_lpp' => $db->insertID() ] + $insertData;
         $response['message']    = 'Insert Success';
 
         return $this->response->setJson($response);
@@ -224,10 +221,9 @@ class PengajuanProyek extends Controller
 
 
         $rules = [
-            'id_pengajuan_proyek'   => 'required',
-            'id_pengaju'            => 'required',
-            'id_anggaran'           => 'required',
-            'id_jenis_pengajuan'    => 'required'
+            'id_lpp'        => 'required',
+            'id_pp'         => 'required',
+            'status_lpp'    => 'required',
         ];
 
     
@@ -242,22 +238,15 @@ class PengajuanProyek extends Controller
         }
 
         $insertData = [
-            'id_pengajuan_proyek'           => (double)$this->request->getPost('id_pengajuan_proyek'),
-            'id_pengaju'                    => (double)$this->request->getPost('id_pengaju'),
-            'id_anggaran'                   => (double)$this->request->getPost('id_anggaran'),
-            'id_jenis_pengajuan'            => (double)$this->request->getPost('id_jenis_pengajuan'),
-            'perihal_pengajuan_proyek'      => (string)$this->request->getPost('perihal_pengajuan_proyek'),
-            //'no_surat_pengajuan_proyek'     => (string)$this->generateNomorSurat($this->request->getPost('id_jenis_pengajuan')),
-            'no_surat_pengajuan_proyek'     => (string)($this->request->getPost('id_jenis_pengajuan')),
-            'tanggal_pengajuan_proyek'      => (string)$this->request->getPost('tanggal_pengajuan_proyek'),
-            'due_date_pengajuan_proyek'     => (string)$this->request->getPost('due_date_pengajuan_proyek')
+            'id_lpp'        => (double)$this->request->getPost('id_lpp'),
+            'id_pp'         => (double)$this->request->getPost('id_pp'),
+            'status_lpp'    => (double)$this->request->getPost('status_lpp'),
         ];
-        $pengajuanModel = new PengajuanProyekModel;
+        $pengajuanModel = new LapPpModel;
         $pengajuanModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
-        //$response['data'] = $insertData;
         $response['message']    = 'Update Success';
 
         return $this->response->setJson($response);
@@ -272,11 +261,11 @@ class PengajuanProyek extends Controller
             'errors'        => []
         ];
 
-        $find = (new PengajuanProyekModel)->find( $id );
+        $find = (new LapPpModel)->find( $id );
         
         if($find) {
 
-            (new PengajuanProyekModel)->delete($id);
+            (new LapPpModel)->delete($id);
 
             $response = [
                 'code'      => 200,
@@ -290,79 +279,6 @@ class PengajuanProyek extends Controller
         return $this->response->setJson($response);
     }
 
-
-    public function generateNomorSurat( $jenis_pengajuan ) {
-        
-        $bulan = date('n');
-        $romawi = '';
-        switch ($bulan){
-            case 1: 
-                $romawi = "I";
-            break;
-            case 2:
-                $romawi = "II";
-            break;
-            case 3:
-                $romawi = "III";
-            break;
-            case 4:
-                $romawi = "IV";
-            break;
-            case 5:
-                $romawi = "V";
-            break;
-            case 6:
-                $romawi = "VI";
-            break;
-            case 7:
-                $romawi = "VII";
-            break;
-            case 8:
-                $romawi = "VIII";
-            break;
-            case 9:
-                $romawi = "IX";
-            break;
-            case 10:
-                $romawi = "X";
-            break;
-            case 11:
-                $romawi = "XI";
-            break;
-            case 12:
-                $romawi = "XII";
-            break;
-        }
-
-        $tahun = date ('Y');
-
-        $kodeJenisPengajuan = (new JenisPengajuanModel())->find($jenis_pengajuan)['kode_jenis_pengajuan'];
-
-
-        $nomor = "/{$kodeJenisPengajuan}/{$romawi}/{$tahun}";
-        
-        // membaca kode / nilai tertinggi dari penomoran yang ada didatabase berdasarkan tanggal
-        $query = (new PengajuanProyekModel())->builder()->select("max(pengajuan_proyek.no_surat_pengajuan_proyek) as maxKode")
-            ->where('pengajuan_proyek.id_jenis_pengajuan', $jenis_pengajuan)
-            ->where('MONTH(tanggal_pengajuan_proyek)', $bulan)
-            ->get();
-        $data  = $query->getRow();
-
-        //var_dump($data);
-
-        $no= $data->maxKode;
-        //echo $no . '<br>';
-        $noUrut= $no + 1;
-        
-        //echo $noUrut . '<br>';
-        
-        //membuat Nomor Surat Otomatis dengan awalan depan 0 misalnya , 01,02 
-        //jika ingin 003 ,tinggal ganti %03
-        $kode =  sprintf("%03s", $noUrut);
-        $nomorbaru = $kode.$nomor;
-
-        return $nomorbaru;
-    }
 
 
 }

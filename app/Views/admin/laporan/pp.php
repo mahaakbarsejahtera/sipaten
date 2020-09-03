@@ -38,7 +38,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-md-3">
-                    <a href="javascript:void(0)" data-toggle="modal" data-target="#modal-pengajuan" class="btn btn-primary mb-3" id="js-trigger-modal-pengajuan">Tambah Data</a>
+                    <!-- <a href="javascript:void(0)" data-toggle="modal" data-target="#modal-pengajuan" class="btn btn-primary mb-3" id="js-trigger-modal-pengajuan">Tambah Data</a> -->
                 </div>
                 <div class="col-12 col-md-9">
                     <form class="w-100" id="filter-form">
@@ -295,13 +295,8 @@
                                 </td>
                                 <td>
 
-                                    <a href="javascript:void(0)" class="btn btn-warning mb-2" title="Edit Pengajuan" data-toggle="table-action" data-action="edit" data-id="${v.id_pengajuan_proyek}" data-permintaan="${v.id_permintaan}">
-                                        <span class="fas fa-edit"></span>
-                                    </a>
-                                    
-                                    <a href="javascript:void(0)" class="btn btn-danger mb-2" title="Hapus Pengajuan" data-toggle="table-action"  data-action="delete" data-id="${v.id_pengajuan_proyek}">
-                                        <span class="fas fa-trash"></span>
-                                    </a>
+                                    <a href="javascript:void(0)"  data-toggle="table-action"  data-action="lihat-laporan" data-id="${v.id_pengajuan_proyek}">Lihat Laporan</a>
+                  
                                 </td>
                             </tr>
                         
@@ -317,6 +312,14 @@
             })
 
         }
+
+        // <a href="javascript:void(0)" class="btn btn-warning mb-2" title="Edit Pengajuan" data-toggle="table-action" data-action="edit" data-id="${v.id_pengajuan_proyek}" data-permintaan="${v.id_permintaan}">
+        //     <span class="fas fa-edit"></span>
+        // </a>
+        
+        // <a href="javascript:void(0)" class="btn btn-danger mb-2" title="Hapus Pengajuan" data-toggle="table-action"  data-action="delete" data-id="${v.id_pengajuan_proyek}">
+        //     <span class="fas fa-trash"></span>
+        // </a>
 
     
         getAnggaran()
@@ -654,6 +657,12 @@
                     }
 
                     break;
+
+                case 'lihat-laporan':
+
+
+
+                    break;
                 
         
             }
@@ -939,7 +948,7 @@
 
         function loadPengajuanProyekItem(data) {
             return $.ajax({
-                url: `${baseUrl}/api/pengajuan-proyek-item`,
+                url: `${baseUrl}/api/laporan/pengajuan-proyek-item`,
                 data: data
             })
         }
@@ -947,7 +956,7 @@
         function addPengajuanProyekItem(data) {
             return $.ajax({
                 method: 'POST',
-                url: `${baseUrl}/api/pengajuan-proyek-item`,
+                url: `${baseUrl}/api/laporan/pengajuan-proyek-item`,
                 data: data, 
             })
         }
@@ -955,7 +964,7 @@
         function updatePengajuanProyekItem(data) {
             return $.ajax({
                 method: 'POST',
-                url: `${baseUrl}/api/pengajuan-proyek-item/update`,
+                url: `${baseUrl}/api/laporan/pengajuan-proyek-item/update`,
                 data: data, 
             })
         }
@@ -963,9 +972,11 @@
         function deletePengajuanItem(id) {
             return $.ajax({
                 method: 'POST',
-                url: `${baseUrl}/api/pengajuan-proyek-item/${id}/delete`,
+                url: `${baseUrl}/api/laporan/pengajuan-proyek-item/${id}/delete`,
             })
         }
+
+       
     })
 </script>
 

@@ -227,7 +227,7 @@ class PengajuanInternal extends Controller
             'id_pengaju'                    => (double)$this->request->getPost('id_pengaju'),
             'id_jenis_pengajuan'            => (double)$this->request->getPost('id_jenis_pengajuan'),
             'perihal_pengajuan_internal'      => (string)$this->request->getPost('perihal_pengajuan_internal'),
-            'no_surat_pengajuan_internal'     => (string)$this->generateNomorSurat($this->request->getPost('id_jenis_pengajuan')),
+            'no_surat_pengajuan_internal'     => (string)($this->request->getPost('id_jenis_pengajuan')),
             'tanggal_pengajuan_internal'      => (string)$this->request->getPost('tanggal_pengajuan_internal'),
             'due_date_pengajuan_internal'     => (string)$this->request->getPost('due_date_pengajuan_internal')
         ];
@@ -321,8 +321,9 @@ class PengajuanInternal extends Controller
         $nomor = "/{$kodeJenisPengajuan}/{$romawi}/{$tahun}";
         
         // membaca kode / nilai tertinggi dari penomoran yang ada didatabase berdasarkan tanggal
-        $query = (new PengajuanInternalModel())->builder()->select("max(no_surat_pengajuan_internal) as maxKode")
-            ->where('month(tanggal)', '$bulan')
+        $query = (new PengajuanInternalModel())->builder()->select("max(tanggal_pengajuan_internal) as maxKode")
+            ->where('id_jenis_pengajuan',  $jenis_pengajuan)
+            ->where('month(tanggal)', $bulan)
             ->get();
         $data  = $query->getRow();
         $no= $data['maxKode'];
@@ -330,7 +331,7 @@ class PengajuanInternal extends Controller
         
         //membuat Nomor Surat Otomatis dengan awalan depan 0 misalnya , 01,02 
         //jika ingin 003 ,tinggal ganti %03
-        $kode =  sprintf("%02s", $noUrut);
+        $kode =  sprintf("%03s", $noUrut);
         $nomorbaru = $kode.$nomor;
 
         return $nomorbaru;

@@ -84,6 +84,9 @@ class Pengajuan extends Controller
                     'sort' => true,
                 ],
                 [
+                    'name' => 'Nomor Surat',
+                ],
+                [
                     'name' => 'Tanggal Pengajuan'
                 ],
                 [

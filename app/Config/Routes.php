@@ -77,6 +77,18 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 	$routes->post('permintaan/(:num)/delete', 'Permintaan::delete/$1');
 	$routes->post('permintaan/destroy', 'Permintaan::destroy');
 
+	// Permintaan File
+	$routes->get('permintaan-file', 'PermintaanFile::index');
+	$routes->get('permintaan-file/show/(:num)', 'PermintaanFile::show/$1');
+
+	$routes->post('permintaan-file', 'PermintaanFile::store');
+	$routes->post('permintaan-file/update', 'PermintaanFile::update');
+	$routes->post('permintaan-file/penunjukan/(:num)', 'PermintaanFile::accPenunjukan/$1');
+	$routes->post('permintaan-file/hasil-survey/(:num)', 'PermintaanFile::accHasilSurvey/$1');
+
+	$routes->post('permintaan-file/(:num)/delete', 'PermintaanFile::delete/$1');
+	$routes->post('permintaan-file/destroy', 'PermintaanFile::destroy');
+
 	//Nego
 	$routes->get('negosiasi', 'Negosiasi::index');
 	$routes->get('negosiasi/show/(:num)', 'Negosiasi::show/$1');
@@ -217,7 +229,18 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 	$routes->post('pengajuan-internal-item/(:num)/delete', 'PengajuanInternalItem::delete/$1');
 	$routes->post('pengajuan-internal-item/destroy', 'PengajuanInternalItem::destroy');
 
-	
+	$routes->group('laporan', function($routes){
+		// Pengajuan Internal Item
+		$routes->get('pengajuan-proyek', 'LapPp::index');
+		$routes->get('pengajuan-proyek/show/(:num)', 'LapPp::show/$1');
+
+		$routes->post('pengajuan-proyek', 'LapPp::store');
+		$routes->post('pengajuan-proyek/update', 'LapPp::update');
+
+		$routes->post('pengajuan-proyek/(:num)/delete', 'LapPp::delete/$1');
+		$routes->post('pengajuan-proyek/destroy', 'LapPp::destroy');
+
+	});
 	
 
 });
@@ -225,6 +248,8 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 
 $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function($routes){
 
+
+	// Super User Dashboard
 	$routes->get('users', 'Users::index');
 	$routes->get('roles', 'Roles::index');
 	$routes->get('permintaan', 'Permintaan::index');
@@ -234,6 +259,8 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 	$routes->get('pengajuan-proyek', 'Home::pengajuanAnggaran');
 	$routes->get('pengajuan-internal', 'Home::pengajuanNonAnggaran');
 
+
+	// Dashboard Pemasaran
 	$routes->group('pemasaran', function($routes) {
 
 		$routes->get('customer', 'Home::pemasaranCustomer');
@@ -254,6 +281,7 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 
 	});
 
+	// Dashboard Teknik
 	$routes->group('teknik', function($routes) {
 
 		$routes->get('permintaan', 'Home::teknikPermintaan');
@@ -268,20 +296,52 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 
 	});
 
-	$routes->get('laporan/lampiran-boq', 'Laporan::lampiranBoq');
 
 	$routes->group('laporan', function($routes) {
+
+		// Dashboard View
+		$routes->get('pp', 'Home::dashboardLaporanPengajuanProyek');
+
+		// Lampiran
+		$routes->get('lampiran-boq', 'Laporan::lampiranBoq');
 		$routes->get('estimasi', 'Laporan::hasilEstimasi');
 		$routes->get('lampiran-penawaran', 'Laporan::lampiranPenawaran');
 		$routes->get('nego', 'Laporan::lampiranNego');
 		$routes->get('anggaran', 'Laporan::lampiranAnggaran');
 		$routes->get('pengajuan', 'Laporan::lampiranPengajuan');
 		$routes->get('pengajuan-internal', 'Laporan::lampiranPengajuanInternal');
+	
+
 	});
 
-	 
+});
+
+$routes->get('no-surat', function(){
+
+	$PengajuanProyek = (new \App\Controllers\Api\PengajuanProyek);
+	echo $PengajuanProyek->generateNomorSurat(23);
+
+});
+
+$routes->get('auth', function(){
 
 
+	$key = "example_key";
+	$payload = [
+		"iss" => "http://example.org",
+		"aud" => "http://example.com",
+		"iat" => 1356999524,
+		"nbf" => 1357000000
+	];
+
+
+	$jwt  = \Firebase\JWT\JWT::encode($payload, $key);
+
+	echo $jwt;
+
+	$data = \Firebase\JWT\JWT::decode($jwt, $key, array('HS256'));
+
+	var_dump( $data ); 
 });
 
 /**
