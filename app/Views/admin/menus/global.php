@@ -248,12 +248,38 @@
     </ul>
 </li>
 
-<li class="nav-item">
+<li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+        <i class="nav-icon fas fa-copy"></i>
+        <p>
+        Laporan
+        <i class="fas fa-angle-left right"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+
+        
+        <li class="nav-item">
+            <a href="<?php echo base_url('dashboard/laporan/pp') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Pengajuan Proyek</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="<?php echo base_url('dashboard/laporan/pi') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Pengajuan Internnal</p>
+            </a>
+        </li>
+    </ul>
+</li>
+<!-- <li class="nav-item">
     <a href="javascript:void(0)" class="nav-link">
         <i class="nav-icon far fa-circle"></i>
         <p>Laporan</p>
     </a>
-</li>
+</li> -->
 
 
 
