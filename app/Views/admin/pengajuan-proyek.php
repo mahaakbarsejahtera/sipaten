@@ -842,7 +842,8 @@
 
 
 
-                });
+                })
+                .catch(err => console.log('update item', err));;
             } else {
                 addPengajuanProyekItem(data)
                 .then(response => {
@@ -884,7 +885,8 @@
 
                     }
                    
-                });
+                })  
+                .catch(err => console.log('insert item', err));;
             }
 
             
@@ -935,6 +937,7 @@
             e.preventDefault();
             $('#form-operasional-item')[0].reset();
             $('#i-id_pengajuan_proyek_item').val('');
+            $('#i-id_anggaran_item').val('').trigger('change');
         })
 
         function loadPengajuanProyekItem(data) {

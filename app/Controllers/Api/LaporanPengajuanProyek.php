@@ -4,10 +4,9 @@ namespace App\Controllers\Api;
 
 use App\Models\JenisPengajuanModel;
 use App\Models\PengajuanProyekModel;
-use App\Models\LapPpModel;
 use CodeIgniter\Controller;
 
-class LapPp extends Controller
+class LaporanPengajuanProyek extends Controller
 {
     
     public function show( $id ) 
@@ -21,21 +20,20 @@ class LapPp extends Controller
         ];
 
 
+
         $find = (new PengajuanProyekModel)->builder()
         ->select("
 
-            lap_pp.id_lpp, lap_pp.id_pp, lap_pp.status_lpp, lap_pp.id_pp, lap_pp.acc_date,
 
-            pengajuan_proyek.id_pengaju, pengajuan_proyek.id_anggaran,
+            pengajuan_proyek.id_pengajuan_proyek, pengajuan_proyek.id_pengaju, pengajuan_proyek.id_anggaran,
             pengajuan_proyek.id_jenis_pengajuan, pengajuan_proyek.perihal_pengajuan_proyek, pengajuan_proyek.no_surat_pengajuan_proyek,
-            pengajuan_proyek.tanggal_pengajuan_proyek, pengajuan_proyek.due_date_pengajuan_proyek, 
+            pengajuan_proyek.tanggal_pengajuan_proyek, pengajuan_proyek.due_date_pengajuan_proyek, pengajuan_proyek.status_laporan_pengajuan_proyek,
 
             anggaran.id_permintaan,
 
             permintaan.nama_pekerjaan
            
         ")
-        ->join('lap_pp', 'pengajuan_proyek.id_pengajuan_proyek = lap_pp.id_pp', 'left')
         ->join('anggaran', 'pengajuan_proyek.id_anggaran=anggaran.id_anggaran', 'left')
         ->join('permintaan', 'anggaran.id_permintaan = permintaan.id_permintaan', 'left')
         ->join('jenis_pengajuan', 'pengajuan_proyek.id_jenis_pengajuan=jenis_pengajuan.id_jenis_pengajuan','left')
@@ -68,7 +66,6 @@ class LapPp extends Controller
         $pengajuanModel->builder()
         ->select("
 
-            lap_pp.id_lpp,  lap_pp.status_lpp, lap_pp.id_pp, lap_pp.acc_date,
 
             pengajuan_proyek.id_pengajuan_proyek, pengajuan_proyek.id_pengaju, pengajuan_proyek.id_anggaran,
             pengajuan_proyek.id_jenis_pengajuan, pengajuan_proyek.perihal_pengajuan_proyek, pengajuan_proyek.no_surat_pengajuan_proyek,
@@ -76,10 +73,9 @@ class LapPp extends Controller
 
             anggaran.id_permintaan,
 
-            permintaan.nama_pekerjaan
+            permintaan.nama_pekerjaan,
            
         ")
-        ->join('lap_pp', 'pengajuan_proyek.id_pengajuan_proyek = lap_pp.id_pp', 'left')
         ->join('anggaran', 'pengajuan_proyek.id_anggaran=anggaran.id_anggaran', 'left')
         ->join('permintaan', 'anggaran.id_permintaan = permintaan.id_permintaan', 'left')
         ->join('jenis_pengajuan', 'pengajuan_proyek.id_jenis_pengajuan=jenis_pengajuan.id_jenis_pengajuan','left');
@@ -158,56 +154,6 @@ class LapPp extends Controller
 
         return $this->response->setJson($response);
     }
-
-    public function store()
-    {
-
-        $response = [
-            'data'      => [], 
-            'errors'    => [],
-            'code'      => 200, 
-            'message'   => '' 
-        ];
-
-        // Dinamis ikuti table
-        $rules = [
-            'id_pp'           => 'required',
-            'status_lpp'      => 'required',
-
-        ];
-
-    
-        if(!$this->validate($rules))
-        {
-
-            $response['code']       = 400;
-            $response['message']    = 'Bad Request';
-            $response['errors']     = $this->validator->getErrors();
-            return $this->response->setJson($response);
-
-        }
-
-
-        // Dinamis ikuti table
-        $insertData = [
-            'id_pp'         => (int)$this->request->getPost('id_pp'),
-            'status_lpp'    => (string)$this->request->getPost('status_lpp'),
-        ];
-
-        
-        //return $this->response->setJson($insertData);
-
-        $db = db_connect();
-        $pengajuanModel = $db->table('lap_pp')->insert($insertData);
-
-        $response['code']       = 200;
-        $response['data']       = [ 'id_lpp' => $db->insertID() ] + $insertData;
-        $response['message']    = 'Insert Success';
-
-        return $this->response->setJson($response);
-        
-    }
-
     public function update()
     {
 
@@ -220,11 +166,9 @@ class LapPp extends Controller
 
 
         $rules = [
-            'id_lpp'        => 'required',
-            'id_pp'         => 'required',
-            'status_lpp'    => 'required',
+            'id_pengajuan_proyek'                       => 'required',
+            'status_laporan_pengajuan_proyek'            => 'required'
         ];
-
     
         if(!$this->validate($rules))
         {
@@ -237,47 +181,20 @@ class LapPp extends Controller
         }
 
         $insertData = [
-            'id_lpp'        => (double)$this->request->getPost('id_lpp'),
-            'id_pp'         => (double)$this->request->getPost('id_pp'),
-            'status_lpp'    => (double)$this->request->getPost('status_lpp'),
+            'id_pengajuan_proyek'               => (double)$this->request->getPost('id_pengajuan_proyek'),
+            'status_laporan_pengajuan_proyek'   => (string)$this->request->getPost('status_laporan_pengajuan_proyek'),
         ];
-        $pengajuanModel = new LapPpModel;
+        $pengajuanModel = new PengajuanProyekModel;
         $pengajuanModel->save($insertData);
 
         $response['code']       = 200;
         $response['data']       = $insertData;
+        //$response['data'] = $insertData;
         $response['message']    = 'Update Success';
 
         return $this->response->setJson($response);
-    }
-
-    public function delete($id)
-    {
-        $response = [
-            'code'          => 0,
-            'message'       =>'',
-            'data'          => [],
-            'errors'        => []
-        ];
-
-        $find = (new LapPpModel)->find( $id );
         
-        if($find) {
-
-            (new LapPpModel)->delete($id);
-
-            $response = [
-                'code'      => 200,
-                'data'      => $find,
-                'message'   => 'Success',
-                'errors'    => []
-            ];
-
-        }
-
-        return $this->response->setJson($response);
     }
-
 
 
 }

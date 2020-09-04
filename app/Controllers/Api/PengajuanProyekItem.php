@@ -172,7 +172,9 @@ class PengajuanProyekItem extends Controller
         $item_dipakai   = $item->getRow();
         $item_rows      = count($item->getResult());
 
-        if($item_rows > 0)
+        //var_dump($item_dipakai);
+
+        if($item_rows > 0 && $item_dipakai->total_qty && $item_dipakai->total_price)
         {
 
             $errors['num_rows'] = 'Item sudah ada';

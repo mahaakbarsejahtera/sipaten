@@ -184,7 +184,7 @@
                                         href="javascript:void(0)"  
                                         data-toggle="table-action"  
                                         data-action="lihat-laporan" 
-                                        data-id_pp="${v.id_pengajuan_proyek}" data-id_lpp="${v.id_lpp}">
+                                        data-id="${v.id_pengajuan_proyek}">
                                             <span>Lihat Laporan</span>
                                     </a>
                   
@@ -196,6 +196,7 @@
 
                     tableData.find('tbody').html(html);
                     $('#pagination-wrapper').html(response.data.pagination);
+                    
                 },
                 error: function(err) {
                     console.log('operasonal', err);
@@ -272,48 +273,10 @@
 
                 case 'lihat-laporan':
 
-                    let idPp = btn.data('id_pp');
-                    let idLpp = btn.data('id_lpp');
+                    let idPengajuanProyek = btn.data('id');
 
-                    console.log(' lihat laporan ', { 
-                        id_pp: idPp,
-                        id_lpp: idLpp,
-                    })
-
-                    if(idLpp) {
+                    LaporanPengajuanProyek
                     
-
-
-                    }
-                    else {
-
-                        let data = {
-                            id_pp: idPp,
-                            status_lpp: 'Pending'
-                        }
-                        
-                        LaporanPengajuanProyek
-                            .add(data) 
-                            .then(afterCreate => {
-                                console.log('afterCreate', afterCreate)
-                                
-                                PengajuanProyek
-                                    .items({
-                                        no_limit: true,
-                                        filters: [
-                                            { key: 'id_pengajuan_proyek', value: idPp }
-                                        ]
-                                    })
-                                    .then( items => {
-                                        
-                                        console.log('get pengajuan protek items', items);
-                                    
-                                    })
-
-
-                            })
-
-                    }
 
                     $('#modal-pengajuan').modal('show');
 

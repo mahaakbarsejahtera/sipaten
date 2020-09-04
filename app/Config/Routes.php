@@ -230,15 +230,26 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 	$routes->post('pengajuan-internal-item/destroy', 'PengajuanInternalItem::destroy');
 
 	$routes->group('laporan', function($routes){
-		// Pengajuan Internal Item
-		$routes->get('pengajuan-proyek', 'LapPp::index');
-		$routes->get('pengajuan-proyek/show/(:num)', 'LapPp::show/$1');
+		// Pengajuan Proyek
+		$routes->get('pengajuan-proyek', 'LaporanPengajuanProyek::index');
+		$routes->get('pengajuan-proyek/show/(:num)', 'LaporanPengajuanProyek::show/$1');
 
-		$routes->post('pengajuan-proyek', 'LapPp::store');
-		$routes->post('pengajuan-proyek/update', 'LapPp::update');
+		$routes->post('pengajuan-proyek', 'LaporanPengajuanProyek::store');
+		$routes->post('pengajuan-proyek/update', 'LaporanPengajuanProyek::update');
 
-		$routes->post('pengajuan-proyek/(:num)/delete', 'LapPp::delete/$1');
-		$routes->post('pengajuan-proyek/destroy', 'LapPp::destroy');
+		$routes->post('pengajuan-proyek/(:num)/delete', 'LaporanPengajuanProyek::delete/$1');
+		$routes->post('pengajuan-proyek/destroy', 'LaporanPengajuanProyek::destroy');
+
+		
+		// Pengajuan Proyek Item
+		$routes->get('pengajuan-proyek-item', 'LaporanPengajuanProyekItem::index');
+		$routes->get('pengajuan-proyek-item/show/(:num)', 'LaporanPengajuanProyekItem::show/$1');
+
+		$routes->post('pengajuan-proyek-item', 'LaporanPengajuanProyekItem::store');
+		$routes->post('pengajuan-proyek-item/update', 'LaporanPengajuanProyekItem::update');
+
+		$routes->post('pengajuan-proyek-item/(:num)/delete', 'LaporanPengajuanProyekItem::delete/$1');
+		$routes->post('pengajuan-proyek-item/destroy', 'LaporanPengajuanProyekItem::destroy');
 
 	});
 	
