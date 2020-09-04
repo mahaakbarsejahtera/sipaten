@@ -46,24 +46,22 @@ CREATE TABLE IF NOT EXISTS `anggaran_item` (
   `anggaran_price` double DEFAULT NULL,
   `anggaran_keterangan` text,
   PRIMARY KEY (`id_anggaran_item`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 -- Membuang data untuk tabel internal_pt_maha.anggaran_item: ~13 rows (lebih kurang)
 /*!40000 ALTER TABLE `anggaran_item` DISABLE KEYS */;
 INSERT IGNORE INTO `anggaran_item` (`id_anggaran_item`, `id_anggaran`, `jenis_anggaran`, `anggaran_item`, `anggaran_qty`, `anggaran_unit`, `anggaran_price`, `anggaran_keterangan`) VALUES
-	(1, 1, 'boq', 'item 1', 1, 'pc', 30, NULL),
+	(1, 1, 'boq', 'item 1', 1, 'pc', 50000, NULL),
 	(2, 1, 'boq', 'item 2', 1, 'pc', 3000000, NULL),
-	(4, 1, 'teknik', 'Item 1', 1, 'pc', 30, NULL),
-	(8, 1, 'pemasaran', 'item 1', 30, 'pc', 30, NULL),
-	(9, 1, 'keuangan', 'item 2', 1, 'pc', 3, NULL),
-	(10, 1, 'proyek', 'item 2', 5, 'pc', 30000, NULL),
-	(11, 1, 'boq', 'item 5', 2, 'pc', 5000000, NULL),
-	(12, 1, 'teknik', 'item 2', 1, 'lot', 2, NULL),
-	(13, 1, 'pemasaran', 'item 2', 5, 'pc', 5, NULL),
-	(14, 1, 'keuangan', 'item 8', 8, 'pc', 4, NULL),
-	(15, 1, 'proyek', 'item 8', 5, 'roll', 50000, NULL),
-	(16, 1, 'boq', '', 0, '', 0, NULL),
-	(17, 1, 'boq', '', 0, '', 0, NULL);
+	(4, 1, 'teknik', 'Item 3', 1, 'pc', 30, NULL),
+	(8, 1, 'pemasaran', 'item 4', 30, 'pc', 30, NULL),
+	(9, 1, 'keuangan', 'item 5', 1, 'pc', 3, NULL),
+	(10, 1, 'proyek', 'item 6', 5, 'pc', 30000, NULL),
+	(11, 1, 'boq', 'item 7', 2, 'pc', 5000000, NULL),
+	(12, 1, 'teknik', 'item 8', 1, 'lot', 2, NULL),
+	(13, 1, 'pemasaran', 'item 9', 5, 'pc', 5, NULL),
+	(14, 1, 'keuangan', 'item 10', 8, 'pc', 4, NULL),
+	(15, 1, 'proyek', 'item 11', 5, 'roll', 50000, NULL);
 /*!40000 ALTER TABLE `anggaran_item` ENABLE KEYS */;
 
 -- membuang struktur untuk table internal_pt_maha.customers
@@ -219,9 +217,9 @@ CREATE TABLE IF NOT EXISTS `penanggung_jawab` (
   `sebagai_penanggung_jawab` varchar(50) DEFAULT '',
   `urutan_penanggung_jawab` int(3) DEFAULT '0',
   PRIMARY KEY (`id_penanggung_jawab`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
 
--- Membuang data untuk tabel internal_pt_maha.penanggung_jawab: ~42 rows (lebih kurang)
+-- Membuang data untuk tabel internal_pt_maha.penanggung_jawab: ~38 rows (lebih kurang)
 /*!40000 ALTER TABLE `penanggung_jawab` DISABLE KEYS */;
 INSERT IGNORE INTO `penanggung_jawab` (`id_penanggung_jawab`, `id_jenis_pengajuan`, `penanggung_jawab_user`, `sebagai_penanggung_jawab`, `urutan_penanggung_jawab`) VALUES
 	(1, 16, 6, 'Di Periksa', 0),
@@ -265,7 +263,8 @@ INSERT IGNORE INTO `penanggung_jawab` (`id_penanggung_jawab`, `id_jenis_pengajua
 	(42, 34, 6, 'Di Periksa', 2),
 	(43, 35, 5, 'Di Periksa', 1),
 	(44, 35, 6, 'Di Periksa', 2),
-	(45, 36, 5, 'Di Periksa', 1);
+	(45, 36, 5, 'Di Periksa', 1),
+	(46, 23, 7, 'Di Ketahui', 2);
 /*!40000 ALTER TABLE `penanggung_jawab` ENABLE KEYS */;
 
 -- membuang struktur untuk table internal_pt_maha.penawaran
@@ -314,7 +313,9 @@ CREATE TABLE IF NOT EXISTS `pengajuan_internal_item` (
   `pengajuan_internal_keterangan` text,
   `pengajuan_internal_unit` varchar(15) DEFAULT '',
   `pengajuan_internal_price` double DEFAULT '0',
-  PRIMARY KEY (`id_pengajuan_internal_item`)
+  PRIMARY KEY (`id_pengajuan_internal_item`),
+  KEY `FK_PENGJUAN_INTERNAL_ITEM` (`id_pengajuan_internal`),
+  CONSTRAINT `FK_PENGJUAN_INTERNAL_ITEM` FOREIGN KEY (`id_pengajuan_internal`) REFERENCES `pengajuan_internal` (`id_pengajuan_internal`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- Membuang data untuk tabel internal_pt_maha.pengajuan_internal_item: ~0 rows (lebih kurang)
@@ -346,35 +347,43 @@ CREATE TABLE IF NOT EXISTS `pengajuan_proyek` (
   `no_surat_pengajuan_proyek` varchar(50) DEFAULT '',
   `tanggal_pengajuan_proyek` date DEFAULT NULL,
   `due_date_pengajuan_proyek` date DEFAULT NULL,
+  `status_pengajuan_proyek` enum('Accepted','Revisi','Draft','Pending') DEFAULT 'Draft',
+  `status_laporan_pengajuan_proyek` enum('Accepted','Revisi','Draft','Pending') DEFAULT 'Pending',
   PRIMARY KEY (`id_pengajuan_proyek`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
--- Membuang data untuk tabel internal_pt_maha.pengajuan_proyek: ~1 rows (lebih kurang)
+-- Membuang data untuk tabel internal_pt_maha.pengajuan_proyek: ~4 rows (lebih kurang)
 /*!40000 ALTER TABLE `pengajuan_proyek` DISABLE KEYS */;
-INSERT IGNORE INTO `pengajuan_proyek` (`id_pengajuan_proyek`, `id_pengaju`, `id_anggaran`, `id_jenis_pengajuan`, `perihal_pengajuan_proyek`, `no_surat_pengajuan_proyek`, `tanggal_pengajuan_proyek`, `due_date_pengajuan_proyek`) VALUES
-	(9, 6, 1, 23, 'Perihal 1', '01/PBB/VIII/2020', '2020-08-28', '2020-09-11'),
-	(10, 6, 1, 24, 'Perihal 2', '01/PBBP/VIII/2020', '2020-08-28', '2020-09-11');
+INSERT IGNORE INTO `pengajuan_proyek` (`id_pengajuan_proyek`, `id_pengaju`, `id_anggaran`, `id_jenis_pengajuan`, `perihal_pengajuan_proyek`, `no_surat_pengajuan_proyek`, `tanggal_pengajuan_proyek`, `due_date_pengajuan_proyek`, `status_pengajuan_proyek`, `status_laporan_pengajuan_proyek`) VALUES
+	(17, 5, 1, 23, '', '01/OPP/IX/2020', '2020-09-03', '2020-09-17', 'Draft', 'Pending'),
+	(18, 5, 1, 23, '', '02/OPP/IX/2020', '2020-09-03', '2020-09-17', 'Draft', 'Pending'),
+	(19, 5, 1, 25, '', '01/ABP/IX/2020', '2020-09-03', '2020-09-17', 'Draft', 'Pending'),
+	(20, 5, 1, 25, '', '02/ABP/IX/2020', '2020-09-03', '2020-09-17', 'Draft', 'Pending');
 /*!40000 ALTER TABLE `pengajuan_proyek` ENABLE KEYS */;
 
 -- membuang struktur untuk table internal_pt_maha.pengajuan_proyek_item
 CREATE TABLE IF NOT EXISTS `pengajuan_proyek_item` (
   `id_pengajuan_proyek_item` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_pengajuan_proyek` bigint(20) NOT NULL DEFAULT '0',
+  `id_anggaran_item` bigint(20) NOT NULL DEFAULT '0',
   `pengajuan_proyek_name` varchar(100) DEFAULT '',
   `pengajuan_proyek_desc` text,
   `pengajuan_proyek_qty` float DEFAULT '0',
   `pengajuan_proyek_unit` varchar(15) DEFAULT '',
   `pengajuan_proyek_price` double DEFAULT '0',
   `pengajuan_proyek_keterangan` text,
-  PRIMARY KEY (`id_pengajuan_proyek_item`)
+  `pengajuan_proyek_actual_qty` float DEFAULT '0',
+  `pengajuan_proyek_actual_price` double DEFAULT '0',
+  PRIMARY KEY (`id_pengajuan_proyek_item`),
+  KEY `FK_pengajuan_proyek_item_pengajuan_proyek` (`id_pengajuan_proyek`),
+  CONSTRAINT `FK_pengajuan_proyek_item_pengajuan_proyek` FOREIGN KEY (`id_pengajuan_proyek`) REFERENCES `pengajuan_proyek` (`id_pengajuan_proyek`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- Membuang data untuk tabel internal_pt_maha.pengajuan_proyek_item: ~2 rows (lebih kurang)
 /*!40000 ALTER TABLE `pengajuan_proyek_item` DISABLE KEYS */;
-INSERT IGNORE INTO `pengajuan_proyek_item` (`id_pengajuan_proyek_item`, `id_pengajuan_proyek`, `pengajuan_proyek_name`, `pengajuan_proyek_desc`, `pengajuan_proyek_qty`, `pengajuan_proyek_unit`, `pengajuan_proyek_price`, `pengajuan_proyek_keterangan`) VALUES
-	(2, 9, 'Item2', 'ini item 2', 3, 'PC', 1000000, 'keterangan item 2'),
-	(3, 9, 'item 3', 'item 3', 5, 'PC', 30000, 'ini keterangan item 3'),
-	(4, 10, 'ITEM 1', '', 1, 'PC', 10000, '');
+INSERT IGNORE INTO `pengajuan_proyek_item` (`id_pengajuan_proyek_item`, `id_pengajuan_proyek`, `id_anggaran_item`, `pengajuan_proyek_name`, `pengajuan_proyek_desc`, `pengajuan_proyek_qty`, `pengajuan_proyek_unit`, `pengajuan_proyek_price`, `pengajuan_proyek_keterangan`, `pengajuan_proyek_actual_qty`, `pengajuan_proyek_actual_price`) VALUES
+	(3, 17, 1, '', '', 1, '', 50000, '', 0, 0),
+	(4, 17, 2, '', '', 1, '', 5000, '', 0, 0);
 /*!40000 ALTER TABLE `pengajuan_proyek_item` ENABLE KEYS */;
 
 -- membuang struktur untuk table internal_pt_maha.permintaan
@@ -386,7 +395,6 @@ CREATE TABLE IF NOT EXISTS `permintaan` (
   `nama_pekerjaan` varchar(100) DEFAULT '',
   `keterangan_pekerjaan` text,
   `no_survey` varchar(100) DEFAULT '',
-  `no_kontrak` varchar(100) DEFAULT '',
   `permintaan_status` varchar(15) DEFAULT '',
   `permintaan_sales` bigint(20) DEFAULT '0',
   `permintaan_lokasi_survey` text,
@@ -401,19 +409,23 @@ CREATE TABLE IF NOT EXISTS `permintaan` (
   `permintaan_nego_jabatan` varchar(100) DEFAULT '',
   `permintaan_nego` char(1) DEFAULT '',
   `permintaan_kontrak` char(1) DEFAULT '',
+  `no_kontrak` varchar(100) DEFAULT '',
+  `nama_kontrak` text,
+  `tgl_kontrak` date DEFAULT NULL,
+  `tgl_jatuh_tempo_kontrak` date DEFAULT NULL,
   PRIMARY KEY (`id_permintaan`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 -- Membuang data untuk tabel internal_pt_maha.permintaan: ~2 rows (lebih kurang)
 /*!40000 ALTER TABLE `permintaan` DISABLE KEYS */;
-INSERT IGNORE INTO `permintaan` (`id_permintaan`, `id_customer`, `id_pic`, `no_permintaan`, `nama_pekerjaan`, `keterangan_pekerjaan`, `no_survey`, `no_kontrak`, `permintaan_status`, `permintaan_sales`, `permintaan_lokasi_survey`, `permintaan_jadwal_survey`, `permintaan_approval`, `approve_by`, `date_create`, `permintaan_supervisi_status`, `permintaan_supervisi`, `permintaan_hasil_survey_status`, `permintaan_nego_nama`, `permintaan_nego_jabatan`, `permintaan_nego`, `permintaan_kontrak`) VALUES
-	(8, 4, 1, '', 'PEKERJAAN 1', 'WEW', '', '', 'Publish', 5, 'MEDAN', '2020-08-22', NULL, NULL, '2020-08-25', NULL, NULL, 'Accept', 'Draft', 'Draft', 'N', 'N'),
-	(9, 3, 0, '', 'Baru', 'Test', '', '', 'Publish', 6, 'Medan', '2020-08-18', NULL, NULL, '2020-08-25', 'Accept', 7, 'Accept', 'Draft', 'Draft', 'Y', 'Y');
+INSERT IGNORE INTO `permintaan` (`id_permintaan`, `id_customer`, `id_pic`, `no_permintaan`, `nama_pekerjaan`, `keterangan_pekerjaan`, `no_survey`, `permintaan_status`, `permintaan_sales`, `permintaan_lokasi_survey`, `permintaan_jadwal_survey`, `permintaan_approval`, `approve_by`, `date_create`, `permintaan_supervisi_status`, `permintaan_supervisi`, `permintaan_hasil_survey_status`, `permintaan_nego_nama`, `permintaan_nego_jabatan`, `permintaan_nego`, `permintaan_kontrak`, `no_kontrak`, `nama_kontrak`, `tgl_kontrak`, `tgl_jatuh_tempo_kontrak`) VALUES
+	(8, 4, 1, '', 'PEKERJAAN 1', 'WEW', '', 'Publish', 5, 'MEDAN', '2020-08-22', NULL, NULL, '2020-08-25', NULL, NULL, 'Accept', 'Draft', 'Draft', 'N', 'N', '', NULL, NULL, NULL),
+	(9, 3, 0, '', 'Baru', 'Test', '', 'Publish', 6, 'Medan', '2020-08-18', NULL, NULL, '2020-08-25', 'Accept', 7, 'Accept', 'Draft', 'Draft', 'Y', 'Y', '', NULL, NULL, NULL);
 /*!40000 ALTER TABLE `permintaan` ENABLE KEYS */;
 
 -- membuang struktur untuk table internal_pt_maha.permintaan_file
 CREATE TABLE IF NOT EXISTS `permintaan_file` (
-  `id_file` bigint(20) NOT NULL DEFAULT '0',
+  `id_file` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_permintaan` bigint(20) NOT NULL DEFAULT '0',
   `nama_file` varchar(50) DEFAULT NULL,
   `lokasi_file` text,
@@ -478,9 +490,9 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `role_desc` text NOT NULL,
   `role_cap` int(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_role`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
--- Membuang data untuk tabel internal_pt_maha.roles: ~7 rows (lebih kurang)
+-- Membuang data untuk tabel internal_pt_maha.roles: ~10 rows (lebih kurang)
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
 INSERT IGNORE INTO `roles` (`id_role`, `role_name`, `role_desc`, `role_cap`) VALUES
 	(1, 'Administrator', 'role dengan level tertinggi', 99),
@@ -490,8 +502,28 @@ INSERT IGNORE INTO `roles` (`id_role`, `role_name`, `role_desc`, `role_cap`) VAL
 	(17, 'Wew', 'Wew', 50),
 	(18, 'Direktur', 'direktur', 95),
 	(19, 'Manager Teknik', '', 90),
-	(20, 'Manager Keuangan', '', 90);
+	(20, 'Manager Keuangan', '', 90),
+	(21, 'Financial Audit', '', 90),
+	(22, 'Manager Pemasaran', '', 90);
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+
+-- membuang struktur untuk table internal_pt_maha.roles_pengajuan
+CREATE TABLE IF NOT EXISTS `roles_pengajuan` (
+  `id_role` bigint(20) DEFAULT '0',
+  `id_jenis_pengajuan` bigint(20) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Membuang data untuk tabel internal_pt_maha.roles_pengajuan: ~7 rows (lebih kurang)
+/*!40000 ALTER TABLE `roles_pengajuan` DISABLE KEYS */;
+INSERT IGNORE INTO `roles_pengajuan` (`id_role`, `id_jenis_pengajuan`) VALUES
+	(22, 23),
+	(22, 24),
+	(22, 25),
+	(22, 26),
+	(22, 28),
+	(21, 23),
+	(21, 25);
+/*!40000 ALTER TABLE `roles_pengajuan` ENABLE KEYS */;
 
 -- membuang struktur untuk table internal_pt_maha.survey
 CREATE TABLE IF NOT EXISTS `survey` (
@@ -540,25 +572,28 @@ CREATE TABLE IF NOT EXISTS `timeline_item` (
 CREATE TABLE IF NOT EXISTS `users` (
   `id_user` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_divisi` bigint(20) NOT NULL DEFAULT '0',
-  `user_role` bigint(20) DEFAULT NULL,
+  `user_role` bigint(20) DEFAULT '0',
   `user_code` varchar(10) NOT NULL DEFAULT '0',
-  `user_name` varchar(75) DEFAULT NULL,
-  `user_fullname` varchar(150) DEFAULT NULL,
-  `user_pass` char(32) DEFAULT NULL,
-  `user_email` varchar(150) DEFAULT NULL,
-  `user_status` varchar(15) DEFAULT NULL,
+  `user_name` varchar(75) DEFAULT '',
+  `user_fullname` varchar(150) DEFAULT '',
+  `user_pass` char(32) DEFAULT '',
+  `user_email` varchar(150) DEFAULT '',
+  `user_status` varchar(15) DEFAULT '',
   `user_image` text,
   `create_date` date DEFAULT NULL,
   `latest_update` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
--- Membuang data untuk tabel internal_pt_maha.users: ~3 rows (lebih kurang)
+-- Membuang data untuk tabel internal_pt_maha.users: ~5 rows (lebih kurang)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT IGNORE INTO `users` (`id_user`, `user_divisi`, `user_role`, `user_code`, `user_name`, `user_fullname`, `user_pass`, `user_email`, `user_status`, `user_image`, `create_date`, `latest_update`) VALUES
 	(5, 0, 1, '0', 'anonim1', 'anonim1', '3847820138564525205299f1f444c5ec', 'anonim1@gmail.com', 'Suspend', '1597212041_fd59edd9cab78e43edf9.png', NULL, NULL),
 	(6, 0, 14, '0', 'anonim2', 'Bambang Widjayanto', '126fbdc6ce3047fea1f8f6d65144e4fc', 'bambang@gmail.com', 'Active', '1597220648_71591cbb5668645eb80e.jpeg', NULL, NULL),
-	(7, 0, 16, '0', 'ibnu', 'ibnu', '126fbdc6ce3047fea1f8f6d65144e4fc', 'ibnu@gmail.com', 'Active', '1597473165_7b6332b5eca3d3a853c4.png', NULL, NULL);
+	(7, 0, 16, '0', 'ibnu', 'ibnu', '126fbdc6ce3047fea1f8f6d65144e4fc', 'ibnu@gmail.com', 'Active', '1597473165_7b6332b5eca3d3a853c4.png', NULL, NULL),
+	(8, 0, 21, '', 'furizal', 'Rizal', '126fbdc6ce3047fea1f8f6d65144e4fc', 'furizal@gmail.com', 'Active', NULL, NULL, NULL),
+	(9, 0, 18, '', 'hazridir', 'Hazri', '126fbdc6ce3047fea1f8f6d65144e4fc', 'hazridir@gmail.com', 'Active', NULL, NULL, NULL),
+	(10, 0, 19, '', 'rizalmt', 'Rizal MT', '126fbdc6ce3047fea1f8f6d65144e4fc', 'rizalmt@gmail.com', 'Active', NULL, NULL, NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
