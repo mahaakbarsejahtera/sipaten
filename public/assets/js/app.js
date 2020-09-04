@@ -210,4 +210,190 @@ function getNoPenawaran() {
     })
 }
 
+ 
+let SelectOptions = {
+    html: '',
+    addOption: function(id, text) { 
+
+        SelectOptions.html += `<option value='${id}'>${text}</option>`;
+
+    },
+    getOption: function() { 
+        return SelectOptions.html;
+    }
+}
+
+
+
+let LaporanPengajuanProyek = {
+
+    get: function(id) 
+    { 
+
+        return $.ajax({ 
+            method: 'GET',
+            url: `${baseUrl}/api/laporan/pengajuan-proyek/show` + id,
+        })
+
+    },
+
+    add: function( data ) 
+    {
+        return $.ajax({
+            url: `${baseUrl}/api/laporan/pengajuan-proyek`,
+            method: 'POST',
+            data: data,
+        })
+    },
+
+    update: function( data )
+    { 
+
+        return $.ajax({
+            url: `${baseUrl}/api/laporan/pengajuan-proyek/update`,
+            method: 'POST',
+            data: data,
+        })
+
+    }, 
+
+    delete: function( id )
+    { 
+
+        return $.ajax({
+            method: 'POST',
+            url: `${baseUrl}/api/laporan/pengajuan-proyek/${id}/delete`
+        })
+
+    },
+
+    addItem: function(data) {
+
+
+        return $.ajax({
+            method: 'POST',
+            url: `${baseUrl}/api/laporan/pengajuan-proyek-item/`,
+            data: data
+        })
+
+    },
+
+    updateItem: function(data) {
+
+
+        return $.ajax({
+            method: 'POST',
+            url: `${baseUrl}/api/laporan/pengajuan-proyek-item/`,
+            data: data
+        })
+
+    },
+
+    deleteItem: function(id) {
+        return $.ajax({
+            method: 'POST',
+            url: `${baseUrl}/api/laporan/pengajuan-proyek-item/${id}/delete`
+        })
+    },
+
+    getItem: function( id ) {
+        return $.ajax({
+            url: `${baseUrl}/api/laporan/pengajuan-proyek-item/show/${id}`
+        })
+    },
+
+    items: function(data = {}) {
+        return $.ajax({
+            url: `${baseUrl}/api/laporan/pengajuan-proyek-item`,
+            data: data
+        })
+    }
+
+}
+
+let PengajuanProyek = {
+
+    get: function(id) 
+    { 
+
+        return $.ajax({ 
+            method: 'GET',
+            url: `${baseUrl}/api/pengajuan-proyek/show` + id,
+        })
+
+    },
+
+    add: function( data ) 
+    {
+        return $.ajax({
+            url: `${baseUrl}/api/pengajuan-proyek`,
+            method: 'POST',
+            data: data,
+        })
+    },
+
+    update: function( data )
+    { 
+
+        return $.ajax({
+            url: `${baseUrl}/api/pengajuan-proyek/update`,
+            method: 'POST',
+            data: data,
+        })
+
+    }, 
+
+    delete: function( id )
+    { 
+
+        return $.ajax({
+            method: 'POST',
+            url: `${baseUrl}/api/pengajuan-proyek/${id}/delete`
+        })
+
+    },
+
+    addItem: function(data) {
+
+
+        return $.ajax({
+            method: 'POST',
+            url: `${baseUrl}/api/pengajuan-proyek-item/`,
+            data: data
+        })
+
+    },
+
+    updateItem: function(data) {
+
+
+        return $.ajax({
+            method: 'POST',
+            url: `${baseUrl}/api/pengajuan-proyek-item/`,
+            data: data
+        })
+
+    },
+
+    deleteItem: function(id) {
+        return $.ajax({
+            method: 'POST',
+            url: `${baseUrl}/api/pengajuan-proyek-item/${id}/delete`
+        })
+    },
+
+    getItem: function( id ) {
+        return $.ajax({
+            url: `${baseUrl}/api/pengajuan-proyek-item/show/${id}`
+        })
+    },
+
+    items: function(data = {}) {
+        return $.ajax({
+            url: `${baseUrl}/api/pengajuan-proyek-item`,
+            data: data
+        })
+    }
+
+}
 

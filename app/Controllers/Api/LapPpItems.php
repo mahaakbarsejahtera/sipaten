@@ -5,7 +5,7 @@ namespace App\Controllers\Api;
 use App\Models\PengajuanProyekItemModel;
 use CodeIgniter\Controller;
 
-class PengajuanProyekItem extends Controller
+class LapPpItems extends Controller
 {
 
     public function show( $id ) 
@@ -101,12 +101,13 @@ class PengajuanProyekItem extends Controller
         {
 
             $data[] = $list;
-
+            
         }
 
 
 
         $response['data']['lists'] = $data;
+        $response['data']['pagination'] = $pager->links('group1', 'bootstrap_pagination');
         
 
         return $this->response->setJson($response);

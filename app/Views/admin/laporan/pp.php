@@ -68,139 +68,27 @@
 
     <!-- BOQ Modal -->
     <div class="modal fade" id="modal-pengajuan" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-dialog" role="document" style="max-width: 95%;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Operasional</h5>
+                    <h5 class="modal-title">Form Laporan Pengajuan</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    
-                    <form action="" id="form-pengajuan">
-                        <input type="hidden" name="truth_action" id="i-truth_action" value="">
-                        <input type="hidden" name="id_pengajuan_proyek" id="i-id_pengajuan_proyek">
-                        <input type="hidden" name="_method" value="POST">
-                     
-                        <div class="row">
-                            <div class="col-12 col-md-8">
-                                
-                                <div class="form-group">
-                                    <label for="i-id_pengaju">Pengaju</label>
-                                    <select name="id_pengaju" id="i-id_pengaju" class="form-control">
-                                        <option value="">Pilih</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="i-id_jenis_pengajuan">Jenis Pengajuan</label>
-                                    <select name="id_jenis_pengajuan" id="i-id_jenis_pengajuan" class="form-control">
-                                        <option value="">Pilih</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="i-no_surat_pengajuan_proyek">No Surat</label>
-                                    <input type="text" name="no_surat_pengajuan_proyek" id="i-no_surat_pengajuan_proyek" class="form-control" disabled>
-                                </div>
-                                
-
-                                <div class="form-group">
-                                    <label for="i-id_anggaran">Perihal</label>
-                                    <select name="id_anggaran" id="i-id_anggaran" class="form-control">
-                                        <option value="">Pilih</option>
-                                    </select>
-                                </div>
-
-                                <!-- <div class="form-group">
-                                    <label for="i-perihal_pengajuan_proyek">Perihal</label>
-                                    <input type="text" name="perihal_pengajuan_proyek" id="i-perihal_pengajuan_proyek" value="" class="form-control">
-                                </div> -->
-                            </div>  
-
-                            <?php $current_date = date('Y-m-d'); ?>
-                            <div class="col-12 col-md-4">
-                                <div class="form-group">
-                                    <label for="i-tanggal_pengajuan_proyek">Tanggal Pengajuan</label>
-                                    <input type="date" name="tanggal_pengajuan_proyek" id="i-tanggal_pengajuan_proyek" value="<?php echo $current_date ?>" class="form-control">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="i-due_date_pengajuan_proyek">Due Date Pengajuan</label>
-
-                                    <input type="date" name="due_date_pengajuan_proyek" id="i-due_date_pengajuan_proyek" value="<?php echo date('Y-m-d', strtotime("{$current_date} + 14 days")) ?>" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-
-                        <button class="btn btn-primary" id="js-save-pengajuan">Simpan Pengajuan</button>
-                        
-                    </form>
-
-                    <hr>
-                    
-                    <div id="js-operasional-item" class="collapse">
-                        <form action="" id="form-operasional-item">
-                            <input type="hidden" name="id_pengajuan_proyek_item" id="i-id_pengajuan_proyek_item">
-                            <div class="row">
-                                <div class="col-12 col-md-8">
-
-                                    <div class="form-group">
-                                        <label for="i-id_anggaran_item">Nama</label>
-                                        <!-- <input type="text" name="pengajuan_proyek_name" class="form-control" id="i-pengajuan_proyek_name"> -->
-                                        <select name="id_anggaran_item" id="i-id_anggaran_item" class="form-control"></select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="i-pengajuan_proyek_desc">Deskripsi</label>
-                                        <textarea name="pengajuan_proyek_desc" class="form-control" rows="5" id="i-pengajuan_proyek_desc"></textarea>
-                                    </div>
-
-
-                                </div>
-                                <div class="col-12 col-md-4">
-
-                                    <div class="form-row">
-                                        <div class="form-group col-12 col-md-4">
-                                            <label for="i-pengajuan_proyek_qty">Qty</label>
-                                            <input type="text" name="pengajuan_proyek_qty" class="form-control" id="i-pengajuan_proyek_qty">
-                                        </div>
-
-                                        <div class="form-group col-12 col-md-8">
-                                            <label for="i-pengajuan_proyek_price">Harga</label>
-                                            <input type="text" name="pengajuan_proyek_price" class="form-control" id="i-pengajuan_proyek_price">
-                                        </div>
-
-                                        <!-- <div class="form-group col-6">
-                                            <label for="i-pengajuan_proyek_unit">Satuan</label>
-                                            <input type="text" name="pengajuan_proyek_unit" class="form-control" id="i-pengajuan_proyek_unit">
-                                        </div> -->
-                                    </div>
-
-                                    <button class="btn btn-primary" id="js-add-pengajuan-item">Simpan Item</button>
-                                    <button class="btn btn-warning" id="js-clear-pengajuan-item">Cancel</button>
-
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="i-pengajuan_proyek_keterangan">Keterangan</label>
-                                <textarea name="pengajuan_proyek_keterangan" class="form-control" rows="5" id="i-pengajuan_proyek_keterangan"></textarea>
-                            </div>
-                        </form>
-
+           
+                    <div id="js-laporan-pp-item">
                         <div class="">
                             <div class="table table-responsive">
                                 <table class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th rowspan="2" class="text-center align-middle">Nama</th>
-                                            <th rowspan="2" class="text-center align-middle">Qty</th>
-                                            <th rowspan="2" class="text-center align-middle">Harga</th>
-                                            <th colspan="2" class="text-center">Total</th>
-                                            <th colspan="2" class="text-center">Keterangan</th>
-                                            <th>Aksi</th>
+                                            <th width="200" class="text-center align-middle">Nama</th>
+                                            <th width="20" class="text-center align-middle">Qty</th>
+                                            <th width="100" class="text-center align-middle">Harga</th>
+                                            <th width="100" class="text-center">Total</th>
+                                            <th width="100" class="text-center">Keterangan</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -267,7 +155,7 @@
             `);
 
             $.ajax({
-                url: "<?php echo base_url('/api/pengajuan-proyek') ?>",
+                url: `${baseUrl}/api/laporan/pengajuan-proyek`,
                 data: data,
                 success: function(response) {
                     console.log('load data', response);
@@ -291,11 +179,14 @@
                                     <div>${v.pengaju.user_fullname}</div>
                                 </td>
                                 <td>
-                                    <span class="${parseFloat(v.total_nilai_pengajuan) > parseFloat(v.total_anggaran) ? 'text-danger' : 'text-success'} ">${Rp(v.total_nilai_pengajuan)}</span> / ${Rp(v.total_anggaran)}
-                                </td>
-                                <td>
 
-                                    <a href="javascript:void(0)"  data-toggle="table-action"  data-action="lihat-laporan" data-id="${v.id_pengajuan_proyek}">Lihat Laporan</a>
+                                    <a 
+                                        href="javascript:void(0)"  
+                                        data-toggle="table-action"  
+                                        data-action="lihat-laporan" 
+                                        data-id_pp="${v.id_pengajuan_proyek}" data-id_lpp="${v.id_lpp}">
+                                            <span>Lihat Laporan</span>
+                                    </a>
                   
                                 </td>
                             </tr>
@@ -312,284 +203,9 @@
             })
 
         }
-
-        // <a href="javascript:void(0)" class="btn btn-warning mb-2" title="Edit Pengajuan" data-toggle="table-action" data-action="edit" data-id="${v.id_pengajuan_proyek}" data-permintaan="${v.id_permintaan}">
-        //     <span class="fas fa-edit"></span>
-        // </a>
-        
-        // <a href="javascript:void(0)" class="btn btn-danger mb-2" title="Hapus Pengajuan" data-toggle="table-action"  data-action="delete" data-id="${v.id_pengajuan_proyek}">
-        //     <span class="fas fa-trash"></span>
-        // </a>
-
-    
-        getAnggaran()
-        .then(response => {
-            console.log('getPermintaan');
-            let html = '<option value="">Pilih</option>';
-
-            response.data.lists.map((v, i) => {
-                html += `<option value="${v.id_anggaran}">${v.nama_pekerjaan}</option>`;
-            })
-
-            $('#i-id_anggaran').html(html);
-            $('#i-id_anggaran').select2({
-                themes: 'bootstrap'
-            });
-
-        }).catch(err => {
-            console.log(err);
-        });
-
-        
-
-        getJenisPengajuan()
-        .then(response => {
-            console.log('getJenisPengajuan', response);
-            let html = '<option value="">Pilih</option>';
-
-            response.data.lists.map((v, i) => {
-                html += `<option value="${v.id_jenis_pengajuan}">${v.kode_jenis_pengajuan} - ${v.nama_jenis_pengajuan}</option>`;
-            })
-
-            $('#i-id_jenis_pengajuan').html(html);
-
-        }).catch(err => {
-            console.log(err);
-        });
-
-        getPengaju()
-        .then(response => {
-            console.log('getJenisPengajuan', response);
-            let html = '<option value="">Pilih</option>';
-
-            response.data.lists.map((v, i) => {
-                html += `<option value="${v.id_user}">${v.user_fullname} - ${v.role_name}</option>`;
-            })
-
-            $('#i-id_pengaju').html(html);
-
-        }).catch(err => {
-            console.log(err);
-        });
-
-        
-
-        function getAnggaran(data = {}) {
-
-            return $.ajax({
-                url: `${baseUrl}/api/anggaran?page_group1=-1`,
-                data: data
-            })
-
-        }
-
-        function getAnggaranItem(data = {}) {
-            return $.ajax({
-                url: `${baseUrl}/api/anggaran-item`,
-                data: data,
-            }) 
-        }
-
-        function getJenisPengajuan() {
-            return $.ajax({
-                url: `${baseUrl}/api/jenis-pengajuan?page_group1=-1`,
-            })
-        }
-
-        function getPengaju(data = {}) {
-
-            return $.ajax({
-                url: `${baseUrl}/api/users?page_group1=-1`,
-                data: data
-            })
-
-        }
-
-        function addData() {
-
-            let form = $('#form-pengajuan');
-            let data = form.serialize();
-
-            
-            console.log('add data', data);
-
-            // /return false;
-            /** let data = {
-                id_permintaan: $('#i-id_permintaan').val(),
-                nego_term: tinyMCE.activeEditor.getContent(),
-                nego_pic_nama: $('#i-nego_pic_nama').val(),
-                nego_pic_jabatan: $('#i-nego_pic_jabatan').val(),
-                nego_tgl_surat: $('#i-nego_tgl_surat').val(),
-                nego_lokasi: $('#i-nego_lokasi').val(),
-                nego_no: $('#i-nego_no').val()
-            } **/ 
-
-            return $.ajax({
-                method: 'POST',
-                url: `${baseUrl}/api/pengajuan-proyek`,
-                data: data, 
-                success: function(response) {
-                    console.log('success response add', response);
-                    switch(response.code) {
-
-                        case 200: 
-                            Toast('success', 'Berhasil menambahkan data');
-                            loadData();
-                        break;
-
-                        case 400:
-                            Toast('error', response.message);
-                            break;
-
-                    }
-                    
-                }, 
-                error: function(response) {
-                    Toast('error', 'Something Wrong!!!');
-                }
-            })
-
-        }
-
-        function updateData() {
-            
-            
-            let form = $('#form-pengajuan');
-            let data = form.serialize();
-
-            console.log('update data', data);
-            /** let data = {
-                id_nego: $('#i-id_nego').val(),
-                id_permintaan: $('#i-id_permintaan').val(),
-                nego_term: tinyMCE.activeEditor.getContent(),
-                nego_pic_nama: $('#i-nego_pic_nama').val(),
-                nego_pic_jabatan: $('#i-nego_pic_jabatan').val(),
-                nego_no: $('#i-nego_no').val(),
-                nego_tgl_surat: $('#i-nego_tgl_surat').val(),
-                nego_lokasi: $('#i-nego_lokasi').val(),
-            } **/
-
-            return $.ajax({
-                method: 'POST',
-                url: "<?php echo base_url('/api/pengajuan-proyek/update') ?>",
-                data: data, 
-                success: function(response) {
-                    console.log('success response add', response);
-
-                    switch(response.code) {
-
-                        case 200: 
-                            Toast('success', 'Berhasil memperbaharui data');
-                            loadData();
-                        break;
-
-                        case 400:
-                            Toast('error', response.message);
-                            break;
-                    }
-                    
-                }, 
-                error: function(response) {
-                    console.log(response)
-                    Toast('error', 'Something Wrong!!!');
-                }
-            })
-        }
-        
-        function getData( id ) {
-            return $.ajax({
-                url: `${baseUrl}/api/pengajuan-proyek/show/${id}`,
-                success: function(response) {
-                    truthAction.val('update');
-
-                    for(data in response.data) {
-                        
-                        if(data == 'nego_term') {
-                            tinymce.activeEditor.setContent(response.data[data]);
-                        }else {
-                            $('#i-' + data).val(response.data[data]);
-                        }
-                        
-
-                    }
-
-                    loadPengajuanProyekItem({
-                        filters: [
-                            { key: 'id_pengajuan_proyek', value: response.data.id_pengajuan_proyek }
-                        ]
-                    })
-                    .then(results => {
-                        
-                        let tbody = $('#js-operasional-item').find('tbody');
-                        tbody.html('');
-                        results.data.lists.map((v, i) => {
-                            tbody.append(createRowPengajuanItem(v));
-                        })
-                    })
-                    .then(() => {
-
-                        getAnggaranItem({
-                            no_limit: true,
-                            filters: [
-                                { key: 'id_anggaran', value: $('#i-id_anggaran').val() }
-                            ]
-                        })
-                        .then(anggaranItems => {
-                            console.log('anggaran items', anggaranItems);
-                            let options = "<option value=''>Pilih</option>";
-                            anggaranItems.data.lists.map((v,i) => {
-                                options += `<option value="${v.id_anggaran_item}">${v.anggaran_item} - Tersisa (${v.sisa_qty} ${v.anggaran_unit}) - Anggaran (${Rp(v.sisa_price)})</option>`;
-                            })
-                            $('#i-id_anggaran_item').html(options);
-                            $('#i-id_anggaran_item').select2();
-                        })
-
-                    })
-
-
-
-                    $('#js-operasional-item').collapse('show');
-                    
-                    $('#pengajuan-modal').modal('show');
-                }
-            })
-
-        }
-
-        function deleteData( id ) {
-            return $.ajax({
-                method: 'POST',
-                url: `${baseUrl}/api/pengajuan-proyek/${id}/delete`,
-                success: function(response) {
-                    switch(response.code) {
-                        case 200:
-                            Toast('success', 'Data berhasil dihapus');
-                            loadData();
-                            break;
-
-                        case 400:
-                            Toast('warning', response.message);
-                            break;
-                    }
-                },
-                error: function(response) {
-                    Toast('error','Something Wrong!!');
-                }
-            })
-        }
-
-        function saveData() {
-
-            if(truthAction.val() == 'update') return updateData();
-            
-            return addData();
-
-        }
-
       
         function clearForm() {
             $('#form-pengajuan')[0].reset();
-            //$('#form-estimasi').find('tbody').html('');
             $('#i-id_permintaan').attr('disabled', false);
             $('#i-id_nego').val('');
             $('#i-truth_action').val('');
@@ -635,10 +251,6 @@
                         for(d in response.data) {
                             $('#i-' . d).val(response.data[d]);
                         }
-
-                        // $('#i-id_permintaan').val(data.data.id_permintaan);
-                        // $('#i-id_permintaan').attr('disabled', true);
-
                         $('#modal-pengajuan').modal('show');
                         
                     });
@@ -660,7 +272,50 @@
 
                 case 'lihat-laporan':
 
+                    let idPp = btn.data('id_pp');
+                    let idLpp = btn.data('id_lpp');
 
+                    console.log(' lihat laporan ', { 
+                        id_pp: idPp,
+                        id_lpp: idLpp,
+                    })
+
+                    if(idLpp) {
+                    
+
+
+                    }
+                    else {
+
+                        let data = {
+                            id_pp: idPp,
+                            status_lpp: 'Pending'
+                        }
+                        
+                        LaporanPengajuanProyek
+                            .add(data) 
+                            .then(afterCreate => {
+                                console.log('afterCreate', afterCreate)
+                                
+                                PengajuanProyek
+                                    .items({
+                                        no_limit: true,
+                                        filters: [
+                                            { key: 'id_pengajuan_proyek', value: idPp }
+                                        ]
+                                    })
+                                    .then( items => {
+                                        
+                                        console.log('get pengajuan protek items', items);
+                                    
+                                    })
+
+
+                            })
+
+                    }
+
+                    $('#modal-pengajuan').modal('show');
 
                     break;
                 
@@ -752,229 +407,6 @@
             .catch(err => console.log('afterSaveErr', err));
 
         })
- 
-        function createRowPengajuanItem(data) {
-
-            let stringfy = JSON.stringify(data);
-
-            html = `<tr>
-                <td class="text-left align-middle">
-                    <div class="font-weight-bold">${data.anggaran_item}</div>
-                    <div><pre class="p-0 m-0">${data.pengajuan_proyek_desc}</pre></div>
-                </td>
-                <td class="text-center align-middle">${data.pengajuan_proyek_qty} ${data.anggaran_unit}</td>
-                <td class="text-right align-middle">${Rp(data.pengajuan_proyek_price)}</td>
-                <td colspan="2" class="text-right align-middle">${Rp(data.pengajuan_proyek_qty * data.pengajuan_proyek_price)}</td>
-                <td colspan="2" class="text-left align-middle">${data.pengajuan_proyek_keterangan}</td>
-                <td width="150">
-                    <a href="javascript:void(0)" 
-                        class="btn btn-warning js-proyek-item-edit" 
-                        data-id="${data.id_pengajuan_proyek}"
-                        data-item='${JSON.stringify(data)}'>
-                        <span class="fas fa-edit"></span>
-                    </a>
-                    <a 
-                        href="javascript:void(0)" 
-                        class="btn btn-danger js-proyek-item-delete" 
-                        data-id="${data.id_pengajuan_proyek_item}"
-                        data-item="">
-                        <span class="fas fa-trash"></span>
-                    </a>
-                </td>
-            </tr>`;
-            return html;
-        }
-
-        $('#js-add-pengajuan-item').click(function(e){
-            e.preventDefault();
-            let idPengajuanProyekItem   = $('#i-id_pengajuan_proyek_item').val();
-            let idPengajuanProyek       =  $('#i-id_pengajuan_proyek').val();
-            let data = $('#form-operasional-item').serialize();
-            data += "&id_pengajuan_proyek=" + idPengajuanProyek;
-
-
-            //return false;
-            
-            let tbody = $('#js-operasional-item').find('tbody');
-
-            if(idPengajuanProyekItem) 
-            {
-                
-                data += "&id_pengajuan_proyek_item=" + idPengajuanProyekItem;
-                
-                updatePengajuanProyekItem(data)
-                .then(response => {
-                    
-                    console.log('update pengajuan proyek item', response)
-
-                    switch(response.code) {
-                        case 200:
-                            Toast('success', 'Item berhasil di tambahkan');
-
-                            loadPengajuanProyekItem({
-                                filters: [
-                                    { key: 'id_pengajuan_proyek', value: response.data['id_pengajuan_proyek'] }
-                                ]
-                            })
-                            .then(results => {
-                                
-                                let tbody = $('#js-operasional-item').find('tbody');
-                                tbody.html('');
-                                results.data.lists.map((v, i) => {
-                                    tbody.append(createRowPengajuanItem(v));
-                                })
-                            })
-
-                            
-                            $('#i-id_pengajuan_proyek_item').val('');
-                            $('#i-id_anggaran_item').val('');
-                            $('#i-id_anggaran_item').trigger('change');
-                            $('#i-pengajuan_proyek_desc').val('');
-                            $('#i-pengajuan_proyek_qty').val('');
-                            $('#i-pengajuan_proyek_unit').val('');
-                            $('#i-pengajuan_proyek_price').val('');
-                            $('#i-pengajuan_proyek_keterangan').val('');
-                            
-                            $('#i-id_anggaran_item').val(null).trigger('change');
-                            loadData();
-                            
-                            break;
-
-                        case 400: 
-                            
-                            for(err in response.errors) {
-                                Toast('warning', response.errors[err]);
-                            } 
-                            break;
-                    }
-                    
-
-
-
-                });
-            } else {
-                addPengajuanProyekItem(data)
-                .then(response => {
-                    
-                    console.log('add pengajuan proyek item', response)
-                    
-                    switch(response.code) {
-
-
-                        case 200:
-
-                            tbody.append(createRowPengajuanItem(response.data));
-                    
-                            Toast('success', 'Item berhasil di tambahkan');
-
-                            $('#i-id_pengajuan_proyek_item').val('');
-                            $('#i-id_anggaran_item').val('');
-                            $('#i-id_anggaran_item').trigger('change');
-                            $('#i-pengajuan_proyek_desc').val('');
-                            $('#i-pengajuan_proyek_qty').val('');
-                            $('#i-pengajuan_proyek_unit').val('');
-                            $('#i-pengajuan_proyek_price').val('');
-                            $('#i-pengajuan_proyek_keterangan').val('');
-
-                            $('#i-id_anggaran_item').val(null).trigger('change');
-                            loadData();
-
-
-                            break;
-
-
-                        case 400:
-
-                            for(err in response.errors) {
-                                Toast('warning', response.errors[err]);
-                            } 
-
-                            break;
-
-                    }
-                   
-                });
-            }
-
-            
-        })
-
-        $(document).on('click', '.js-proyek-item-edit', function(e){
-            e.preventDefault();
-            let btn = $(this);
-            let item = btn.data('item');
-
-            console.log('edit item', item);
-
-            $('#i-id_pengajuan_proyek_item').val(item.id_pengajuan_proyek_item);
-            $('#i-id_anggaran_item').val(item.id_anggaran_item);
-            $('#i-id_anggaran_item').trigger('change');
-            $('#i-pengajuan_proyek_desc').val(item.pengajuan_proyek_desc);
-            $('#i-pengajuan_proyek_qty').val(item.pengajuan_proyek_qty);
-            $('#i-pengajuan_proyek_unit').val(item.pengajuan_proyek_unit);
-            $('#i-pengajuan_proyek_price').val(item.pengajuan_proyek_price);
-            $('#i-pengajuan_proyek_keterangan').val(item.pengajuan_proyek_keterangan);
-
-        })
-
-
-        $(document).on('click', '.js-proyek-item-delete', function(e){
-            let id = $(this).data('id');
-
-            console.log('delete id', id);
-
-            let isDelete = confirm('Delete ???');
-
-            if(isDelete)
-            {
-
-                deletePengajuanItem(id)
-                .then(response => {
-                    console.log('pengajuan item', response);
-                    Toast('success', 'Item berhasil di hapus');
-                    $(this).parent().parent().remove();
-                })
-
-            }
-
-            
-        })
-
-        $('#js-clear-pengajuan-item').click(function(e){
-            e.preventDefault();
-            $('#form-operasional-item')[0].reset();
-            $('#i-id_pengajuan_proyek_item').val('');
-        })
-
-        function loadPengajuanProyekItem(data) {
-            return $.ajax({
-                url: `${baseUrl}/api/laporan/pengajuan-proyek-item`,
-                data: data
-            })
-        }
-
-        function addPengajuanProyekItem(data) {
-            return $.ajax({
-                method: 'POST',
-                url: `${baseUrl}/api/laporan/pengajuan-proyek-item`,
-                data: data, 
-            })
-        }
-
-        function updatePengajuanProyekItem(data) {
-            return $.ajax({
-                method: 'POST',
-                url: `${baseUrl}/api/laporan/pengajuan-proyek-item/update`,
-                data: data, 
-            })
-        }
-
-        function deletePengajuanItem(id) {
-            return $.ajax({
-                method: 'POST',
-                url: `${baseUrl}/api/laporan/pengajuan-proyek-item/${id}/delete`,
-            })
-        }
 
        
     })

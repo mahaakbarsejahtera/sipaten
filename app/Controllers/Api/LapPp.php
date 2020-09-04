@@ -21,13 +21,12 @@ class LapPp extends Controller
         ];
 
 
-
-        $find = (new LapPpModel)->builder()
+        $find = (new PengajuanProyekModel)->builder()
         ->select("
 
-            lap_pp.id_lpp,  lap_pp.status_lpp, lap_pp.id_pp, lap_pp.acc_date,
+            lap_pp.id_lpp, lap_pp.id_pp, lap_pp.status_lpp, lap_pp.id_pp, lap_pp.acc_date,
 
-            pengajuan_proyek.id_pengajuan_proyek, pengajuan_proyek.id_pengaju, pengajuan_proyek.id_anggaran,
+            pengajuan_proyek.id_pengaju, pengajuan_proyek.id_anggaran,
             pengajuan_proyek.id_jenis_pengajuan, pengajuan_proyek.perihal_pengajuan_proyek, pengajuan_proyek.no_surat_pengajuan_proyek,
             pengajuan_proyek.tanggal_pengajuan_proyek, pengajuan_proyek.due_date_pengajuan_proyek, 
 
@@ -36,7 +35,7 @@ class LapPp extends Controller
             permintaan.nama_pekerjaan
            
         ")
-        ->join('pengajuan_proyek', 'lap_pp.id_pp = pengajuan_proyek.id_pengajuan_proyek')
+        ->join('lap_pp', 'pengajuan_proyek.id_pengajuan_proyek = lap_pp.id_pp', 'left')
         ->join('anggaran', 'pengajuan_proyek.id_anggaran=anggaran.id_anggaran', 'left')
         ->join('permintaan', 'anggaran.id_permintaan = permintaan.id_permintaan', 'left')
         ->join('jenis_pengajuan', 'pengajuan_proyek.id_jenis_pengajuan=jenis_pengajuan.id_jenis_pengajuan','left')
@@ -65,7 +64,7 @@ class LapPp extends Controller
 
 
         
-        $pengajuanModel = new LapPpModel();
+        $pengajuanModel = new PengajuanProyekModel();
         $pengajuanModel->builder()
         ->select("
 
@@ -80,7 +79,7 @@ class LapPp extends Controller
             permintaan.nama_pekerjaan
            
         ")
-        ->join('pengajuan_proyek', 'lap_pp.id_pp = pengajuan_proyek.id_pengajuan_proyek')
+        ->join('lap_pp', 'pengajuan_proyek.id_pengajuan_proyek = lap_pp.id_pp', 'left')
         ->join('anggaran', 'pengajuan_proyek.id_anggaran=anggaran.id_anggaran', 'left')
         ->join('permintaan', 'anggaran.id_permintaan = permintaan.id_permintaan', 'left')
         ->join('jenis_pengajuan', 'pengajuan_proyek.id_jenis_pengajuan=jenis_pengajuan.id_jenis_pengajuan','left');
@@ -173,7 +172,7 @@ class LapPp extends Controller
         // Dinamis ikuti table
         $rules = [
             'id_pp'           => 'required',
-            'status_lpp'           => 'required',
+            'status_lpp'      => 'required',
 
         ];
 
@@ -192,7 +191,7 @@ class LapPp extends Controller
         // Dinamis ikuti table
         $insertData = [
             'id_pp'         => (int)$this->request->getPost('id_pp'),
-            'status_lpp'    => (int)$this->request->getPost('status_lpp'),
+            'status_lpp'    => (string)$this->request->getPost('status_lpp'),
         ];
 
         
