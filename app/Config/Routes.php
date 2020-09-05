@@ -234,11 +234,7 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 		$routes->get('pengajuan-proyek', 'LaporanPengajuanProyek::index');
 		$routes->get('pengajuan-proyek/show/(:num)', 'LaporanPengajuanProyek::show/$1');
 
-		$routes->post('pengajuan-proyek', 'LaporanPengajuanProyek::store');
 		$routes->post('pengajuan-proyek/update', 'LaporanPengajuanProyek::update');
-
-		$routes->post('pengajuan-proyek/(:num)/delete', 'LaporanPengajuanProyek::delete/$1');
-		$routes->post('pengajuan-proyek/destroy', 'LaporanPengajuanProyek::destroy');
 
 		
 		// Pengajuan Proyek Item

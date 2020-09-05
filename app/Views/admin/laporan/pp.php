@@ -83,6 +83,7 @@
 
 
                         <form action="" method="POST">
+                            <input type="hidden" name="id_pengajuan_proyek" id="i-id_pengajuan_proyek" value="">
                             <div class="form-row">
                                 <div class="form-group col-12 col-md-3">
                                     <label for="i-status_laporan_pengajuan_proyek">Status Laporan</label>
@@ -128,7 +129,7 @@
                                 </div>
                             </div>
 
-                            <button class="btn btn-primary">Simpan  Laporan</button>
+                            <button class="btn btn-primary" id="js-simpan-laporan">Simpan  Laporan</button>
                         </form>
                     </div>
 
@@ -309,6 +310,8 @@
                 case 'lihat-laporan':
 
                     let idPengajuanProyek = btn.data('id');
+                    
+                    $('#i-id_pengajuan_proyek').val(idPengajuanProyek);
 
                     LaporanPengajuanProyek.items({ 
                         no_limit: true,
@@ -373,7 +376,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td id="grandtotal-actual" class="text-right">${Rp(0)}</td>
+                                <th id="grandtotal-actual" class="text-right">${Rp(0)}</th>
                                 <td></td>
                             </tr>
 
@@ -521,6 +524,12 @@
 
         }
 
+        $('#js-simpan-laporan').click(function(e){
+            e.preventDefault();
+
+            
+
+        })
        
     })
 </script>
