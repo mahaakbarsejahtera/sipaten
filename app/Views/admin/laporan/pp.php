@@ -310,7 +310,7 @@
                 case 'lihat-laporan':
 
                     let idPengajuanProyek = btn.data('id');
-                    
+
                     $('#i-id_pengajuan_proyek').val(idPengajuanProyek);
 
                     LaporanPengajuanProyek.items({ 
@@ -527,7 +527,18 @@
         $('#js-simpan-laporan').click(function(e){
             e.preventDefault();
 
-            
+            let data = {
+                id_pengajuan_proyek: $('#i-id_pengajuan_proyek').val(),
+                status_laporan_pengajuan_proyek: $('#i-status_laporan_pengajuan_proyek').val()
+            }
+
+            LaporanPengajuanProyek
+                .update(data)
+                .then( afterUpdate => {
+
+                    console.log('afterUpdate', afterUpdate);
+
+                });
 
         })
        

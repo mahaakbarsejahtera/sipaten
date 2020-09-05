@@ -7,13 +7,14 @@ use CodeIgniter\Model;
 class PengajuanProyekModel extends Model
 {
     
-    protected $table = "pengajuan_proyek";
-    protected $primaryKey = "id_pengajuan_proyek";
+    protected $table        = "pengajuan_proyek";
+    protected $primaryKey   = "id_pengajuan_proyek";
     
     protected $allowedFields = [
         'id_anggaran', 'id_jenis_pengajuan', 'id_pengaju',
         'perihal_pengajuan_proyek', 'no_surat_pengajuan_proyek',
-        'tanggal_pengajuan_proyek', 'due_date_pengajuan_proyek' 
+        'tanggal_pengajuan_proyek', 'due_date_pengajuan_proyek',
+        'status_pengajuan_proyek', 'status_laporan_pengajuan_proyek'
     ];
 
     protected $orderby = [
@@ -27,6 +28,8 @@ class PengajuanProyekModel extends Model
         'id_anggaran'           => 'pengajuan_proyek.id_anggaran',
         'id_pengaju'            => 'pengajuan_proyek.id_pengaju',
         'id_jenis_pengajuan'    => 'pengajuan_proyek.id_jenis_pengajuan',
+        'status_pengajuan_proyek'            => 'pengajuan_proyek.status_pengajuan_proyek',
+        'status_laporan_pengajuan_proyek'    => 'pengajuan_proyek.status_laporan_pengajuan_proyek',
 
     ];
 
