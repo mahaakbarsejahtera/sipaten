@@ -348,7 +348,7 @@ CREATE TABLE IF NOT EXISTS `pengajuan_proyek` (
   `tanggal_pengajuan_proyek` date DEFAULT NULL,
   `due_date_pengajuan_proyek` date DEFAULT NULL,
   `status_pengajuan_proyek` enum('Accepted','Revisi','Draft','Pending') DEFAULT 'Draft',
-  `status_laporan_pengajuan_proyek` enum('Accepted','Revisi','Draft','Pending') DEFAULT 'Pending',
+  `status_laporan_pengajuan_proyek` enum('Accepted','Revisi','Draft','Pending','Reject') DEFAULT 'Pending',
   PRIMARY KEY (`id_pengajuan_proyek`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
@@ -374,6 +374,7 @@ CREATE TABLE IF NOT EXISTS `pengajuan_proyek_item` (
   `pengajuan_proyek_keterangan` text,
   `pengajuan_proyek_actual_qty` float DEFAULT '0',
   `pengajuan_proyek_actual_price` double DEFAULT '0',
+  `pengajuan_proyek_actual_keterangan` text,
   PRIMARY KEY (`id_pengajuan_proyek_item`),
   KEY `FK_pengajuan_proyek_item_pengajuan_proyek` (`id_pengajuan_proyek`),
   CONSTRAINT `FK_pengajuan_proyek_item_pengajuan_proyek` FOREIGN KEY (`id_pengajuan_proyek`) REFERENCES `pengajuan_proyek` (`id_pengajuan_proyek`) ON DELETE CASCADE ON UPDATE NO ACTION
@@ -381,9 +382,9 @@ CREATE TABLE IF NOT EXISTS `pengajuan_proyek_item` (
 
 -- Membuang data untuk tabel internal_pt_maha.pengajuan_proyek_item: ~2 rows (lebih kurang)
 /*!40000 ALTER TABLE `pengajuan_proyek_item` DISABLE KEYS */;
-INSERT IGNORE INTO `pengajuan_proyek_item` (`id_pengajuan_proyek_item`, `id_pengajuan_proyek`, `id_anggaran_item`, `pengajuan_proyek_name`, `pengajuan_proyek_desc`, `pengajuan_proyek_qty`, `pengajuan_proyek_unit`, `pengajuan_proyek_price`, `pengajuan_proyek_keterangan`, `pengajuan_proyek_actual_qty`, `pengajuan_proyek_actual_price`) VALUES
-	(3, 17, 1, '', '', 1, '', 50000, '', 0, 0),
-	(4, 17, 2, '', '', 1, '', 5000, '', 0, 0);
+INSERT IGNORE INTO `pengajuan_proyek_item` (`id_pengajuan_proyek_item`, `id_pengajuan_proyek`, `id_anggaran_item`, `pengajuan_proyek_name`, `pengajuan_proyek_desc`, `pengajuan_proyek_qty`, `pengajuan_proyek_unit`, `pengajuan_proyek_price`, `pengajuan_proyek_keterangan`, `pengajuan_proyek_actual_qty`, `pengajuan_proyek_actual_price`, `pengajuan_proyek_actual_keterangan`) VALUES
+	(3, 17, 1, '', '', 1, '', 50000, '', 0, 0, NULL),
+	(4, 17, 2, '', '', 1, '', 5000, '', 0, 0, NULL);
 /*!40000 ALTER TABLE `pengajuan_proyek_item` ENABLE KEYS */;
 
 -- membuang struktur untuk table internal_pt_maha.permintaan

@@ -79,22 +79,57 @@
                 <div class="modal-body">
            
                     <div id="js-laporan-pp-item">
-                        <div class="">
-                            <div class="table table-responsive">
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th width="200" class="text-center align-middle">Nama</th>
-                                            <th width="20" class="text-center align-middle">Qty</th>
-                                            <th width="100" class="text-center align-middle">Harga</th>
-                                            <th width="100" class="text-center">Total</th>
-                                            <th width="100" class="text-center">Keterangan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
+
+
+
+                        <form action="" method="POST">
+                            <div class="form-row">
+                                <div class="form-group col-12 col-md-3">
+                                    <label for="i-status_laporan_pengajuan_proyek">Status Laporan</label>
+                                    <select name="status_laporan_pengajuan_proyek" id="i-status_laporan_pengajuan_proyek" class="form-control">
+
+                                        <?php 
+                                        
+                                        $statuses = [
+                                            'Draft',
+                                            'Accepted',
+                                            'Revisi',
+                                            'Pending',
+                                            'Reject'
+                                        ]; 
+                                        
+                                        ?>
+
+                                        <?php foreach($statuses as $status) : ?>
+                                            <option value="<?php echo $status; ?>"><?php echo $status; ?></option>
+                                        <?php endforeach; ?>
+
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+                            <div class="">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th width="200" class="text-center align-middle">Nama</th>
+                                                <th width="20" class="text-center align-middle">Qty</th>
+                                                <th width="100" class="text-center align-middle">Harga</th>
+                                                <th width="100" class="text-center">Total</th>
+                                                <th></th>
+                                                <th>Qty</th>
+                                                <th>Harga</th>
+                                                <th>Total</th>
+                                                <th>Keterangan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary">Simpan  Laporan</button>
+                        </form>
                     </div>
 
                 </div>
@@ -275,7 +310,78 @@
 
                     let idPengajuanProyek = btn.data('id');
 
-                    LaporanPengajuanProyek
+                    LaporanPengajuanProyek.items({ 
+                        no_limit: true,
+                        filters: [
+                            { key: 'id_pengajuan_proyek', value: idPengajuanProyek }
+                        ]
+                    })
+                    .then( response => {
+                        
+                        console.log('response', response);
+
+                        let tbody       = $('#js-laporan-pp-item').find('tbody');
+                        let total       = 0;
+                        tbody.html('');
+                        response.data.lists.map((v, i) => {
+
+                            let subtotal = parseFloat(v.pengajuan_proyek_qty) * parseFloat(v.pengajuan_proyek_price);
+                            total += subtotal;
+                            tbody.append(`
+
+                                <tr>
+
+                                    <td width="300px">${v.anggaran_item}</td>
+                                    <td width="80px" class="text-center">${v.pengajuan_proyek_qty} ${v.anggaran_unit}</td>
+                                    <td class="text-right" width="150px">${Rp(v.pengajuan_proyek_price)}</td>
+                                    <td class="text-right" width="150px">${Rp(subtotal)}</td>
+                                    <td width="50px">&nbsp;</td>
+                                    <td width="150px">
+
+                                        <input class="form-control form-bind form-qty" 
+                                            data-target="#subtotal-${v.id_anggaran_item}"
+                                            data-id_anggaran_item="${v.id_anggaran_item}"
+                                            id="qty-${v.id_anggaran_item}">
+
+                                    </td>
+                                    <td width="200px">
+                                        <input class="form-control form-bind form-price" 
+                                            data-target="#subtotal-${v.id_anggaran_item}"
+                                            data-id_anggaran_item="${v.id_anggaran_item}"
+                                            id="price-${v.id_anggaran_item}">
+                                    </td>
+                                    <td id="subtotal-${v.id_anggaran_item}" class="text-right" width="150px">${Rp(0)}</td>
+                                    <td>
+
+                                        <textarea class="form-control" id="actual-keterangan-${v.id_anggaran_item}"></textarea>
+                                    
+                                    </td>
+
+                                </tr>
+
+                            `)
+
+                            
+                        })
+
+                        tbody.append(`
+
+                            <tr>
+
+                                <th class="text-center" colspan="3">Grand Total</th>
+                                <th class="text-right">${Rp(total)}</th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td id="grandtotal-actual" class="text-right">${Rp(0)}</td>
+                                <td></td>
+                            </tr>
+
+                        `)
+                        
+                        
+
+                    })
                     
 
                     $('#modal-pengajuan').modal('show');
@@ -370,6 +476,50 @@
             .catch(err => console.log('afterSaveErr', err));
 
         })
+
+
+        $(document).on('keydown keyup change keypress', '.form-bind', function(e){
+
+
+            let target = $($(this).data('target'));
+            let idAnggaranItem = $(this).data('id_anggaran_item');
+
+            let price   = parseFloat($('#price-' + idAnggaranItem).val());
+            let qty     = parseFloat($('#qty-' + idAnggaranItem).val());
+            let total   = (price * qty);
+
+            if(isNaN(total)) total = 0;
+
+            target.html(Rp(total));
+
+            $('#grandtotal-actual').html(Rp(bindTotal()));
+
+        });
+
+        function bindTotal() {
+            let formPrice = $('.form-price');
+            let formQty = $('.form-qty');
+            let length = formPrice.length;
+
+            let total = 0;
+
+            for(let i = 0; i < length; i ++) 
+            { 
+                
+                let price = parseFloat($(formPrice[i]).val())
+                let qty = parseFloat($(formQty[i]).val())
+                let subtotal = price * qty;
+
+                if(isNaN(subtotal)) total += 0;
+                else total += subtotal;
+                
+            }
+
+            //if(isNaN(total)) return 0;
+
+            return total;
+
+        }
 
        
     })
