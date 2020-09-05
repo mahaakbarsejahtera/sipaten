@@ -332,7 +332,7 @@
                             total += subtotal;
                             tbody.append(`
 
-                                <tr>
+                                <tr class="row-input" data-id="${v.id_pengajuan_proyek_item}" data-anggaran="${v.id_anggaran_item}">
 
                                     <td width="300px">${v.anggaran_item}</td>
                                     <td width="80px" class="text-center">${v.pengajuan_proyek_qty} ${v.anggaran_unit}</td>
@@ -537,6 +537,41 @@
                 .then( afterUpdate => {
 
                     console.log('afterUpdate', afterUpdate);
+                    let tbody = $('#js-laporan-pp-item').find('tbody');
+                    let trs = tbody.find('.row-input');
+
+                    for(let i=0; i < trs.length; i++) {
+
+                        console.log(trs[i]);
+                        let tr          = $(trs[i]);
+                        let id          = tr.data('id');
+                        let anggaran    = tr.data('anggaran');
+
+
+                        let qty         = tr.find('#qty-' + anggaran).val();
+                        let price       = tr.find('#price-' + anggaran).val();
+                        let keterangan  = tr.find('#actual-keterangan-' + anggaran).val();
+
+                        data = {
+                            id_pengajuan_proyek_item: id,
+                            pengajuan_proyek_actual_qty: qty,
+                            pengajuan_proyek_actual_price: price,
+                            kpengajuan_proyek_actual_keterangan: keterangan
+                        }
+
+                        LaporanPengajuanProyek
+                            .updateItem(data)
+                            .then( response => {
+
+                                console.log('update item', response)
+
+                            })
+                            .catch( err => console.log('err item', err));
+
+                    }
+
+                    
+                    Toast('success', 'Berhasil Disimpan');
 
                 });
 

@@ -283,7 +283,7 @@ let LaporanPengajuanProyek = {
 
         return $.ajax({
             method: 'POST',
-            url: `${baseUrl}/api/laporan/pengajuan-proyek-item/`,
+            url: `${baseUrl}/api/laporan/pengajuan-proyek-item/update`,
             data: data
         })
 
