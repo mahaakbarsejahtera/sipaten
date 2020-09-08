@@ -14,7 +14,10 @@ class LaporanPengajuanProyekItemModel extends Model
         'id_pengajuan_proyek','	pengajuan_proyek_name', 'pengajuan_proyek_desc',
         'pengajuan_proyek_qty', 'pengajuan_proyek_unit',
         'pengajuan_proyek_price', 'pengajuan_proyek_keterangan',
-        'id_anggaran_item' 
+        'id_anggaran_item', 
+        'pengajuan_proyek_actual_price',
+        'pengajuan_proyek_actual_qty',
+        'pengajuan_proyek_actual_keterangan'
     ];
 
     protected $orderby = [

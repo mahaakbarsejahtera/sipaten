@@ -196,4 +196,10 @@ class LaporanPengajuanProyek extends Controller
         
     }
 
+    public function laporan()
+    {
+
+
+    }
+
 }

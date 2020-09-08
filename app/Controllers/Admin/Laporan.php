@@ -381,4 +381,122 @@ class Laporan extends Controller
 
     }
 
+
+
+    public function laporanPengajuanProyek()
+    {
+        
+        $idPp = $this->request->getGet('id_pp');
+        $pengajuan = (new \App\Models\PengajuanProyekModel())  
+            ->builder()
+            ->select('anggaran.*, pengajuan_proyek.*, pengaju.user_fullname as nama_lengkap_pengaju, permintaan.*, jenis_pengajuan.*, roles.*')
+            ->join('anggaran', 'pengajuan_proyek.id_anggaran = anggaran.id_anggaran', 'left')
+            ->join('permintaan', 'anggaran.id_permintaan = permintaan.id_permintaan', 'left')
+            ->join('users as pengaju', 'pengajuan_proyek.id_pengaju = pengaju.id_user', 'left')
+            ->join('roles', 'pengaju.user_role=roles.id_role')
+            ->join('jenis_pengajuan', 'pengajuan_proyek.id_jenis_pengajuan=jenis_pengajuan.id_jenis_pengajuan', 'left')
+            ->where('pengajuan_proyek.id_pengajuan_proyek', $idPp)
+            ->get()
+            ->getRow();
+
+        $penanggung_jawab = (new \App\Models\PenanggungJawabModel())
+            ->builder()
+            ->join('users', 'penanggung_jawab.penanggung_jawab_user=users.id_user', 'left')
+            ->join('roles', 'users.user_role=roles.id_role', 'left')
+            ->where('id_jenis_pengajuan', $pengajuan->id_jenis_pengajuan)
+            ->get()
+            ->getResult();
+        
+        $items =  (new \App\Models\PengajuanProyekItemModel())
+            ->builder()
+            ->join('anggaran_item', 'pengajuan_proyek_item.id_anggaran_item = anggaran_item.id_anggaran_item', 'left')
+            ->where('pengajuan_proyek_item.id_pengajuan_proyek', $idPp)
+            ->get()
+            ->getResult();
+        
+        $nilai_pengajuan = (new \App\Models\PengajuanProyekItemModel())
+        ->builder()
+        ->select('SUM(pengajuan_proyek_qty * pengajuan_proyek_price) as total, SUM(pengajuan_proyek_actual_qty * pengajuan_proyek_actual_price) as total_actual')
+        ->where('pengajuan_proyek_item.id_pengajuan_proyek', $idPp)
+        ->get()
+        ->getRow();
+
+
+        $html = view('laporan/laporan-pengajuan-proyek', [
+            'pengajuan'             => $pengajuan,
+            'items'                 => $items,
+            'nilai_pengajuan'       => $nilai_pengajuan,
+            'penanggung_jawab'      => $penanggung_jawab
+        ]);
+
+
+        //return $html;
+
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream($pengajuan->nama_pekerjaan . "-" . date('his'));
+        
+        return $html;
+    }
+
+    public function laporanPengajuanInternal()
+    {
+        
+        $idPp = $this->request->getGet('id_pp');
+        $pengajuan = (new \App\Models\PengajuanInternalModel())  
+            ->builder()
+            ->select('pengajuan_internal.*, pengaju.user_fullname as nama_lengkap_pengaju, jenis_pengajuan.*, roles.*')
+            ->join('users as pengaju', 'pengajuan_internal.id_pengaju = pengaju.id_user', 'left')
+            ->join('roles', 'pengaju.user_role=roles.id_role')
+            ->join('jenis_pengajuan', 'pengajuan_internal.id_jenis_pengajuan=jenis_pengajuan.id_jenis_pengajuan', 'left')
+            ->where('pengajuan_internal.id_pengajuan_internal', $idPp)
+            ->get()
+            ->getRow();
+
+        $penanggung_jawab = (new \App\Models\PenanggungJawabModel())
+            ->builder()
+            ->join('users', 'penanggung_jawab.penanggung_jawab_user=users.id_user', 'left')
+            ->join('roles', 'users.user_role=roles.id_role', 'left')
+            ->where('id_jenis_pengajuan', $pengajuan->id_jenis_pengajuan)
+            ->get()
+            ->getResult();
+        
+        $items =  (new \App\Models\PengajuanInternalItemModel())
+            ->builder()
+            ->where('pengajuan_internal_item.id_pengajuan_internal', $idPp)
+            ->get()
+            ->getResult();
+        
+        $nilai_pengajuan = (new \App\Models\PengajuanInternalItemModel())
+        ->builder()
+        ->select('SUM(pengajuan_internal_qty * pengajuan_internal_price) as total, SUM(pengajuan_internal_actual_qty * pengajuan_internal_actual_price) as total_actual')
+        ->where('pengajuan_internal_item.id_pengajuan_internal', $idPp)
+        ->get()
+        ->getRow();
+
+
+        $html = view('laporan/laporan-pengajuan-internal', [
+            'pengajuan'             => $pengajuan,
+            'items'                 => $items,
+            'nilai_pengajuan'       => $nilai_pengajuan,
+            'penanggung_jawab'      => $penanggung_jawab
+        ]);
+
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream($pengajuan->perihal_pengajuan_internal . "-" . date('his'));
+        
+        return $html;
+    }
+
 }

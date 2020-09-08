@@ -43,6 +43,7 @@ class Permintaan extends Controller
             anggaran.id_anggaran
 
         ")
+        ->join('negosiasi', 'permintaan.id_permintaan=negosiasi.id_permintaan', 'left')
         ->join('users as sales', 'permintaan.permintaan_sales=sales.id_user', 'left')
         ->join('survey', 'permintaan.id_permintaan=survey.id_permintaan', 'left')
         ->join('users as supervisi', 'permintaan.permintaan_supervisi=supervisi.id_user', 'left')
@@ -69,7 +70,7 @@ class Permintaan extends Controller
                 'item_hp_nego'          => (int)$find['item_hp_nego'],
                 'item_hj_nego'          => (int)$find['item_hj_nego'],
                 'estimasi_harga_pokok'  => (int)$harga->estimasi_harga_pokok,
-                'estimasi_harga_jual'   => (int)$harga->estimasi_harga_jual
+                'estimasi_harga_jual'   => (int)$harga->estimasi_harga_jual.
             ];
 
             $response['data']       = $find;
@@ -111,11 +112,14 @@ class Permintaan extends Controller
 
             supervisi.user_fullname as nama_supervisi,
 
-            anggaran.id_anggaran
+            anggaran.id_anggaran,
+
+            negosiasi.id_nego, 
 
 
 
         ")
+        ->join('negosiasi', 'permintaan.id_permintaan=negosiasi.id_permintaan', 'left')
         ->join('users as sales', 'permintaan.permintaan_sales=sales.id_user', 'left')
         ->join('survey', 'permintaan.id_permintaan=survey.id_permintaan', 'left')
         ->join('users as supervisi', 'permintaan.permintaan_supervisi=supervisi.id_user', 'left')
@@ -171,19 +175,32 @@ class Permintaan extends Controller
 
             $harga = (new PermintaanItemsModel)
                 ->builder()
-                ->select("SUM(item_qty * item_hp) as estimasi_harga_pokok, SUM(item_qty * item_hj) as estimasi_harga_jual")
+                ->select("
+                    SUM(item_qty * item_hp) as estimasi_harga_pokok, 
+                    SUM(item_qty * item_hj) as estimasi_harga_jual,
+                    SUM(item_qty * item_hj_nego) as estimasi_harga_nego
+                ")
                 ->where('id_permintaan', $list['id_permintaan'])
                 ->groupBy('id_permintaan')
                 ->get()
                 ->getRow();
 
+   
+
             $data[] = $list + [
-                'item_hp'               => (int)$list['item_hp'],
-                'item_hj'               => (int)$list['item_hp'],
-                'item_hp_nego'          => (int)$list['item_hp_nego'],
-                'item_hj_nego'          => (int)$list['item_hj_nego'],
-                'estimasi_harga_pokok'  => (int)$harga->estimasi_harga_pokok,
-                'estimasi_harga_jual'   => (int)$harga->estimasi_harga_jual
+                'item_hp'               => (double)$list['item_hp'],
+                'item_hj'               => (double)$list['item_hp'],
+                'item_hp_nego'          => (double)$list['item_hp_nego'],
+                'item_hj_nego'          => (double)$list['item_hj_nego'],
+                'estimasi_harga_pokok'  => (double)$harga->estimasi_harga_pokok,
+                'estimasi_harga_jual'   => (double)$harga->estimasi_harga_jual,
+                'estimasi_harga_nego'   => (double)$harga->estimasi_harga_nego,
+                'files'                 => (new \App\Models\PermintaanFileModel())
+                                            ->builder()
+                                            ->where('id_permintaan', $list['id_permintaan'])
+                                            ->findAll(),
+
+                                            
             ];
 
         }
@@ -209,16 +226,6 @@ class Permintaan extends Controller
         $rules = [
             'id_customer' => 'required',
             'nama_pekerjaan' => 'required'
-            //'no_permintaan'         => 'required',
-            //'no_survey'             => 'required',
-            //'no_kontrak'            => 'required',
-            //'permintaan_status'     => 'required',
-            //'permintaan_user'       => 'required',
-            //'permintaan_fkasi_survey'  => 'required',
-            //'permintaan_jadwal_survey'  => 'required',
-            //'date_create'  => 'required',
-            //'permintaan_approval'  => 'required',
-            //'approve_by'  => 'required',
         ];
 
     

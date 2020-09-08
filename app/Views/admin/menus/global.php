@@ -269,7 +269,34 @@
         <li class="nav-item">
             <a href="<?php echo base_url('dashboard/laporan/pi') ?>" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Pengajuan Internnal</p>
+                <p>Pengajuan Internal</p>
+            </a>
+        </li>
+    </ul>
+</li>
+
+<li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+        <i class="nav-icon fas fa-copy"></i>
+        <p>
+        Arsip
+        <i class="fas fa-angle-left right"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+
+        
+        <li class="nav-item">
+            <a href="<?php echo base_url('dashboard/arsip-proyek') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Proyek</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="<?php echo base_url('dashboard/laporan/arsip-internal') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Internal</p>
             </a>
         </li>
     </ul>

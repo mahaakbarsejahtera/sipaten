@@ -52,10 +52,7 @@ class PengajuanInternal extends Controller
             'code'      => 200, 
             'message'   => '' 
         ];
-        
-
-
-        
+                
         $pengajuanModel = new PengajuanInternalModel();
         $pengajuanModel->builder()
         ->select("

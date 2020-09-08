@@ -397,3 +397,88 @@ let PengajuanProyek = {
 
 }
 
+let LaporanPengajuanInternal = {
+
+    get: function(id) 
+    { 
+
+        return $.ajax({ 
+            method: 'GET',
+            url: `${baseUrl}/api/laporan/pengajuan-internal/show` + id,
+        })
+
+    },
+
+    add: function( data ) 
+    {
+        return $.ajax({
+            url: `${baseUrl}/api/laporan/pengajuan-internal`,
+            method: 'POST',
+            data: data,
+        })
+    },
+
+    update: function( data )
+    { 
+
+        return $.ajax({
+            url: `${baseUrl}/api/laporan/pengajuan-internal/update`,
+            method: 'POST',
+            data: data,
+        })
+
+    }, 
+
+    delete: function( id )
+    { 
+
+        return $.ajax({
+            method: 'POST',
+            url: `${baseUrl}/api/laporan/pengajuan-internal/${id}/delete`
+        })
+
+    },
+
+    addItem: function(data) {
+
+
+        return $.ajax({
+            method: 'POST',
+            url: `${baseUrl}/api/laporan/pengajuan-internal-item/`,
+            data: data
+        })
+
+    },
+
+    updateItem: function(data) {
+
+
+        return $.ajax({
+            method: 'POST',
+            url: `${baseUrl}/api/laporan/pengajuan-internal-item/update`,
+            data: data
+        })
+
+    },
+
+    deleteItem: function(id) {
+        return $.ajax({
+            method: 'POST',
+            url: `${baseUrl}/api/laporan/pengajuan-internal-item/${id}/delete`
+        })
+    },
+
+    getItem: function( id ) {
+        return $.ajax({
+            url: `${baseUrl}/api/laporan/pengajuan-internal-item/show/${id}`
+        })
+    },
+
+    items: function(data = {}) {
+        return $.ajax({
+            url: `${baseUrl}/api/laporan/pengajuan-internal-item`,
+            data: data
+        })
+    }
+
+}

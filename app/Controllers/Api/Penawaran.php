@@ -279,6 +279,15 @@ class Penawaran extends Controller
 
     public function noPenawaran( $id_permintaan ) {
 
+        $months = [
+            'I', 'II', 'III',
+            'IV', 'V', 'VI',
+            'VII', 'VIII', 'IX',
+            'X', 'XI', 'XII'
+        ];
+
+        $bulan = date('n');
+
         $permintaan = (new PermintaanModel)
             ->builder()
             ->select("
@@ -296,32 +305,21 @@ class Penawaran extends Controller
 
    
 
-        $user_code = $permintaan->user_code;
-        $customer_code = $permintaan->kode_customer;
-
-        $penawaranModel = new PenawaranModel;
-        $no_penawaran = (int)$penawaranModel
-        ->builder()
-        ->select("COUNT(*) as no_penawaran")
-        ->where('YEAR(penawaran_validasi_date)', date('Y'))
-        ->get()
-        ->getRow()
-        ->no_penawaran;
+        $user_code      = $permintaan->user_code;
+        $customer_code  = $permintaan->kode_customer;
         
+        $nomor          = "/PN/{$user_code}/{$customer_code}/" . $months[(int)date('m')-1] ."/" . date('Y');
+        $query          = (new PenawaranModel())->builder()->select("max(penawaran.penawaran_no) as maxKode")
+                            ->where('MONTH(penawaran_due_date)', $bulan)
+                            ->get();
 
-        //var_dump($no_penawaran);
-        //return ;
+        $data           = $query->getRow();
+        $no             = $data->maxKode;
+        $noUrut         = $no + 1;
+        $kode           = sprintf("%03s", $noUrut);
+        $nomorbaru      = $kode . $nomor;
 
-        $months = [
-            'I', 'II', 'III',
-            'IV', 'V', 'VI',
-            'VII', 'VIII', 'IX',
-            'X', 'XI', 'XII'
-        ];
-        $no_penawaran = sprintf("%'.03d\n", ++$no_penawaran);
-        $strNoPenawaran = "{$no_penawaran}/PN/{$user_code}/{$customer_code}/" . $months[(int)date('m')-1] ."/" . date('Y');
-
-        return $strNoPenawaran;
+        return $nomorbaru;
 
     }
 

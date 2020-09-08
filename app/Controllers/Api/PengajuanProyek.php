@@ -291,10 +291,12 @@ class PengajuanProyek extends Controller
     }
 
 
-    public function generateNomorSurat( $jenis_pengajuan ) {
+    public function generateNomorSurat( $jenis_pengajuan ) 
+    {
         
         $bulan = date('n');
         $romawi = '';
+        
         switch ($bulan){
             case 1: 
                 $romawi = "I";
@@ -346,12 +348,11 @@ class PengajuanProyek extends Controller
             ->where('pengajuan_proyek.id_jenis_pengajuan', $jenis_pengajuan)
             ->where('MONTH(tanggal_pengajuan_proyek)', $bulan)
             ->get();
+
         $data  = $query->getRow();
 
-        //var_dump($data);
-
         $no= $data->maxKode;
-        //echo $no . '<br>';
+        
         $noUrut= $no + 1;
         
         //echo $noUrut . '<br>';

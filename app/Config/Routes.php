@@ -247,6 +247,18 @@ $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes
 		$routes->post('pengajuan-proyek-item/(:num)/delete', 'LaporanPengajuanProyekItem::delete/$1');
 		$routes->post('pengajuan-proyek-item/destroy', 'LaporanPengajuanProyekItem::destroy');
 
+		// Pengajuan Internal
+		$routes->get('pengajuan-internal', 'LaporanPengajuanInternal::index');
+		$routes->get('pengajuan-internal/show/(:num)', 'LaporanPengajuanInternal::show/$1');
+
+		$routes->post('pengajuan-internal/update', 'LaporanPengajuanInternal::update');
+
+		// Pengajuan Internal Item
+		$routes->get('pengajuan-internal-item', 'LaporanPengajuanInternalItem::index');
+		$routes->post('pengajuan-internal-item/update', 'LaporanPengajuanInternalItem::update');
+		
+
+
 	});
 	
 
@@ -266,6 +278,7 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 	$routes->get('pengajuan-proyek', 'Home::pengajuanAnggaran');
 	$routes->get('pengajuan-internal', 'Home::pengajuanNonAnggaran');
 
+	$routes->get('arsip-proyek', 'Home::arispProyek');
 
 	// Dashboard Pemasaran
 	$routes->group('pemasaran', function($routes) {
@@ -308,6 +321,7 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 
 		// Dashboard View
 		$routes->get('pp', 'Home::dashboardLaporanPengajuanProyek');
+		$routes->get('pi', 'Home::dashboardLaporanPengajuanInternal');
 
 		// Lampiran
 		$routes->get('lampiran-boq', 'Laporan::lampiranBoq');
@@ -316,7 +330,8 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 		$routes->get('nego', 'Laporan::lampiranNego');
 		$routes->get('anggaran', 'Laporan::lampiranAnggaran');
 		$routes->get('pengajuan', 'Laporan::lampiranPengajuan');
-		$routes->get('pengajuan-internal', 'Laporan::lampiranPengajuanInternal');
+		$routes->get('pengajuan-internal', 'Laporan::laporanPengajuanInternal');
+		$routes->get('pengajuan-proyek', 'Laporan::laporanPengajuanProyek');
 	
 
 	});

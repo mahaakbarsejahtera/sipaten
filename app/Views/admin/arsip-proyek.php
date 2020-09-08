@@ -38,14 +38,14 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-md-3">
-                    <a href="javascript:void(0)" data-toggle="modal" data-target="#form-modal" class="btn btn-primary mb-3">Tambah Data</a>
+                    <!-- <a href="javascript:void(0)" data-toggle="modal" data-target="#form-modal" class="btn btn-primary mb-3">Tambah Data</a> -->
                 </div>
                 <div class="col-12 col-md-9">
                     <form class="w-100" id="filter-form">
 
                         <div class="form-row d-flex justify-content-end">
                             <div class="form-group col-12 col-md-4">
-                                <input type="text" class="form-control" placeholder="Search" id="filter-search">
+                                <input type="text" class="form-control" placeholder="Search" id="filter-search" v-model="keyword">
                             </div>
                         </div>
 
@@ -55,7 +55,9 @@
                 </div>
 
                 <div class="col-12">
-                    <div><?php echo $table; ?></div>
+                    <div>
+                        <?php echo $table; ?>
+                    </div>
                     <div id="pagination-wrapper"></div>
                 </div>
             </div>    
@@ -297,6 +299,7 @@
 <?php $this->section('footerScript') ?>
 
 <script>
+
     $(function(){
 
         let truthAction = $('#i-truth_action');
@@ -326,45 +329,22 @@
                             <tr>
                                 <td>
                                     <div>${v.nama_pekerjaan}</div>
-                                    <ul style="padding: 0; margin: 0; list-style: none;">
-                                        <li>Negosiasi <span class="badge badge-${(v.permintaan_nego == 'Y') ? 'success' : 'dark'}">${v.permintaan_nego}</span></li>
-                                        <li>Kontrak <span class="badge badge-${(v.permintaan_kontrak == 'Y') ? 'success' : 'dark'}">${v.permintaan_kontrak}</span></li>
-                                    </ul>
                                 </td>
-                                <td>${v.nama_customer}</td>
-                                <td>${v.permintaan_lokasi_survey}</td>
+                                <td>
+                                    <a href="javascript:void(0)"></a>
+                                </td>
+                                <td>
+                                    
+                                </td>
+                                <td>
+                                    <a href="${baseUrl + '/dashboard/laporan/estimasi/?id_permintaan=' + v.id_permintaan}" download>${Rp(v.estimasi_harga_jual)}</a>
+                                </td>
+                                <td>
+
+                                    <a href="${baseUrl}/dashboard/laporan/nego/?id_nego=${v.id_nego}" target="_blank">${Rp(v.estimasi_harga_nego)}
+                                </td>
                                 <td>${v.permintaan_jadwal_survey}</td>
                                 <td>${v.keterangan_pekerjaan}</td>
-                                
-                                <td>${v.user_fullname}</td>
-                                <td>${v.permintaan_status}</td>
-                                <td>${v.date_create}</td>
-                                <td><a href="javascript:void(0)" data-permintaan="${v.id_permintaan}" title="Lihat Hasil Survey" data-toggle="table-action" data-action="hasil-survey">BOQ</a></td>
-                                <td>
-                                    <a href="javascript:void(0)" data-permintaan="${v.id_permintaan}" data-toggle="table-action" data-action="estimasi-harga">${Rp(v.estimasi_harga_pokok)}</a>
-                                </td>
-                                <td>
-                                    <div class="d-flex flex-column">
-                                        <a href="${baseUrl + '/dashboard/laporan/estimasi/?id_permintaan=' + v.id_permintaan}" download>${Rp(v.estimasi_harga_jual)}</a>
-                                    </div>
-                                </td>
-                                
-                                <td>
-                                    <div></div>
-                                    <a href="javascript:void(0)" data-toggle="table-action" data-action="add-doc" data-permintaan="${v.id_permintaan}">Tambah Dokumen</a>
-                                </td>
-                                <td>
-
-                                    <a href="javascript:void(0)" class="btn btn-warning mb-2" title="Edit Permintaan" data-toggle="table-action" data-action="edit" data-id="${v.id_permintaan}">
-                                        <span class="fas fa-edit"></span>
-                                    </a>
-                                    
-                                    <a href="javascript:void(0)" class="btn btn-danger mb-2" title="Hapus Permintaan" data-toggle="table-action"  data-action="delete" data-id="${v.id_permintaan}">
-                                        <span class="fas fa-trash"></span>
-                                    </a>
-
-                                
-                                </td>
                             </tr>
                         
                         `
@@ -377,171 +357,7 @@
 
         }
 
-        getUsers()
-        .then(response => {
-            let html = '<option value="">Pilih</option>';
-
-            response.data.lists.map((v, i) => {
-                html += `<option value="${v.id_user}">${v.user_fullname} - ${v.role_name}</option>`;
-            })
-
-            $('#i-permintaan_sales').html(html);
-
-        });
-
-        getCustomers()
-        .then(response => {
-            console.log('getCustomers');
-            let html = '<option value="">Pilih</option>';
-
-            response.data.lists.map((v, i) => {
-                html += `<option value="${v.id_customer}">${v.nama_customer}</option>`;
-            })
-
-            $('#i-id_customer').html(html);
-
-        }).catch(err => {
-            console.log(err);
-        });
-
-
-        function getUsers() {
-
-            return $.ajax({
-                url: "<?php echo base_url('/api/users?page_group1=-1') ?>",
-            })
-
-        }
-
-        function getCustomers() {
-
-            return $.ajax({
-                url: "<?php echo base_url('/api/customer?page_group1=-1') ?>",
-            })
-
-        }
-
-
-        function addData() {
-
-            let data = form.serialize();
-
-            return $.ajax({
-                method: 'POST',
-                url: "<?php echo base_url('/api/permintaan') ?>",
-                data: data, 
-                success: function(response) {
-                    console.log('success response add', response);
-                    switch(response.code) {
-
-                        case 200: 
-                            Toast('success', 'Berhasil menambahkan data');
-                            clearForm();
-                            loadData();
-                        break;
-
-                        case 400:
-                            Toast('error', response.message);
-                            break;
-
-                    }
-                    
-                }, 
-                error: function(response) {
-                    Toast('error', 'Something Wrong!!!');
-                }
-            })
-
-        }
-
-        function updateData() {
-            
-            let data = form.serialize();
-
-            return $.ajax({
-                method: 'POST',
-                url: "<?php echo base_url('/api/permintaan/update') ?>",
-                data: data, 
-                success: function(response) {
-                    console.log('success response add', response);
-
-                    switch(response.code) {
-
-                        case 200: 
-                            Toast('success', 'Berhasil memperbaharui data');
-                            clearForm();
-                            loadData();
-                        break;
-
-                        case 400:
-                            Toast('error', response.message);
-                            break;
-                    }
-                    
-                }, 
-                error: function(response) {
-                    console.log(response)
-                    Toast('error', 'Something Wrong!!!');
-                }
-            })
-        }
-        
-        function getData( id ) {
-            
-            return $.ajax({
-                url: `<?php echo base_url('/api/permintaan/show') ?>/${id}`,
-                success: function(response) {
-
-                    truthAction.val('update');
-
-                    for(data in response.data) {
-                        $('#i-' + data).val(response.data[data]);
-                    }
-                    
-                    $('#form-modal').modal('show');
-                }
-            })
-
-        }
-
-        function deleteData( id ) {
-            return $.ajax({
-                method: 'POST',
-                url: `<?php echo base_url('/api/permintaan') ?>/${id}/delete`,
-                success: function(response) {
-                    switch(response.code) {
-                        case 200:
-                            Toast('success', 'Data berhasil dihapus');
-                            loadData();
-                            break;
-
-                        case 400:
-                            Toast('warning', response.message);
-                            break;
-                    }
-                },
-                error: function(response) {
-                    Toast('error','Something Wrong!!');
-                }
-            })
-        }
-
-        function saveData() {
-
-            if(truthAction.val() == 'update') updateData();
-            else addData();
-
-        }
-
-        function clearForm() {
-            $('#form')[0].reset();
-        }
-
-
-        $('#js-save').click(function(e){{
-            e.preventDefault();
-            saveData();
-        }})
+    
 
         $(document).on('click', '#pagination-wrapper .page-item', function(e){
             e.preventDefault();
@@ -556,39 +372,6 @@
         
         })
 
-        function loadHasilPermintaan( id_permintaan, divisi = 'teknik' ) {
-
-
-            return $.ajax({
-                url: "<?php echo base_url('/api/permintaan-item') ?>",
-                data: {
-                    
-                    filters: [
-                        { 
-                            key: 'id_permintaan',
-                            value: id_permintaan
-                        },
-                        {
-                            key: 'survey_divisi',
-                            value: divisi
-                        } 
-                    ]
-                }
-            })
-
-        }
-
-        function hasNegosiasi(id_permintaan) {
-            return $.ajax({
-                method: 'GET',
-                url: `${baseUrl}/api/negosiasi`,
-                data: {
-                    filters: [
-                        { key: 'id_permintaan', value: id_permintaan }
-                    ]
-                }
-            })
-        }
 
         $(document).on('click', '[data-toggle=table-action]', function(e){
             e.preventDefault();
@@ -933,520 +716,39 @@
         })
 
 
-        $('.js-add-item').click(function(e){
-            e.preventDefault();
-            addHasilSurvey()
+        
 
-        });
+    
 
-        $(document).on('click', '.js-remove-item', function(e){
+    })
 
-            let btn = $(this);
-            let parent = btn.closest('tr');
+    let app = new Vue({
+        el: '#app',
+        data: {
+            message: 'Print By Vue',
+            permintaans: [],
+            keyword: ''
+        },
+        methods: {
 
-            deleteHasilSurvey(btn.data('item'))
-            .then(response => {
+            getPenawaran: function( idPermintaan ) {
+                
 
-                Toast('success', 'Data berhasil dihapus');
-                parent.remove();
+                
+            },
 
-            })
+            getPermintaan: function() {
 
+            }
 
+        }, 
+        mounted() {
+            axios.get('/api/permintaan').then(res => {
 
-        });
+                
 
-
-        $(document).on('click', '.js-update-item', function(e){
-            e.preventDefault();
-
-            let parent = $(this).closest('tr');
-
-            let idSurvey = $('#i-id_survey').val();
-            let idSurveyItem = $(this).data('item');
-            let inputs = parent.find('input')
-
-            console.log({ 
-                id_survey_item: idSurveyItem
             });
-
-            let data = {
-                id_survey_item: idSurveyItem,
-                id_survey: idSurvey,
-                survey_item_name: $(inputs[0]).val(),
-                survey_item_qty: parseFloat($(inputs[1]).val()),
-                survey_item_unit: $(inputs[2]).val(),
-                survey_harga_pokok: parseFloat($(inputs[3]).val()),
-                survey_harga_jual: parseFloat($(inputs[4]).val()),
-                survey_divisi: $('#i-survey_divisi').val()
-            }
-
-            updateHasilSurvey(data);
-        });
-
-        function addHasilSurvey() {
-            
-            let id_survey   = $('#i-id_survey').val();
-            let item        = $('#i-survey_item_name').val();
-            let qty         = $('#i-survey_item_qty').val();
-            let unit        = $('#i-survey_item_unit').val();
-            let harga_pokok = $('#i-survey_harga_pokok').val();
-            let harga_jual  = $('#i-survey_harga_jual').val();
-            let survey_divisi = $('#i-survey_divisi').val();
-
-            let data =  {
-                id_survey: id_survey,
-                survey_item_name: item,
-                survey_item_qty: qty,
-                survey_item_unit: unit,
-                survey_harga_pokok: harga_pokok,
-                survey_harga_jual: harga_jual,
-                survey_divisi: survey_divisi,                            
-            }
-
-            return $.ajax({
-                method: 'POST',
-                url: "<?php echo base_url('/api/survey/item/add') ?>",
-                data: data, 
-                success: function(response) {
-
-                    console.log('success response add', response);
-                    
-                    switch(response.code) {
-
-                        case 200: 
-
-                            Toast('success', 'Berhasil menambahkan data');
-                            let getMarin = InternalCalculation.getPersentaseMargin(response.data.item.survey_harga_pokok, response.data.item.survey_harga_jual).toFixed(2);
-                            let getMarginHTML =  getMarin > 0 ? `<span class="text-success">${getMarin}%</span>` : `<span class="text-danger">${getMarin}%</span>`;
-                            html = `
-                                <tr>
-                                    <th>
-                                        <input name="items[name][${response.data.item.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukann Nama item" value="${response.data.item.survey_item_name}">
-                                    </th>
-                                    <th width="100">
-                                        <input name="items[qty][${response.data.item.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukan Qty" value="${response.data.item.survey_item_qty}">
-                                    </th>
-                                    <th width="100">
-                                        <input name="items[unit][${response.data.item.id_survey_item}]" type="text" class="form-control form-control-sm" placeholder="Masukan Unit" value="${response.data.item.survey_item_unit}">
-                                    </th>
-                                    <th>
-                                        <input 
-                                            name="items[harga_pokok][${response.data.item.id_survey_item}]"
-                                            type="number" 
-                                            class="form-control form-control-sm" 
-                                            placeholder="Masukan Harga Pokok" 
-                                            value="${response.data.item.survey_harga_pokok}"
-                                            data-toggle="get-margin"  
-                                            data-action="harga-pokok"
-                                            data-bind="#js-harga-jual-${response.data.item.id_survey_item}"
-                                            data-target="#js-margin-${response.data.item.id_survey_item}"
-                                            id="js-harga-pokok-${response.data.item.id_survey_item}">
-                                    </th>
-                                    <th>
-                                        <div class="d-flex align-items-center">
-                                            <input 
-                                                name="item[harga_jual][${response.data.item.id_survey_item}]" 
-                                                type="number" 
-                                                class="form-control form-control-sm" 
-                                                placeholder="Masukan Harga Jual" 
-                                                value="${response.data.item.survey_harga_jual}"
-                                                data-toggle="get-margin" 
-                                                data-action="harga-jual"
-                                                data-bind="#js-harga-pokok-${response.data.item.id_survey_item}"
-                                                data-target="#js-margin-${response.data.item.id_survey_item}"
-                                                id="js-harga-jual-${response.data.item.id_survey_item}">
-                                                                                    
-                                        </div>
-                                    </th>
-                                    <td>${response.data.item.survey_item_qty * response.data.item.survey_harga_jual}</td>
-                                    <td id="js-margin-${response.data.item.id_survey_item}">${getMarginHTML}</td>
-                                    <th>
-                                        <a href="javascript:void(0)" data-item="${response.data.item.id_survey_item}" class="btn btn-danger js-remove-item"><span class="fas fa-minus"></span></a>
-                                        <a href="javascript:void(0)" data-item="${response.data.item.id_survey_item}" class="btn btn-warning js-update-item"><span class="fas fa-pen"></span></a>
-                                    </th>
-                                </tr>
-                            `;
-
-                            $('#form-boq')
-                                .find('tbody')
-                                .append(html);
-
-                            $('#i-id_survey').val('');
-                            $('#i-survey_item_name').val('');
-                            $('#i-survey_item_qty').val('');
-                            $('#i-survey_item_unit').val('');
-                            $('#i-survey_harga_pokok').val('');
-                            $('#i-survey_harga_jual').val('');
-                            break;
-
-                        case 400:
-                            Toast('error', response.message);
-                            break;
-                    }
-                    
-                }, 
-                error: function(response) {
-                    Toast('error', 'Something Wrong!!!');
-                }
-            })
-
-
         }
-
-        function updateHasilSurvey(data) {
-            
-            return $.ajax({
-                method: 'POST',
-                url: "<?php echo base_url('/api/survey/item/update') ?>",
-                data: data, 
-                success: function(response) {
-
-                    console.log('success response update item', response);
-                    
-                    switch(response.code) {
-
-                        case 200: 
-
-                            Toast('success', 'Berhasil memperbaharui data');
-
-                            break;
-
-                        case 400:
-                            Toast('error', response.message);
-                            break;
-                    }
-                    
-                }, 
-                error: function(response) {
-                    Toast('error', 'Something Wrong!!!');
-                }
-            })
-
-        }
-
-        function deleteHasilSurvey(id_survey_item) {
-            return $.ajax({
-                method: 'POST',
-                url: "<?php echo base_url('api/survey/item/delete') ?>/" + id_survey_item
-            })
-        }
-
-
-        // Load Hasil Survey
-        function loadHasilSurvey( id_permintaan, divisi = 'teknik' ) {
-
-            return $.ajax({
-                url: "<?php echo base_url('/api/survey/item/load') ?>",
-                data: {
-                    
-                    filters: [
-                        { 
-                            key: 'id_permintaan',
-                            value: id_permintaan
-                        },
-                        {
-                            key: 'survey_divisi',
-                            value: divisi
-                        } 
-                    ]
-                }
-            })
-
-        }
-
-
-        $(document).on('change keyup', '.js-bind-harga-pokok', function(){
-
-            let id          = $(this).data('id');
-            let target      = $($(this).data('target'));
-            let qty         = parseFloat($(this).data('qty'));
-            let value       = parseFloat($(this).val());
-            let hargaJual   = $('#js-bind-harga-jual-' + id).val()
-
-            target.html(Rp(qty * value));
-
-            console.log("margin", $('#margin-' + id));
-            
-            let marginHarga = InternalCalculation.getPersentaseMargin(value, hargaJual).toFixed(2)
-            let selisihHarga = selisihHasil(value, hargaJual);
-
-            let marginHTML = `
-            
-            <div class="d-flex justify-content-between">
-                <span>${Rp(selisihHarga).toString()}</span>
-                <span>${marginHarga.toString()}%</span>
-            </div>
-
-            `;
-
-            $('#margin-' + id).html( marginHTML );
-
-
-        })
-
-        $(document).on('change keyup', '.js-bind-harga-jual', function(){
-
-            let id          = $(this).data('id');
-            let target      = $($(this).data('target'));
-            let qty         = parseFloat($(this).data('qty'));
-            let value       = parseFloat($(this).val());
-            let hargaPokok  = $('#js-bind-harga-pokok-' + id).val()
-
-            target.html(Rp(qty * value));
-
-
-            
-            let marginHarga = InternalCalculation.getPersentaseMargin(hargaPokok, value).toFixed(2)
-            let selisihHarga = selisihHasil(hargaPokok, value);
-
-            let marginHTML = `
-            
-            <div class="d-flex justify-content-between">
-                <span>${Rp(selisihHarga).toString()}</span>
-                <span>${marginHarga.toString()}%</span>
-            </div>
-
-            `
-
-            $('#margin-' + id).html( marginHTML );
-
-
-
-        })
-
-
-        function updateItem(data) {
-
-            console.log('update item data', data)
-
-            return $.ajax({
-                method: 'POST',
-                data: data,
-                url: "<?php echo base_url("/api/permintaan-item/update-estimasi") ?>"
-            })
-        }
-
-        $('#js-save-estimasi').click(function(e){
-            e.preventDefault();
-
-            console.log('serialize', $('#form-estimasi').find('.js-bind-harga-jual'));
-
-            let inputs = $('#form-estimasi').find('.js-bind-harga-pokok');
-
-            let progress = 0;
-            
-            inputs.map((i, el) => {
-                console.log(el);
-                let id = $(el).data('id');
-                let item_hp = $(el).val();
-                let item_hj = $('#js-bind-harga-jual-' + id ).val()
-
-                updateItem({
-                    id_item: id,
-                    item_hp: item_hp,
-                    item_hj: item_hj
-                })
-                .then((response) => {
-                    console.log(response)
-                    progress += 1;
-                    console.log('progress', progress, inputs.length);
-                    if(progress == inputs.length) {
-                        Toast('success', (progress) + ' item telah disimpan');
-                        loadData();
-                    }
-                })
-
-                
-
-            })
-
-
-
-        })
-
-        function addBoq(data) {
-            return $.ajax({
-                method: 'POST',
-                data: data, 
-                url: `${baseUrl}/api/permintaan-item/add`
-            })
-        }
-
-        function updateBoq(data) {
-            return $.ajax({
-                method: 'POST',
-                data: data, 
-                url: `${baseUrl}/api/permintaan-item/update-boq`
-            })
-        }
-
-        function deleteBoq(id) {
-            return $.ajax({
-                method: 'POST',
-                url: `${baseUrl}/api/permintaan-item/${id}/delete`,
-            })
-        }
-
-
-        $('#js-add-boq').click(function(e){
-            e.preventDefault();
-
-            
-
-            let idPermintaan = $(this).data('permintaan');
-            let itemName    = $('#boq-item_name').val();
-            let itemQty     = $('#boq-item_qty').val();
-            let itemUnit    = $('#boq-item_unit').val();
-
-            let data = {
-                id_permintaan: idPermintaan, 
-                item_name: itemName,
-                item_qty: itemQty,
-                item_unit: itemUnit
-            };
-
-            console.log('js add boq', data);
-
-            if(!idPermintaan  || !itemName || !itemQty || !itemUnit) {
-                
-                Toast('warning', 'Nama, Qty, Satuan harus di isi');
-                
-                return false;
-            }
-
-            
-
-            addBoq(data)
-            .then(response => {
-
-                
-
-                $('#form-boq').find('tbody').append(createRowBoq(response.data));
-                Toast('success', 'Berhasil menambahkan item');
-                loadData();
-
-                $('#boq-item_name').val('');
-                $('#boq-item_qty').val('');
-                $('#boq-item_unit').val('');
-
-            }) 
-
-        })
-
-        $(document).on('click', '.js-delete-boq-item', function(e){
-            e.preventDefault();
-
-            let confirmDelete = confirm('Delete ???');
-
-            if(confirmDelete) {
-
-                deleteBoq($(this).data('id'))
-                .then((response) => {
-                    
-                    Toast('success', 'Berhasil menghapus item');
-                    loadData();
-
-                })
-            }
-        })
-
-        $(document).on('click', '.js-update-boq-item', function(e){
-            e.preventDefault();
-
-
-            let idItem      = $(this).data('id');
-            let itemName    = $('#boq-item-name-' + idItem).val();
-            let itemQty     = $('#boq-item-qty-' + idItem).val();
-            let itemUnit    = $('#boq-item-unit-' + idItem).val();
-
-            let data = {
-                id_item: idItem, 
-                item_name: itemName,
-                item_qty: itemQty,
-                item_unit: itemUnit
-            };
-
-            console.log('js add boq', data);
-
-            if(!idItem  || !itemName || !itemQty || !itemUnit) {
-                
-                Toast('warning', 'Nama, Qty, Satuan harus di isi');
-                
-                return false;
-            }
-
-                updateBoq(data)
-                .then((response) => {
-                    
-                    Toast('success', 'Berhasil memperbaharui item');
-                    loadData();
-
-                })
-           
-        })
-
-        $('#i-id_customer').change(function(e){
-
-            getPic($(this).val())
-            .then(response => {
-                let options = `<option value=''>Pilih</option>
-                `;
-
-                response.data.lists.map((v, i) => {
-                    console.log(v);
-                    options += `<option value="${v.id_pic}">${v.nama_pic} (${v.jabatan_pic}) - ${v.divisi_pic}</option>`;
-
-                })
-
-                $('#i-id_pic').html(options);
-            });
-
-        });
-
-        function getPic(idCustomer)
-        {
-
-            return $.ajax({
-                url: `${baseUrl}/api/pic`,
-                data: {
-                    filters: [
-                        {
-                            key: 'id_customer',
-                            value: idCustomer
-                        }
-                    ]
-                }
-            })
-
-        }
-
-
-        function addDoc() 
-        {
-
-            let formData = new FormData('#form-doc');
-
-
-
-            return $.ajax({
-                method:  'POST',
-                url: `${baseUrl}/api/permintaan-file`,
-                data: formdata,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-
-                }
-            })
-
-        }
-
-
-        $('#js-add-doc').click(function(e){
-            e.preventDefault();
-            
-        })
     })
 </script>
 

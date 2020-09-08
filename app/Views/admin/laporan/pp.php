@@ -204,7 +204,6 @@
                             <tr>
                                 <td>
                                     <div>${v.nama_pekerjaan}</div>
-                                    <div><a href="${baseUrl}/dashboard/laporan/pengajuan/?id_pengajuan=${v.id_pengajuan_proyek}" target="_blank">Download</a></div>
                                 </td>
                                 <td>${v.no_surat_pengajuan_proyek}</td>
                                 <td>${v.tanggal_pengajuan_proyek}</td>
@@ -216,13 +215,18 @@
                                 </td>
                                 <td>
 
-                                    <a 
-                                        href="javascript:void(0)"  
-                                        data-toggle="table-action"  
-                                        data-action="lihat-laporan" 
-                                        data-id="${v.id_pengajuan_proyek}">
-                                            <span>Lihat Laporan</span>
-                                    </a>
+                                    <div>
+                                        <a 
+                                            href="javascript:void(0)"  
+                                            data-toggle="table-action"  
+                                            data-action="lihat-laporan" 
+                                            data-id="${v.id_pengajuan_proyek}">
+                                                <span>Lihat Laporan</span>
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a href="${baseUrl}/dashboard/laporan/pengajuan-proyek?id_pp=${v.id_pengajuan_proyek}">Download</a>
+                                    </div>
                   
                                 </td>
                             </tr>
@@ -325,11 +329,16 @@
 
                         let tbody       = $('#js-laporan-pp-item').find('tbody');
                         let total       = 0;
+                        let totalActual = 0;
                         tbody.html('');
                         response.data.lists.map((v, i) => {
 
                             let subtotal = parseFloat(v.pengajuan_proyek_qty) * parseFloat(v.pengajuan_proyek_price);
+                            let subtotalActual = parseFloat(v.pengajuan_proyek_actual_qty) * parseFloat(v.pengajuan_proyek_actual_price);
                             total += subtotal;
+                            totalActual += subtotalActual;
+
+
                             tbody.append(`
 
                                 <tr class="row-input" data-id="${v.id_pengajuan_proyek_item}" data-anggaran="${v.id_anggaran_item}">
@@ -344,19 +353,19 @@
                                         <input class="form-control form-bind form-qty" 
                                             data-target="#subtotal-${v.id_anggaran_item}"
                                             data-id_anggaran_item="${v.id_anggaran_item}"
-                                            id="qty-${v.id_anggaran_item}">
+                                            id="qty-${v.id_anggaran_item}" value="${v.pengajuan_proyek_actual_qty}">
 
                                     </td>
                                     <td width="200px">
                                         <input class="form-control form-bind form-price" 
                                             data-target="#subtotal-${v.id_anggaran_item}"
                                             data-id_anggaran_item="${v.id_anggaran_item}"
-                                            id="price-${v.id_anggaran_item}">
+                                            id="price-${v.id_anggaran_item}" value="${v.pengajuan_proyek_actual_price}">
                                     </td>
-                                    <td id="subtotal-${v.id_anggaran_item}" class="text-right" width="150px">${Rp(0)}</td>
+                                    <td id="subtotal-${v.id_anggaran_item}" class="text-right" width="150px">${Rp(parseFloat(v.pengajuan_proyek_actual_price * v.pengajuan_proyek_actual_qty))}</td>
                                     <td>
 
-                                        <textarea class="form-control" id="actual-keterangan-${v.id_anggaran_item}"></textarea>
+                                        <textarea class="form-control" id="actual-keterangan-${v.id_anggaran_item}">${v.pengajuan_proyek_actual_keterangan}</textarea>
                                     
                                     </td>
 
@@ -376,7 +385,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <th id="grandtotal-actual" class="text-right">${Rp(0)}</th>
+                                <th id="grandtotal-actual" class="text-right">${Rp(totalActual)}</th>
                                 <td></td>
                             </tr>
 
@@ -556,8 +565,10 @@
                             id_pengajuan_proyek_item: id,
                             pengajuan_proyek_actual_qty: qty,
                             pengajuan_proyek_actual_price: price,
-                            kpengajuan_proyek_actual_keterangan: keterangan
+                            pengajuan_proyek_actual_keterangan: keterangan
                         }
+
+                        console.log('update item', data);
 
                         LaporanPengajuanProyek
                             .updateItem(data)

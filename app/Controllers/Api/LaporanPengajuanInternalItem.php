@@ -2,10 +2,10 @@
 
 namespace App\Controllers\Api;
 
-use App\Models\LaporanPengajuanProyekItemModel;
+use App\Models\LaporanPengajuanInternalItemModel;
 use CodeIgniter\Controller;
 
-class LaporanPengajuanProyekItem extends Controller
+class LaporanPengajuanInternalItem extends Controller
 {
 
     public function show( $id ) 
@@ -18,7 +18,7 @@ class LaporanPengajuanProyekItem extends Controller
             'errors'        => []
         ];
 
-        $find = (new LaporanPengajuanProyekItemModel)->find( $id );
+        $find = (new LaporanPengajuanInternalItemModel)->find( $id );
 
         if($find) {
             $response['data']       = $find;
@@ -45,9 +45,8 @@ class LaporanPengajuanProyekItem extends Controller
             'message'   => '' 
         ];
         
-        $pengajuanItemModel = new LaporanPengajuanProyekItemModel();
-        $pengajuanItemModel->builder()
-        ->join('anggaran_item', 'pengajuan_proyek_item.id_anggaran_item=anggaran_item.id_anggaran_item', 'left');
+        $pengajuanItemModel = new LaporanPengajuanInternalItemModel();
+        $pengajuanItemModel->builder();
 
         $response['filters'] = $this->request->getGet('filters');
         if(!empty($this->request->getGet('filters'))) {
@@ -124,7 +123,7 @@ class LaporanPengajuanProyekItem extends Controller
 
 
         $rules = [
-            'id_pengajuan_proyek_item'      => 'required',
+            'id_pengajuan_internal_item'      => 'required',
         ];
 
         $message_rules = [];
@@ -142,13 +141,13 @@ class LaporanPengajuanProyekItem extends Controller
       
 
         $insertData = [
-            'id_pengajuan_proyek_item'           => (int)$this->request->getPost('id_pengajuan_proyek_item'),
-            'pengajuan_proyek_actual_qty'        => (double)$this->request->getPost('pengajuan_proyek_actual_qty'),
-            'pengajuan_proyek_actual_price'      => (double)$this->request->getPost('pengajuan_proyek_actual_price'),
-            'pengajuan_proyek_actual_keterangan' => (string)$this->request->getPost('pengajuan_proyek_actual_keterangan'),
+            'id_pengajuan_internal_item'           => (int)$this->request->getPost('id_pengajuan_internal_item'),
+            'pengajuan_internal_actual_qty'        => (double)$this->request->getPost('pengajuan_internal_actual_qty'),
+            'pengajuan_internal_actual_price'      => (double)$this->request->getPost('pengajuan_internal_actual_price'),
+            'pengajuan_internal_actual_keterangan' => (string)$this->request->getPost('pengajuan_internal_actual_keterangan'),
         ];
 
-        $pengajuanItemModel = new LaporanPengajuanProyekItemModel;
+        $pengajuanItemModel = new LaporanPengajuanInternalItemModel;
         $pengajuanItemModel->save($insertData);
 
         $response['code']       = 200;
