@@ -17,15 +17,15 @@ class App extends BaseConfig
 	|
 	| If this is not set then CodeIgniter will try guess the protocol, domain
 	| and path to your installation. However, you should always configure this
-	| explicitly and never rely on auto-guessing, especially in production
+	| explicitly and never rely on auto-guessing, especially in 
+	production
 	| environments.
 	|
 	*/
 	
 	public $baseURL = 'http://localhost:8080/';
 	
-	
-	//public $baseURL = 'http://192.168.1.104/sipaten/public/';
+	//public $baseURL = 'http://192.168.1.214/sipaten/public/';
 
 
 	/*

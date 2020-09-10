@@ -307,7 +307,13 @@
         <p>Laporan</p>
     </a>
 </li> -->
-
+<li class="nav-item">
+    <a href="<?php echo base_url('/dashboard/timeline') ?>" class="nav-link">
+        <i class="nav-icon far fa-schedule`
+        "></i>
+        <p>Timeline</p>
+    </a>
+</li>
 
 
 <li class="nav-header">Global</li>

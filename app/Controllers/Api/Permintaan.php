@@ -70,7 +70,7 @@ class Permintaan extends Controller
                 'item_hp_nego'          => (int)$find['item_hp_nego'],
                 'item_hj_nego'          => (int)$find['item_hj_nego'],
                 'estimasi_harga_pokok'  => (int)$harga->estimasi_harga_pokok,
-                'estimasi_harga_jual'   => (int)$harga->estimasi_harga_jual.
+                'estimasi_harga_jual'   => (int)$harga->estimasi_harga_jual,
             ];
 
             $response['data']       = $find;
@@ -125,6 +125,7 @@ class Permintaan extends Controller
         ->join('users as supervisi', 'permintaan.permintaan_supervisi=supervisi.id_user', 'left')
         ->join('customers', 'permintaan.id_customer=customers.id_customer', 'left')
         ->join('pic', 'permintaan.id_pic=pic.id_pic', 'left')
+        //->join('anggaran', 'permintaan.id_permintaan=anggaran.id_permintaan', 'left');
         ->join('anggaran', 'permintaan.id_permintaan=anggaran.id_permintaan', 'left');
 
         $response['filters'] = $this->request->getGet('filters');
@@ -199,6 +200,18 @@ class Permintaan extends Controller
                                             ->builder()
                                             ->where('id_permintaan', $list['id_permintaan'])
                                             ->findAll(),
+                'total_anggaran'              => (new \App\Models\AnggaranItemModel())
+                                            ->builder()
+                                            ->select("SUM(anggaran_qty * anggaran_price) as total_anggaran")
+                                            ->where('id_anggaran', $list['id_anggaran'])
+                                            ->get()
+                                            ->getRow()->total_anggaran,
+                'total_nilai_pengajuan' => (new \App\Models\PengajuanProyekItemModel)->builder()
+                                            ->select('SUM(pengajuan_proyek_price * pengajuan_proyek_qty) as total')
+                                            ->join('pengajuan_proyek', 'pengajuan_proyek_item.id_pengajuan_proyek = pengajuan_proyek.id_pengajuan_proyek', 'left')
+                                            ->where('id_anggaran', $list['id_anggaran'])
+                                            ->get()
+                                            ->getRow()->total,
 
                                             
             ];

@@ -330,12 +330,10 @@
                                 <td>
                                     <div>${v.nama_pekerjaan}</div>
                                 </td>
-                                <td>
-                                    <a href="javascript:void(0)"></a>
+                                <td> 
+                                    <a href="${baseUrl}/dashboard/laporan/anggaran?id_anggaran=${v.id_anggaran}" target="_blank">${Rp(v.total_anggaran)}</a>
                                 </td>
-                                <td>
-                                    
-                                </td>
+                                <td>${Rp(v.total_nilai_pengajuan)}</td>
                                 <td>
                                     <a href="${baseUrl + '/dashboard/laporan/estimasi/?id_permintaan=' + v.id_permintaan}" download>${Rp(v.estimasi_harga_jual)}</a>
                                 </td>
@@ -344,7 +342,9 @@
                                     <a href="${baseUrl}/dashboard/laporan/nego/?id_nego=${v.id_nego}" target="_blank">${Rp(v.estimasi_harga_nego)}
                                 </td>
                                 <td>${v.permintaan_jadwal_survey}</td>
-                                <td>${v.keterangan_pekerjaan}</td>
+                                <td>
+                                    <a href="${baseUrl}/dashboard/arsip-proyek/pengajuan/${v.id_anggaran}">Lihat</a>
+                                </td>
                             </tr>
                         
                         `

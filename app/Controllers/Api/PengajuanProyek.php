@@ -74,6 +74,8 @@ class PengajuanProyek extends Controller
             anggaran.id_permintaan,
 
             permintaan.nama_pekerjaan,
+
+            jenis_pengajuan.*
            
         ")
         ->join('anggaran', 'pengajuan_proyek.id_anggaran=anggaran.id_anggaran', 'left')
@@ -124,26 +126,32 @@ class PengajuanProyek extends Controller
         foreach($lists as $list)
         {
 
+            $grandtotal = (new \App\Models\PengajuanProyekItemModel)->builder()
+            ->select('
+                SUM(pengajuan_proyek_price * pengajuan_proyek_qty) as total, 
+                SUM(pengajuan_proyek_actual_price * pengajuan_proyek_actual_qty) as total_actual
+            ')
+            ->join('pengajuan_proyek', 'pengajuan_proyek_item.id_pengajuan_proyek = pengajuan_proyek.id_pengajuan_proyek', 'left')
+            ->where('id_anggaran', $list['id_anggaran'])
+            ->get()
+            ->getRow();
+
             $data[] = $list + [
                 'nilai_pengajuan'       => (new \App\Models\PengajuanProyekItemModel)->builder()
-                                        ->select('SUM(pengajuan_proyek_price * pengajuan_proyek_qty) as total')
-                                        ->where('id_pengajuan_proyek', $list['id_pengajuan_proyek'])
-                                        ->get()
-                ->getRow()->total,
-                'total_anggaran'        => (new \App\Models\AnggaranItemModel())->builder()
-                                        ->select('SUM(anggaran_price * anggaran_qty) as total')
-                                        ->where('id_anggaran', $list['id_anggaran'])
-                                        ->get()
-                                        ->getRow()->total,
-
-                'pengaju'               => (new \App\Models\UsersModel())->find($list['id_pengaju']),
-                'total_nilai_pengajuan' => (new \App\Models\PengajuanProyekItemModel)->builder()
                                             ->select('SUM(pengajuan_proyek_price * pengajuan_proyek_qty) as total')
-                                            ->join('pengajuan_proyek', 'pengajuan_proyek_item.id_pengajuan_proyek = pengajuan_proyek.id_pengajuan_proyek', 'left')
+                                            ->where('id_pengajuan_proyek', $list['id_pengajuan_proyek'])
+                                            ->get()
+                                            ->getRow()->total,
+                'total_anggaran'        => (new \App\Models\AnggaranItemModel())->builder()
+                                            ->select('SUM(anggaran_price * anggaran_qty) as total')
                                             ->where('id_anggaran', $list['id_anggaran'])
                                             ->get()
-                                            ->getRow()->total
-                //'penanggung_jawab'  => (new \App\Models\PenanggungJawabModel())->where('id_jenis_pengajuan', $list['id_jenis_pengajuan'])->findAll()
+                                            ->getRow()->total,
+
+                'pengaju'                       => (new \App\Models\UsersModel())->find($list['id_pengaju']),
+                'total_nilai_pengajuan'         => $grandtotal->total,
+                'total_actual_nilai_pengajuan'  => $grandtotal->total_actual,
+               
             ];
 
         }
@@ -365,5 +373,6 @@ class PengajuanProyek extends Controller
         return $nomorbaru;
     }
 
+   
 
 }

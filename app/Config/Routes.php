@@ -278,7 +278,10 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 	$routes->get('pengajuan-proyek', 'Home::pengajuanAnggaran');
 	$routes->get('pengajuan-internal', 'Home::pengajuanNonAnggaran');
 
-	$routes->get('arsip-proyek', 'Home::arispProyek');
+	$routes->get('arsip-proyek', 'Home::arsipProyek');
+	$routes->get('arsip-proyek/pengajuan/(:num)', 'Home::arsipProyekPengajuan/$1');
+
+	$routes->get('timeline', 'Home::dashboardTimeline');
 
 	// Dashboard Pemasaran
 	$routes->group('pemasaran', function($routes) {

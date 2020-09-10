@@ -704,7 +704,7 @@ class Home extends Controller
         ]);
     }
 
-    public function arispProyek()
+    public function arsipProyek()
     {
         $breadcrumb = (new BreadCrumb)->set([
             [
@@ -749,6 +749,102 @@ class Home extends Controller
             ])
             ->render("table-data")
         ]);
+    }
+
+    public function arsipProyekPengajuan($id_anggaran)
+    {
+       
+        $breadcrumb = (new BreadCrumb)->set([
+            [
+                'name' => 'Dashboard',
+                'url' => base_url('dashboard'),
+            ],
+            [
+                'name' => 'Arsip Proyek',
+                'url' => base_url('dashboard/arsip-proyek'),
+            ],
+            [
+                'name' => 'Pengajuan',
+                'active' => true
+            ]
+        ])->render();
+
+        $data = [
+            'title'      => 'Arsip Pengajuan Proyek',
+            'breadcrumb' => $breadcrumb,
+            'table'         => (new Table())->setColumns([
+
+                [
+                    'name' => 'Nomor Surat'
+                ],
+                [
+                    'name' => 'Jenis Pengajuan' 
+                ],
+                [
+                    'name' => 'Tanggal Pengajuan'
+                ],
+                [
+                    'name' => 'Total Pengajuan'
+                ],
+                [
+                    'name' => 'Total Actual'
+                ]
+
+            ])
+            ->render("table-data"),
+            'id_anggaran' => $id_anggaran
+        ];
+
+        return view('admin/arsip-proyek-pengajuan', $data);
+    }
+
+    public function dashboardTimeline()
+    {
+
+        $breadcrumb = (new BreadCrumb)->set([
+            [
+                'name' => 'Dashboard',
+                'url' => base_url('dashboard'),
+            ],
+            [
+                'name' => 'Timeline',
+                'active' => true
+            ],
+        ])->render();
+        
+        return view('admin/timeline', [
+            'title' => 'Timeline',
+            'breadcrumb' => $breadcrumb,
+            'table'         => (new Table())->setColumns([
+
+                [
+                    'field' => 'nama_pekerjaan',
+                    'name' => 'Nama Pekerjaan',
+                    'sort' => true,
+                ],
+                [
+                    'name' => 'Anggaran'
+                ],
+                [
+                    'name' => 'Total Pengajuan' 
+                ],
+                [
+                    'name' => 'Penawaran'
+                ],
+                [
+                    'name' => 'Nego'
+                ],
+                [
+                    'name' => 'Dokumen'
+                ],
+                [
+                    'name' => 'Pengajuan'
+                ],
+
+            ])
+            ->render("table-data")
+        ]);
+
     }
 
 }
