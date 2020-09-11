@@ -55,8 +55,7 @@
                 </div>
 
                 <div class="col-12">
-                    <div><?php echo $table; ?></div>
-                    <div id="pagination-wrapper"></div>
+                    <div id="gantt_timeline"  style='width: 100%; min-width:100%; min-height:100%; height: 100vh;'></div>
                 </div>
             </div>    
         </div>
@@ -66,242 +65,28 @@
     </section>
     <!-- /.content -->
  
-    <!-- Modal -->
-    <div class="modal fade" id="form-modal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <!-- <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                </div> -->
-                <div class="modal-body">
-                    <form action="" id="form">
-
-                        <input type="hidden" name="truth_action" id="i-truth_action" value="">
-                        <input type="hidden" name="id_permintaan" id="i-id_permintaan">
-                        <input type="hidden" name="_method" value="POST">
-                        
-                        <div class="form-group">
-                            <label for="i-id_customer">Customer</label>
-                            <select name="id_customer" id="i-id_customer" class="form-control">
-                                <option value="">Pilih</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="i-id_pic">Divisi</label>
-                            <select name="id_pic" id="i-id_pic" class="form-control">
-                                <option value="">Pilih</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="i-permintaan_sales">Sales</label>
-                            <select name="permintaan_sales" id="i-permintaan_sales" class="form-control">
-                                <option value="">Pilih</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="i-nama_pekerjaan">Nama pekerjaan</label>
-                            <input type="text" name="nama_pekerjaan" class="form-control" id="i-nama_pekerjaan">
-                        </div>
-
-                        
-
-                        <div class="form-group">
-                            <label for="i-permintaan_lokasi_survey">Lokasi Survey</label>
-                            <input type="text" name="permintaan_lokasi_survey" class="form-control" id="i-permintaan_lokasi_survey">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="i-permintaan_jadwal_survey">Jadwal Survey</label>
-                            <input type="date" name="permintaan_jadwal_survey" class="form-control" id="i-permintaan_jadwal_survey">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="i-permintaan_status">Status</label>
-                            <select name="permintaan_status" id="i-permintaan_status" class="form-control">
-                                <option value="Draft">Draft</option>
-                                <option value="Negosiasi">Negosiasi</option>
-                                <option value="Publish">Publish</option>
-                                <option value="Kontrak">Kontrak</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="i-keterangan_pekerjaan">Keterangan</label>
-                            <textarea name="keterangan_pekerjaan" id="i-keterangan_pekerjaan" rows="5" class="form-control"></textarea>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-12 col-md-6">
-                                <label for="i-permintaan_nego">Negosiasi</label>
-                                <select name="permintaan_nego" id="i-permintaan_nego" class="form-control">
-                                    <option value="Y">Y</option>
-                                    <option value="N">N</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group col-12 col-md-6">
-                                <label for="i-permintaan_kontrak">Kontrak</label>
-                                <select name="permintaan_kontrak" id="i-permintaan_kontrak" class="form-control">
-                                    <option value="Y">Y</option>
-                                    <option value="N">N</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <button class="btn btn-primary" id="js-save">Simpan Permintaan</button>
-
-                    </form>
-                </div>
-                <!-- <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save</button>
-                </div> -->
-            </div>
-        </div>
-    </div>
-
-    <!-- BOQ Modal -->
-    <div class="modal fade" id="modal-boq" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">BOQ</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                </div>
-                <div class="modal-body">
-                    
-                    <form action="" id="form-boq">
-
-                        <!-- <input name="id_survey" type="hidden" id="i-id_survey">
-                        <input name="survey_divisi" type="hidden" id="i-survey_divisi"> -->
-
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Item</th>
-                                        <th width="80">Qty</th>
-                                        <th width="80">Unit</th>
-                                        <th width="120">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>
-                                            <input name="items[name]" type="text" class="form-control form-control-sm" placeholder="Masukann Nama item" value="" id="boq-item_name">
-                                        </th>
-                                        <th>
-                                            <input name="items[qty]" type="text" class="form-control form-control-sm" placeholder="Masukan Qty" value="" id="boq-item_qty">
-                                        </th>
-                                        <th>
-                                            <input name="items[unit]" type="text" class="form-control form-control-sm" placeholder="Masukan Unit" value="" id="boq-item_unit">
-                                        </th>
-                                       
-                                        <th>
-                                            <a href="javascript:void(0)" class="btn btn-primary" id="js-add-boq"><span class="fas fa-plus"></span></a>
-                                        </th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div> 
-    </div>
-    <!-- /BOQ Modal -->
-
-    <!-- BOQ Modal -->
-    <div class="modal fade" id="modal-estimasi" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-        <div class="modal-dialog" role="document" style="max-width: 100%;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Estimasi Harga</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                </div>
-                <div class="modal-body">
-                    
-                    <form action="" id="form-estimasi">
-                        
-                        <div class="table table-responsive">
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th rowspan="2" valign="middle" class="text-center align-middle" width="80">
-                                            <span>No</span>
-                                        </th>
-                                        <th rowspan="2" class="text-center align-middle">Item</th>
-                                        <th rowspan="2" class="text-center align-middle">Qty</th>
-                                        <th colspan="2" class="text-center">Harga Pokok</th>
-                                        <th width="10" rowspan="2" class="border-top-0 border-right-0 border-bottom-0"></th>
-                                        <th colspan="2" class="text-center">Harga Jual</th>
-                                        <th rowspan="2" class="text-center align-middle" width="150">Margin</th>
-                                    </tr>
-                                    <tr>
-                                        <th class="text-center" width="120">Harga</th>
-                                        <th class="text-center" width="120">Total</th>
-                                        <th class="text-center" width="120">Harga</th>
-                                        <th class="text-center" width="120">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                        <button class="btn btn-primary" id="js-save-estimasi">Simpan Estimasi</button>
-                        
-                    </form>
-                </div>
-            </div>
-        </div> 
-    </div>
-    <!-- /BOQ Modal -->
-    
-    <!-- Modal -->
-    <div class="modal fade" id="modal-doc" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Upload Dokumen</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                </div>
-                <div class="modal-body">
-                    <form id="form-doc" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="">Pilih Dokumen</label>
-                            <input type="file" name="file" class="form-control">
-                        </div>
-                        <button class="btn btn-primary" id="js-add-doc">Upload</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
+ 
 
 <?php $this->endSection(); ?>
 
+<?php $this->section('headerScript') ?>
+
+    <link rel="stylesheet" href="<?php echo base_url("/assets/plugins/gantt/codebase/dhtmlxgantt.css") ?>">
+
+<?php $this->endSection() ?>
 
 <?php $this->section('footerScript') ?>
-<script></script>
+<script src="<?php echo base_url("/assets/plugins/gantt/codebase/dhtmlxgantt.js"); ?>"></script>
 <script>
+    
+    gantt.init('gantt_timeline');
+
     $(function(){
 
         let truthAction = $('#i-truth_action');
         let tableData = $('#table-data');
         let form = $('#form');
+
 
         loadData();
         function loadData(data = {}) {
