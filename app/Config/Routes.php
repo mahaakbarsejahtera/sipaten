@@ -35,6 +35,18 @@ $routes->get('/', 'Home::index');
 
 $routes->group('api', [ 'namespace' => 'App\Controllers\Api' ], function($routes){
 
+	// Timeline
+	$routes->get('timeline', 'Timeline::index');
+
+	
+	$routes->post('timeline/task/add', 'Timeline::addTask');
+    $routes->post('timeline/task/update/{id}', 'Timeline::updateTask/$1');
+	$routes->post('timeline/task/delete/{id}', 'Timeline::deleteTask/$1');
+	
+	$routes->post('timeline/link/add', 'Timeline::addLink');
+    $routes->post('timeline/link/update/{id}', 'Timeline::updateLink/$1');
+    $routes->post('timeline/link/delete/{id}', 'Timeline::deleteLink/$1');
+
 	// USERS
 	$routes->get('users', 'Users::index');
 	$routes->get('users/show/(:num)', 'Users::show/$1');
@@ -282,6 +294,7 @@ $routes->group('dashboard', [ 'namespace' => 'App\Controllers\Admin' ], function
 	$routes->get('arsip-proyek/pengajuan/(:num)', 'Home::arsipProyekPengajuan/$1');
 
 	$routes->get('timeline', 'Home::dashboardTimeline');
+	
 
 	// Dashboard Pemasaran
 	$routes->group('pemasaran', function($routes) {
