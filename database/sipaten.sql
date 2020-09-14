@@ -209,6 +209,18 @@ INSERT IGNORE INTO `negosiasi` (`id_nego`, `id_permintaan`, `nego_no`, `nego_tgl
 	(4, 8, 'HK/01/01/01', '2020-08-26', 'Medan', '<p>test</p>', 'Bambang Hendrato:Manager Project, Imam Samudra:Purchasing', '', NULL, '2020-08-26 09:36:19');
 /*!40000 ALTER TABLE `negosiasi` ENABLE KEYS */;
 
+-- membuang struktur untuk table internal_pt_maha.options
+CREATE TABLE IF NOT EXISTS `options` (
+  `id_option` bigint(20) NOT NULL AUTO_INCREMENT,
+  `option_key` varchar(50) DEFAULT NULL,
+  `option_value` longtext,
+  PRIMARY KEY (`id_option`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Membuang data untuk tabel internal_pt_maha.options: ~0 rows (lebih kurang)
+/*!40000 ALTER TABLE `options` DISABLE KEYS */;
+/*!40000 ALTER TABLE `options` ENABLE KEYS */;
+
 -- membuang struktur untuk table internal_pt_maha.penanggung_jawab
 CREATE TABLE IF NOT EXISTS `penanggung_jawab` (
   `id_penanggung_jawab` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -281,8 +293,8 @@ CREATE TABLE IF NOT EXISTS `penawaran` (
 -- Membuang data untuk tabel internal_pt_maha.penawaran: ~2 rows (lebih kurang)
 /*!40000 ALTER TABLE `penawaran` DISABLE KEYS */;
 INSERT IGNORE INTO `penawaran` (`id_penawaran`, `id_permintaan`, `penawaran_no`, `penawaran_due_date`, `penawaran_validasi_date`, `penawaran_term`) VALUES
-	(8, 8, '001\n/PN/0/MKD/VIII/2020', '2020-08-29', '2020-08-21', '<ol style="box-sizing: border-box; margin-top: 0px; margin-bottom: 1rem; color: #212529; font-family: \'Source Sans Pro\', -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif, \'Apple Color Emoji\', \'Segoe UI Emoji\', \'Segoe UI Symbol\'; font-size: 16px; background-color: #ffffff;">\n<li style="box-sizing: border-box;">pekerjaan di medan - binjai</li>\n<li style="box-sizing: border-box;">syarat pembayaran&nbsp;<br style="box-sizing: border-box;" />\n<ul style="box-sizing: border-box; margin-top: 0px; margin-bottom: 0px;">\n<li style="box-sizing: border-box;">50% DP</li>\n<li style="box-sizing: border-box;">50% Selesai berita acara</li>\n</ul>\n</li>\n<li style="box-sizing: border-box;">Harga sudah termasuk P</li>\n</ol>'),
-	(9, 9, '002\n/PN/0/XA/VIII/2020', '2020-08-29', '2020-08-20', '<ol style="box-sizing: border-box; margin-top: 0px; margin-bottom: 1rem; color: #212529; font-family: \'Source Sans Pro\', -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif, \'Apple Color Emoji\', \'Segoe UI Emoji\', \'Segoe UI Symbol\'; font-size: 16px; background-color: #ffffff;">\n<li style="box-sizing: border-box;">pekerjaan di medan - binjai</li>\n<li style="box-sizing: border-box;">syarat pembayaran&nbsp;<br style="box-sizing: border-box;" />\n<ul style="box-sizing: border-box; margin-top: 0px; margin-bottom: 0px;">\n<li style="box-sizing: border-box;">50% DP</li>\n<li style="box-sizing: border-box;">50% Selesai berita acara</li>\n</ul>\n</li>\n<li style="box-sizing: border-box;">Harga sudah termasuk P</li>\n</ol>');
+	(8, 8, '004\n/PN/0/MKD/IX/2020', '2020-08-29', '2020-08-21', '<ol style="box-sizing: border-box; margin-top: 0px; margin-bottom: 1rem; color: #212529; font-family: \'Source Sans Pro\', -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif, \'Apple Color Emoji\', \'Segoe UI Emoji\', \'Segoe UI Symbol\'; font-size: 16px; background-color: #ffffff;">\n<li style="box-sizing: border-box;">pekerjaan di medan - binjai</li>\n<li style="box-sizing: border-box;">syarat pembayaran&nbsp;<br style="box-sizing: border-box;" />\n<ul style="box-sizing: border-box; margin-top: 0px; margin-bottom: 0px;">\n<li style="box-sizing: border-box;">50% DP</li>\n<li style="box-sizing: border-box;">50% Selesai berita acara</li>\n</ul>\n</li>\n<li style="box-sizing: border-box;">Harga sudah termasuk P</li>\n</ol>'),
+	(9, 9, '004/PN/0/XA/IX/2020', '2020-09-22', '2020-09-08', '<p>Wew</p>');
 /*!40000 ALTER TABLE `penawaran` ENABLE KEYS */;
 
 -- membuang struktur untuk table internal_pt_maha.pengajuan_internal
@@ -294,13 +306,15 @@ CREATE TABLE IF NOT EXISTS `pengajuan_internal` (
   `no_surat_pengajuan_internal` varchar(50) DEFAULT '',
   `tanggal_pengajuan_internal` date DEFAULT NULL,
   `due_date_pengajuan_internal` date DEFAULT NULL,
+  `status_pengajuan_internal` enum('Accepted','Revisi','Draft','Pending') DEFAULT 'Draft',
+  `status_laporan_pengajuan_internal` enum('Accepted','Revisi','Draft','Pending','Reject') DEFAULT 'Pending',
   PRIMARY KEY (`id_pengajuan_internal`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Membuang data untuk tabel internal_pt_maha.pengajuan_internal: ~0 rows (lebih kurang)
+-- Membuang data untuk tabel internal_pt_maha.pengajuan_internal: ~1 rows (lebih kurang)
 /*!40000 ALTER TABLE `pengajuan_internal` DISABLE KEYS */;
-INSERT IGNORE INTO `pengajuan_internal` (`id_pengajuan_internal`, `id_jenis_pengajuan`, `id_pengaju`, `perihal_pengajuan_internal`, `no_surat_pengajuan_internal`, `tanggal_pengajuan_internal`, `due_date_pengajuan_internal`) VALUES
-	(1, 23, 5, 'Pengajuan X', '01/OPP/VIII/2020', '2020-08-29', '2020-09-12');
+INSERT IGNORE INTO `pengajuan_internal` (`id_pengajuan_internal`, `id_jenis_pengajuan`, `id_pengaju`, `perihal_pengajuan_internal`, `no_surat_pengajuan_internal`, `tanggal_pengajuan_internal`, `due_date_pengajuan_internal`, `status_pengajuan_internal`, `status_laporan_pengajuan_internal`) VALUES
+	(1, 23, 5, 'Pengajuan X', '01/OPP/VIII/2020', '2020-08-29', '2020-09-12', 'Draft', 'Pending');
 /*!40000 ALTER TABLE `pengajuan_internal` ENABLE KEYS */;
 
 -- membuang struktur untuk table internal_pt_maha.pengajuan_internal_item
@@ -313,15 +327,18 @@ CREATE TABLE IF NOT EXISTS `pengajuan_internal_item` (
   `pengajuan_internal_keterangan` text,
   `pengajuan_internal_unit` varchar(15) DEFAULT '',
   `pengajuan_internal_price` double DEFAULT '0',
+  `pengajuan_internal_actual_qty` float DEFAULT '0',
+  `pengajuan_internal_actual_price` double DEFAULT '0',
+  `pengajuan_internal_actual_keterangan` text,
   PRIMARY KEY (`id_pengajuan_internal_item`),
   KEY `FK_PENGJUAN_INTERNAL_ITEM` (`id_pengajuan_internal`),
   CONSTRAINT `FK_PENGJUAN_INTERNAL_ITEM` FOREIGN KEY (`id_pengajuan_internal`) REFERENCES `pengajuan_internal` (`id_pengajuan_internal`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Membuang data untuk tabel internal_pt_maha.pengajuan_internal_item: ~0 rows (lebih kurang)
+-- Membuang data untuk tabel internal_pt_maha.pengajuan_internal_item: ~1 rows (lebih kurang)
 /*!40000 ALTER TABLE `pengajuan_internal_item` DISABLE KEYS */;
-INSERT IGNORE INTO `pengajuan_internal_item` (`id_pengajuan_internal_item`, `id_pengajuan_internal`, `pengajuan_internal_name`, `pengajuan_internal_desc`, `pengajuan_internal_qty`, `pengajuan_internal_keterangan`, `pengajuan_internal_unit`, `pengajuan_internal_price`) VALUES
-	(1, 1, 'Item 1', '', 3, 'Keterangan Item 1', 'PC', 1500000);
+INSERT IGNORE INTO `pengajuan_internal_item` (`id_pengajuan_internal_item`, `id_pengajuan_internal`, `pengajuan_internal_name`, `pengajuan_internal_desc`, `pengajuan_internal_qty`, `pengajuan_internal_keterangan`, `pengajuan_internal_unit`, `pengajuan_internal_price`, `pengajuan_internal_actual_qty`, `pengajuan_internal_actual_price`, `pengajuan_internal_actual_keterangan`) VALUES
+	(1, 1, 'Item 1', '', 3, 'Keterangan Item 1', 'PC', 1500000, 3, 1000, 'wew');
 /*!40000 ALTER TABLE `pengajuan_internal_item` ENABLE KEYS */;
 
 -- membuang struktur untuk table internal_pt_maha.pengajuan_item_meta
@@ -350,15 +367,17 @@ CREATE TABLE IF NOT EXISTS `pengajuan_proyek` (
   `status_pengajuan_proyek` enum('Accepted','Revisi','Draft','Pending') DEFAULT 'Draft',
   `status_laporan_pengajuan_proyek` enum('Accepted','Revisi','Draft','Pending','Reject') DEFAULT 'Pending',
   PRIMARY KEY (`id_pengajuan_proyek`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 
 -- Membuang data untuk tabel internal_pt_maha.pengajuan_proyek: ~4 rows (lebih kurang)
 /*!40000 ALTER TABLE `pengajuan_proyek` DISABLE KEYS */;
 INSERT IGNORE INTO `pengajuan_proyek` (`id_pengajuan_proyek`, `id_pengaju`, `id_anggaran`, `id_jenis_pengajuan`, `perihal_pengajuan_proyek`, `no_surat_pengajuan_proyek`, `tanggal_pengajuan_proyek`, `due_date_pengajuan_proyek`, `status_pengajuan_proyek`, `status_laporan_pengajuan_proyek`) VALUES
-	(17, 5, 1, 23, '', '01/OPP/IX/2020', '2020-09-03', '2020-09-17', 'Draft', 'Pending'),
+	(17, 5, 1, 23, '', '01/OPP/IX/2020', '2020-09-03', '2020-09-17', 'Draft', 'Draft'),
 	(18, 5, 1, 23, '', '02/OPP/IX/2020', '2020-09-03', '2020-09-17', 'Draft', 'Pending'),
 	(19, 5, 1, 25, '', '01/ABP/IX/2020', '2020-09-03', '2020-09-17', 'Draft', 'Pending'),
-	(20, 5, 1, 25, '', '02/ABP/IX/2020', '2020-09-03', '2020-09-17', 'Draft', 'Pending');
+	(20, 5, 1, 25, '', '02/ABP/IX/2020', '2020-09-03', '2020-09-17', 'Draft', 'Pending'),
+	(21, 7, 3, 26, '', '001/OPT/IX/2020', '2020-09-14', '2020-09-28', 'Draft', 'Pending'),
+	(30, 7, 1, 26, '', '008/OPT/IX/2020', '2020-09-14', '2020-09-28', 'Draft', 'Pending');
 /*!40000 ALTER TABLE `pengajuan_proyek` ENABLE KEYS */;
 
 -- membuang struktur untuk table internal_pt_maha.pengajuan_proyek_item
@@ -383,8 +402,8 @@ CREATE TABLE IF NOT EXISTS `pengajuan_proyek_item` (
 -- Membuang data untuk tabel internal_pt_maha.pengajuan_proyek_item: ~2 rows (lebih kurang)
 /*!40000 ALTER TABLE `pengajuan_proyek_item` DISABLE KEYS */;
 INSERT IGNORE INTO `pengajuan_proyek_item` (`id_pengajuan_proyek_item`, `id_pengajuan_proyek`, `id_anggaran_item`, `pengajuan_proyek_name`, `pengajuan_proyek_desc`, `pengajuan_proyek_qty`, `pengajuan_proyek_unit`, `pengajuan_proyek_price`, `pengajuan_proyek_keterangan`, `pengajuan_proyek_actual_qty`, `pengajuan_proyek_actual_price`, `pengajuan_proyek_actual_keterangan`) VALUES
-	(3, 17, 1, '', '', 1, '', 50000, '', 0, 0, NULL),
-	(4, 17, 2, '', '', 1, '', 5000, '', 0, 0, NULL);
+	(3, 17, 1, '', '', 1, '', 50000, '', 10, 10, 'WEW'),
+	(4, 17, 2, '', '', 1, '', 5000, '', 3, 100000, 'WEW');
 /*!40000 ALTER TABLE `pengajuan_proyek_item` ENABLE KEYS */;
 
 -- membuang struktur untuk table internal_pt_maha.permintaan
@@ -569,6 +588,38 @@ CREATE TABLE IF NOT EXISTS `timeline_item` (
 /*!40000 ALTER TABLE `timeline_item` DISABLE KEYS */;
 /*!40000 ALTER TABLE `timeline_item` ENABLE KEYS */;
 
+-- membuang struktur untuk table internal_pt_maha.timeline_links
+CREATE TABLE IF NOT EXISTS `timeline_links` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `source` int(11) NOT NULL,
+  `target` int(11) NOT NULL,
+  `type` varchar(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Membuang data untuk tabel internal_pt_maha.timeline_links: ~0 rows (lebih kurang)
+/*!40000 ALTER TABLE `timeline_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `timeline_links` ENABLE KEYS */;
+
+-- membuang struktur untuk table internal_pt_maha.timeline_tasks
+CREATE TABLE IF NOT EXISTS `timeline_tasks` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `text` varchar(255) NOT NULL,
+  `start_date` date NOT NULL,
+  `duration` int(11) NOT NULL,
+  `progress` float NOT NULL,
+  `parent` int(11) NOT NULL,
+  `budget` double NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+
+-- Membuang data untuk tabel internal_pt_maha.timeline_tasks: ~2 rows (lebih kurang)
+/*!40000 ALTER TABLE `timeline_tasks` DISABLE KEYS */;
+INSERT IGNORE INTO `timeline_tasks` (`id`, `text`, `start_date`, `duration`, `progress`, `parent`, `budget`) VALUES
+	(20, 'New task', '2020-09-06', 1, 0, 0, 0),
+	(21, 'New task', '2020-09-01', 9, 0, 0, 0);
+/*!40000 ALTER TABLE `timeline_tasks` ENABLE KEYS */;
+
 -- membuang struktur untuk table internal_pt_maha.users
 CREATE TABLE IF NOT EXISTS `users` (
   `id_user` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -584,9 +635,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `create_date` date DEFAULT NULL,
   `latest_update` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
--- Membuang data untuk tabel internal_pt_maha.users: ~5 rows (lebih kurang)
+-- Membuang data untuk tabel internal_pt_maha.users: ~8 rows (lebih kurang)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT IGNORE INTO `users` (`id_user`, `user_divisi`, `user_role`, `user_code`, `user_name`, `user_fullname`, `user_pass`, `user_email`, `user_status`, `user_image`, `create_date`, `latest_update`) VALUES
 	(5, 0, 1, '0', 'anonim1', 'anonim1', '3847820138564525205299f1f444c5ec', 'anonim1@gmail.com', 'Suspend', '1597212041_fd59edd9cab78e43edf9.png', NULL, NULL),
@@ -594,7 +645,9 @@ INSERT IGNORE INTO `users` (`id_user`, `user_divisi`, `user_role`, `user_code`, 
 	(7, 0, 16, '0', 'ibnu', 'ibnu', '126fbdc6ce3047fea1f8f6d65144e4fc', 'ibnu@gmail.com', 'Active', '1597473165_7b6332b5eca3d3a853c4.png', NULL, NULL),
 	(8, 0, 21, '', 'furizal', 'Rizal', '126fbdc6ce3047fea1f8f6d65144e4fc', 'furizal@gmail.com', 'Active', NULL, NULL, NULL),
 	(9, 0, 18, '', 'hazridir', 'Hazri', '126fbdc6ce3047fea1f8f6d65144e4fc', 'hazridir@gmail.com', 'Active', NULL, NULL, NULL),
-	(10, 0, 19, '', 'rizalmt', 'Rizal MT', '126fbdc6ce3047fea1f8f6d65144e4fc', 'rizalmt@gmail.com', 'Active', NULL, NULL, NULL);
+	(10, 0, 19, '', 'rizalmt', 'Rizal MT', '126fbdc6ce3047fea1f8f6d65144e4fc', 'rizalmt@gmail.com', 'Active', NULL, NULL, NULL),
+	(11, 0, 22, '', 'hazrimp', 'Hazri MP', '126fbdc6ce3047fea1f8f6d65144e4fc', 'hazrimp@gmail.com', 'Active', NULL, NULL, NULL),
+	(12, 0, 20, '', 'krisyantomk', 'Krisyanto', '126fbdc6ce3047fea1f8f6d65144e4fc', 'krisyantomk@gmail.com', 'Active', NULL, NULL, NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
