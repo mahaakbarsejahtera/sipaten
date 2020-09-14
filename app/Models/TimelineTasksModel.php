@@ -10,7 +10,7 @@ class TimelineTasksModel extends Model
     protected $primaryKey = "id";
     
     protected $allowedFields = [
-        'text', 'start_date', 'end_date', 'duration', 'progress', 'parent'
+        'text', 'start_date', 'end_date', 'duration', 'progress', 'parent', 'budget'
     ];
 
     protected $orderby = [

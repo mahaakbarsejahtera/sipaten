@@ -51,8 +51,18 @@ class Timeline extends Controller
         $links = (new \App\Models\TimelineLinksModel())->findAll();
         $tasks = (new \App\Models\TimelineTasksModel())->findAll();
 
+       
+        foreach($tasks as $task) 
+        {
+
+            $task['start_date']     = (new \DateTime($task['start_date']))->format('d-m-Y');
+            $task['end_date']       = (new \DateTime($task['end_date']))->format('d-m-Y');
+            $tempTasks[] = $task;
+
+        }
+
         $response['data']['links'] = $links;
-        $response['data']['tasks'] = $tasks;
+        $response['data']['tasks'] = $tempTasks;
         
 
         return $this->response->setJson($response);
@@ -84,11 +94,12 @@ class Timeline extends Controller
 
         $insertData = [
             'text'          => $this->request->getPost('text'),
-            'start_date'    => $this->request->getPost('start_date'),
-            'end_date'      => $this->request->getPost('end_date'),
+            'start_date'    => (new \DateTime($this->request->getPost('start_date')))->format('Y-m-d'),
+            'end_date'      => (new \DateTime($this->request->getPost('end_date')))->format('Y-m-d'),
             'duration'      => $this->request->getPost('duration'),
             'progress'      => $this->request->getPost('progress'),
             'parent'        => $this->request->getPost('parent'),
+            'budget'        => $this->request->getPost('budget'),
         ];
 
         $this->response->setJSON($insertData);
@@ -97,7 +108,7 @@ class Timeline extends Controller
         $model->save($insertData);
 
         $response['code']       = 200;
-        $response['data']       = $insertData;
+        $response['data']       = $this->request->getPost();
         //$response['data'] = $insertData;
         $response['message']    = 'Insert Success';
 
@@ -134,11 +145,12 @@ class Timeline extends Controller
         $insertData = [
             'id'            => $id,
             'text'          => $this->request->getPost('text'),
-            'start_date'    => $this->request->getPost('start_date'),
-            'end_date'      => $this->request->getPost('end_date'),
+            'start_date'    => (new \DateTime($this->request->getPost('start_date')))->format('Y-m-d'),
+            'end_date'      => (new \DateTime($this->request->getPost('end_date')))->format('Y-m-d'),
             'duration'      => $this->request->getPost('duration'),
             'progress'      => $this->request->getPost('progress'),
             'parent'        => $this->request->getPost('parent'),
+            'budget'        => $this->request->getPost('budget'),
         ];
 
         $model = new \App\Models\TimelineTasksModel();

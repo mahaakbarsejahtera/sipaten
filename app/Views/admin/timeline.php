@@ -37,7 +37,7 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-12 col-md-3">
+                <!-- <div class="col-12 col-md-3">
                     <a href="javascript:void(0)" data-toggle="modal" data-target="#form-modal" class="btn btn-primary mb-3">Tambah Data</a>
                 </div>
                 <div class="col-12 col-md-9">
@@ -52,7 +52,7 @@
                         
                     
                     </form>
-                </div>
+                </div> -->
 
                 <div class="col-12">
                     <div id="gantt_timeline"  style='width: 100%; min-width:100%; min-height:100%; height: 100vh;'></div>
@@ -80,27 +80,52 @@
 <script>
     
     gantt.init('gantt_timeline');
+    gantt.config.date_format = "%Y-%m-%d";
+    gantt.config.columns = [
+      {name:"text",       label:"Task name",  width:"*", tree:true },
+      {name:"start_date", label:"Start time", align:"center" },
+      {name:"duration",   label:"Duration",   align:"center" },
+      {name:"budget",     label:"Budget",     align:"center" },
+      {name:"add",        label:"",           width:44 }
+    ];
+
+    gantt.config.lightbox.sections.push({ 
+      name:"budgets", height:72, type:"textarea", map_to:"budget"
+    })
+
+    gantt.attachEvent('onBeforeTaskChanged', function(id, model, old_task) {
+
+      var task = gantt.getTask(id);
+
+      console.log('task', task);
+
+    })
 
     $(function(){
 
         let truthAction = $('#i-truth_action');
-        let tableData = $('#table-data');
-        let form = $('#form');
+        let tableData   = $('#table-data');
+        let form        = $('#form');
 
-        let currentDate = new Date();
-        gantt.config.start_date = new Date();
-        gantt.config.end_date = new Date(currentDate.getFullYear() + 100, currentDate.getMonth(), currentDate.getDay());
-        console.log(gantt.config);
+        let currentDate         = new Date();
+        gantt.config.start_date = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDay() - 30) ;
+        gantt.config.end_date   = new Date(currentDate.getFullYear() + 100, currentDate.getMonth(), currentDate.getDay());
 
         let dp = gantt.createDataProcessor((entity, action, data, id) => {
+
             console.log(data);
             switch(action) {
                 case 'create':
                     return gantt.ajax.post(`${baseUrl}/api/timeline/${entity}/add`, data).then( res => console.log('res', res));
                     break;
+
                 case 'update':
                     return gantt.ajax.post(`${baseUrl}/api/timeline/${entity}/update/${id}`, data);
                     break;
+
+                case  'delete': 
+                    return gantt.ajax.post(`${baseUrl}/api/timeline/${entity}/delete/${id}`);
+                    break; 
             }
         });
 
@@ -115,6 +140,7 @@
                 url: "<?php echo base_url('/api/timeline') ?>",
                 data: data,
                 success: function(response) {
+                  console.log('get data task and links', response.data);
                     gantt.parse(response.data);
                 }
             })
